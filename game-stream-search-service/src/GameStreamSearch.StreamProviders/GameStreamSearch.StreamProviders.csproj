@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ProviderApi\Twitch\Dto\" />
+    <Folder Include="ProviderApi\" />
+    <Folder Include="ProviderApi\Twitch\" />
+    <Folder Include="ProviderApi\Twitch\Interfaces\" />
+    <Folder Include="ProviderApi\Twitch\Dto\Kraken\" />
+    <Folder Include="ProviderApi\YouTube\" />
+    <Folder Include="ProviderApi\YouTube\Interfaces\" />
+    <Folder Include="ProviderApi\YouTube\Dto\" />
+    <Folder Include="ProviderApi\YouTube\Dto\YouTubeV3\" />
+    <Folder Include="Builders\" />
+    <Folder Include="ProviderApi\DLive\" />
+    <Folder Include="ProviderApi\DLive\Dto\" />
+    <Folder Include="ProviderApi\DLive\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="106.11.5" />
+    <PackageReference Include="Base64Url" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="GraphQL.Client" Version="3.2.0" />
+    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
+  </ItemGroup>
+</Project>

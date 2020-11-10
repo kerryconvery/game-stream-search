@@ -1,12 +1,12 @@
-using GameStreamSearch.Providers;
 using NUnit.Framework;
 using Moq;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Interfaces;
-using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Application.Dto;
 using System.Threading.Tasks;
 using System.Linq;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Dto.Kraken;
 using System.Collections.Generic;
+using GameStreamSearch.StreamProviders;
 
 namespace GameSearchService.StreamProviders.Tests
 {

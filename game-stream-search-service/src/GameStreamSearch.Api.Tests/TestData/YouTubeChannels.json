@@ -1,0 +1,24 @@
+﻿{
+  "items": [
+    {
+      "id": "channel1",
+      "snippet": {
+        "thumbnails": {
+          "default": {
+            "url": "http://channel1.thumbnail.url"
+          }
+        }
+      }
+    },
+    {
+      "id": "channel3",
+      "snippet": {
+        "thumbnails": {
+          "default": {
+            "url": "http://channel2.thumbnail.url"
+          }
+        }
+      }
+    }
+  ]
+}

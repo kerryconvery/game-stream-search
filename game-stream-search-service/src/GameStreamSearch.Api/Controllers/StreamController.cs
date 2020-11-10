@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Services.Dto;
-using GameStreamSearch.Services.Interfaces;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
