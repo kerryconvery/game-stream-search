@@ -61,7 +61,7 @@ namespace GameStreamSearch.StreamProviders.Tests
             Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, dliveStreams.data.livestreams.list.First().thumbnailUrl);
             Assert.AreEqual(streams.Items.First().StreamerName, dliveStreams.data.livestreams.list.First().creator.displayName);
             Assert.AreEqual(streams.Items.First().Views, dliveStreams.data.livestreams.list.First().watchingCount);
-            Assert.AreEqual(streams.Items.First().StreamPlatform, StreamingPlatform.dlive);
+            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamingPlatform.dlive.GetFriendlyName());
             Assert.AreEqual(streams.Items.First().IsLive, true);
         }
 

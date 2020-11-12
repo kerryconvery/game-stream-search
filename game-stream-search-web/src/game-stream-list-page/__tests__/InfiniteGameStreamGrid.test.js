@@ -20,7 +20,7 @@ describe('Game string list', () => {
           streamThumbnailUrl: 'http://test.stream.thumbnail.url',
           streamUrl: 'http://test.stream.url',
           streamerAvatarUrl: 'http://test.channel.thumbnail.url',
-          platformName: 'test platform',
+          streamPlatformName: 'test platform',
           isLive: true,
           views: 100
       }

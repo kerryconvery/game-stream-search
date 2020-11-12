@@ -14,7 +14,7 @@ describe('Application', () => {
         streamUrl: 'fake.stream1.url',
         streamerName: 'fake steamer',
         streamerAvatarUrl: 'http://fake.channel1.url',
-        platformName: 'fake platform',
+        streamPlatformName: 'fake platform',
         isLive: true,
         views: 100
       }],
@@ -50,7 +50,7 @@ describe('Application', () => {
         streamUrl: 'fake.stream1.url',
         streamerName: 'fake steamer',
         streamerAvatarUrl: 'http://fake.channel1.url',
-        platformName: 'fake platform',
+        streamPlatformName: 'fake platform',
         isLive: true,
         views: 100
       }],
@@ -64,7 +64,7 @@ describe('Application', () => {
         streamUrl: 'fake.stream2.url',
         streamerName: 'fake steamer',
         streamerAvatarUrl: 'http://fake.channel1.url',
-        platformName: 'fake platform',
+        streamPlatformName: 'fake platform',
         isLive: true,
         views: 100
       }],

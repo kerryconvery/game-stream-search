@@ -69,8 +69,8 @@ namespace GameStreamSearch.StreamProviders
                     StreamThumbnailUrl = s.thumbnailUrl,
                     StreamerAvatarUrl = s.creator.avatar,
                     StreamUrl = urlBuilder.Build(s.creator.displayName),
+                    StreamPlatformName = Platform.GetFriendlyName(),
                     IsLive = true,
-                    StreamPlatform = Platform,
                     Views = s.watchingCount,
 
                 }),
@@ -101,7 +101,7 @@ namespace GameStreamSearch.StreamProviders
             {
                 ChannelName = response.data.userByDisplayName.displayName,
                 AvatarUrl = response.data.userByDisplayName.avatar,
-                Platform = StreamingPlatform.dlive,
+                Platform = Platform,
             };
         }
 

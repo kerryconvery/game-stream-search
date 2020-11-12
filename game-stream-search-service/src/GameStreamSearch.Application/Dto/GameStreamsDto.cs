@@ -11,9 +11,9 @@ namespace GameStreamSearch.Application.Dto
         public string StreamUrl { get; set; }
         public string StreamerName { get; set; }
         public string StreamerAvatarUrl { get; set; }
-        public StreamingPlatform StreamPlatform { get; set; }
         public bool IsLive { get; set; }
         public int Views { get; set; }
+        public string StreamPlatformName { get; set; }
     }
 
     public class GameStreamsDto

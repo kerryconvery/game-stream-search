@@ -11,7 +11,7 @@ describe('Game stream grid tile', () => {
         streamThumbnailUrl: 'http://test.stream.thumbnail.url',
         streamUrl: 'http://test.stream.url',
         streamerAvatarUrl: 'http://test.channel.thumbnail.url',
-        platformName: 'test platform',
+        streamPlatformName: 'test platform',
         views: 100
       },
       {
@@ -20,7 +20,7 @@ describe('Game stream grid tile', () => {
         streamThumbnailUrl: 'http://test.stream.thumbnail.url',
         streamUrl: 'http://test.stream.url',
         streamerAvatarUrl: 'http://test.channel.thumbnail.url',
-        platformName: 'test platform',
+        streamPlatformName: 'test platform',
         views: 10
       },
     ]

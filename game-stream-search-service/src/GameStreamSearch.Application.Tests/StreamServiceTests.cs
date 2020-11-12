@@ -74,8 +74,8 @@ namespace GameStreamSearch.Application.Tests
                         new GameStreamDto
                         {
                             StreamTitle = "stream 1",
-                            StreamPlatform = StreamingPlatform.twitch,
-                         
+                            StreamPlatformName = twitchStreamProviderStub.Object.Platform.GetFriendlyName(),
+
                         }
                     },
                     NextPageToken = "twitch page token"
@@ -89,7 +89,7 @@ namespace GameStreamSearch.Application.Tests
                         new GameStreamDto
                         {
                             StreamTitle = "stream 2",
-                            StreamPlatform = StreamingPlatform.twitch,
+                            StreamPlatformName = twitchStreamProviderStub.Object.Platform.GetFriendlyName(),
                         }
                     },
                 });
@@ -101,7 +101,7 @@ namespace GameStreamSearch.Application.Tests
                     {
                         new GameStreamDto
                         {
-                            StreamPlatform = StreamingPlatform.youtube,
+                            StreamPlatformName = youtubeStreamProviderStub.Object.Platform.GetFriendlyName(),
                         }
                     }
                 });
@@ -115,9 +115,9 @@ namespace GameStreamSearch.Application.Tests
             var nextPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, firstPageOfStreams.NextPageToken);
 
             Assert.AreEqual(nextPageOfStreams.Items.Count(), 2);
-            Assert.AreEqual(nextPageOfStreams.Items.First().StreamPlatform, StreamingPlatform.twitch);
+            Assert.AreEqual(nextPageOfStreams.Items.First().StreamPlatformName, StreamingPlatform.twitch.GetFriendlyName());
             Assert.AreEqual(nextPageOfStreams.Items.First().StreamTitle, "stream 2");
-            Assert.AreEqual(nextPageOfStreams.Items.Last().StreamPlatform, StreamingPlatform.youtube);
+            Assert.AreEqual(nextPageOfStreams.Items.Last().StreamPlatformName, StreamingPlatform.youtube.GetFriendlyName());
         }
 
         [Test]
@@ -128,8 +128,8 @@ namespace GameStreamSearch.Application.Tests
 
             twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() {
-                    new GameStreamDto { Views = 1 },
-                    new GameStreamDto { Views = 2 }
+                    new GameStreamDto() { Views = 1 },
+                    new GameStreamDto() { Views = 2 }
                 } });
 
             var streamService = new StreamService()

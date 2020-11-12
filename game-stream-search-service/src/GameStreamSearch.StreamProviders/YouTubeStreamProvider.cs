@@ -37,8 +37,8 @@ namespace GameStreamSearch.StreamProviders
                     StreamTitle = v.snippet.title,
                     StreamThumbnailUrl = v.snippet.thumbnails.medium.url,
                     StreamerAvatarUrl = channelSnippet?.thumbnails.@default.url,
-                    StreamPlatform = Platform,
                     StreamUrl = urlBuilder.Build(v.id.videoId),
+                    StreamPlatformName = Platform.GetFriendlyName(),
                     IsLive = true,
                     Views = streamDetails != null ? streamDetails.concurrentViewers : 0,
                 };
@@ -112,7 +112,7 @@ namespace GameStreamSearch.StreamProviders
             {
                 ChannelName = channels.items.First().snippet.title,
                 AvatarUrl = channels.items.First().snippet.thumbnails.@default.url,
-                Platform = StreamingPlatform.youtube,
+                Platform = Platform,
             };
         }
 

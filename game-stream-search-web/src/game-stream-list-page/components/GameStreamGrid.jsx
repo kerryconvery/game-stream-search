@@ -3,11 +3,8 @@ import { node, string, number } from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -72,7 +69,7 @@ const StreamTile = ({
   streamUrl,
   streamerName,
   streamerAvatarUrl,
-  platformName,
+  streamPlatformName,
   views }) => {
 
   const classes = useStreamTileStyles();
@@ -92,7 +89,7 @@ const StreamTile = ({
             </Tooltip>
             <div className={classes.streamSubDetails}>
               <div>{streamerName}</div>
-              <span>{platformName}</span>
+              <span>{streamPlatformName}</span>
               <span> • </span>
               <span>{`${views} viewers`}</span>
             </div>
@@ -109,7 +106,7 @@ StreamTile.propTypes = {
   streamThumbnailUrl: string.isRequired,
   streamUrl: string.isRequired,
   streamerAvatarUrl: string.isRequired,
-  platformName: string.isRequired,
+  streamPlatformName: string.isRequired,
   views: number.isRequired,
 }
 

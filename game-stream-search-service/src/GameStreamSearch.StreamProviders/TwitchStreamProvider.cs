@@ -55,8 +55,8 @@ namespace GameStreamSearch.StreamProviders
                 StreamerName = s.channel.display_name,
                 StreamerAvatarUrl = s.channel.logo,
                 StreamThumbnailUrl = s.preview.medium,
-                StreamPlatform = Platform,
                 StreamUrl = s.channel.url,
+                StreamPlatformName = Platform.GetFriendlyName(),
                 IsLive = true,
                 Views = s.viewers,
             });
@@ -114,7 +114,7 @@ namespace GameStreamSearch.StreamProviders
             {
                 ChannelName = channels.Channels.First().display_name,
                 AvatarUrl = channels.Channels.First().logo,
-                Platform = StreamingPlatform.twitch
+                Platform = Platform,
             };
         }
 

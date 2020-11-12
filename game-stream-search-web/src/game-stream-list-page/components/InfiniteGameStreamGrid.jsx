@@ -22,7 +22,7 @@ InfiniteGameStreamGrid.propTypes = {
     streamTitle: string.isRequired,
     streamThumbnailUrl: string.isRequired,
     streamerAvatarUrl: string.isRequired,
-    platformName: string.isRequired,
+    streamPlatformName: string.isRequired,
     isLive: bool.isRequired,
     streamUrl: string.isRequired,
     views: number.isRequired,
