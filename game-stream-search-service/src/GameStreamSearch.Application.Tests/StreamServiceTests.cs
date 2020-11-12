@@ -11,27 +11,31 @@ namespace GameStreamSearch.Application.Tests
 {
     public class StreaServiceTests
     {
+        private Mock<IStreamProvider> CreateStreamProviderStub(StreamingPlatform streamingPlatform)
+        {
+            var streamProviderStub = new Mock<IStreamProvider>();
+
+            streamProviderStub.SetupGet(m => m.Platform).Returns(streamingPlatform);
+
+            return streamProviderStub;
+        }
+
         [Test]
         public async Task Should_Return_An_Aggregated_List_Of_Streams_From_All_Registered_Providers()
         {
-            var paginatorStub = new Mock<IPaginator>();
-            var streamProviderStubA = new Mock<IStreamProvider>();
-            var streamProviderStubB = new Mock<IStreamProvider>();
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamingPlatform.twitch);
+            var youtubeStreamProviderStub = CreateStreamProviderStub(StreamingPlatform.youtube);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
-            paginatorStub.Setup(m => m.decode(It.IsAny<string>())).Returns(new Dictionary<string, string>());
-
-            streamProviderStubA.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } } );
-            streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
 
-            streamProviderStubB.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
+            youtubeStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } } );
-            streamProviderStubB.SetupGet(m => m.ProviderName).Returns("streamB");
 
-            var streamService = new StreamService(paginatorStub.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, streamProviderStubA.Object)
-                .RegisterStreamProvider(StreamingPlatform.youtube, streamProviderStubB.Object);
+            var streamService = new StreamService()
+                .RegisterStreamProvider(twitchStreamProviderStub.Object)
+                .RegisterStreamProvider(youtubeStreamProviderStub.Object);
 
             var streams = await streamService.GetStreams(streamFilterOptions, 2, null);
 
@@ -41,139 +45,95 @@ namespace GameStreamSearch.Application.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_When_No_Streams_Were_Found()
         {
-            var paginatorStub = new Mock<IPaginator>();
-            var streamProviderStubA = new Mock<IStreamProvider>();
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamingPlatform.twitch);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
-            paginatorStub.Setup(m => m.decode(It.IsAny<string>())).Returns(new Dictionary<string, string>());
-
-            streamProviderStubA.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
                 .ReturnsAsync(GameStreamsDto.Empty());
-            streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
 
-            var streamService = new StreamService(paginatorStub.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, streamProviderStubA.Object);
+            var streamService = new StreamService()
+                .RegisterStreamProvider(twitchStreamProviderStub.Object);
 
             var streams = await streamService.GetStreams(streamFilterOptions, 1, null);
 
             Assert.AreEqual(streams.Items.Count(), 0);
         }
 
-
-        [Test]
-        public async Task Should_Return_An_Aggregated_Next_Page_Tokens()
-        {
-            var paginatorStub = new Mock<IPaginator>();
-            var streamProviderStubA = new Mock<IStreamProvider>();
-            var streamProviderStubB = new Mock<IStreamProvider>();
-            var streamFilterOptions = new StreamFilterOptionsDto();
-
-            paginatorStub.Setup(m => m.decode(It.IsAny<string>())).Returns(new Dictionary<string, string>());
-
-            streamProviderStubA.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
-                .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() }, NextPageToken = "1" });
-            streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
-
-            streamProviderStubB.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
-                .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() }, NextPageToken = "2" });
-            streamProviderStubB.SetupGet(m => m.ProviderName).Returns("streamB");
-
-            paginatorStub.Setup(m => m.encode(It.IsAny<Dictionary<string, string>>())).Returns((Dictionary<string, string> p) =>
-            {
-                return $"{p[streamProviderStubA.Object.ProviderName]}{p[streamProviderStubB.Object.ProviderName]}";
-            });
-
-            var streamService = new StreamService(paginatorStub.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, streamProviderStubA.Object)
-                .RegisterStreamProvider(StreamingPlatform.youtube, streamProviderStubB.Object);
-
-            var streams = await streamService.GetStreams(streamFilterOptions, 1, null);
-
-            Assert.AreEqual(streams.NextPageToken, "12");
-        }
-
-        [Test]
-        public async Task Should_Exclude_Null_Page_Tokens_From_Aggregation()
-        {
-            var paginatorStub = new Mock<IPaginator>();
-            var streamProviderStubA = new Mock<IStreamProvider>();
-            var streamProviderStubB = new Mock<IStreamProvider>();
-            var streamFilterOptions = new StreamFilterOptionsDto();
-
-            paginatorStub.Setup(m => m.decode(It.IsAny<string>())).Returns(new Dictionary<string, string>());
-
-            streamProviderStubA.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
-                .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() }, NextPageToken = null });
-            streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
-
-            streamProviderStubB.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
-                .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() }, NextPageToken = "2" });
-            streamProviderStubB.SetupGet(m => m.ProviderName).Returns("streamB");
-
-            paginatorStub.Setup(m => m.encode(It.Is<Dictionary<string, string>>(p => !p.ContainsKey("streamA")))).Returns((Dictionary<string, string> p) =>
-            {
-                return p[streamProviderStubB.Object.ProviderName];
-            });
-
-            var streamService = new StreamService(paginatorStub.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, streamProviderStubA.Object)
-                .RegisterStreamProvider(StreamingPlatform.youtube, streamProviderStubB.Object);
-
-            var streams = await streamService.GetStreams(streamFilterOptions, 1, null);
-
-            Assert.AreEqual(streams.NextPageToken, "2");
-        }
-
         [Test]
         public async Task Should_Pass_Page_Tokens_Where_A_Page_Token_For_The_Provider_Exists()
         {
-            var paginatorStub = new Mock<IPaginator>();
-            var streamProviderStubA = new Mock<IStreamProvider>();
-            var streamProviderStubB = new Mock<IStreamProvider>();
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamingPlatform.twitch);
+            var youtubeStreamProviderStub = CreateStreamProviderStub(StreamingPlatform.youtube);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
-            var pageTokens = new Dictionary<string, string>
-            {
-                { "streamB", "streamB.token" }
-            };
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), null))
+                .ReturnsAsync(new GameStreamsDto()
+                {
+                    Items = new List<GameStreamDto>
+                    {
+                        new GameStreamDto
+                        {
+                            StreamTitle = "stream 1",
+                            StreamPlatform = StreamingPlatform.twitch,
+                         
+                        }
+                    },
+                    NextPageToken = "twitch page token"
+                });
 
-            paginatorStub.Setup(m => m.decode("encoded.composit.token")).Returns(pageTokens);
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), "twitch page token"))
+                .ReturnsAsync(new GameStreamsDto()
+                {
+                    Items = new List<GameStreamDto>
+                    {
+                        new GameStreamDto
+                        {
+                            StreamTitle = "stream 2",
+                            StreamPlatform = StreamingPlatform.twitch,
+                        }
+                    },
+                });
 
-            streamProviderStubA.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
-                .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } });
-            streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
+            youtubeStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), null))
+                .ReturnsAsync(new GameStreamsDto()
+                {
+                    Items = new List<GameStreamDto>
+                    {
+                        new GameStreamDto
+                        {
+                            StreamPlatform = StreamingPlatform.youtube,
+                        }
+                    }
+                });
 
-            streamProviderStubB.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, "streamB.token"))
-                .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } });
-            streamProviderStubB.SetupGet(m => m.ProviderName).Returns("streamB");
+            var streamService = new StreamService()
+                .RegisterStreamProvider(twitchStreamProviderStub.Object)
+                .RegisterStreamProvider(youtubeStreamProviderStub.Object);
 
-            var streamService = new StreamService(paginatorStub.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, streamProviderStubA.Object)
-                .RegisterStreamProvider(StreamingPlatform.youtube, streamProviderStubB.Object);
+            var firstPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, null);
 
-            var streams = await streamService.GetStreams(streamFilterOptions, 2, "encoded.composit.token");
+            var nextPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, firstPageOfStreams.NextPageToken);
 
-            Assert.AreEqual(streams.Items.Count(), 2);
+            Assert.AreEqual(nextPageOfStreams.Items.Count(), 2);
+            Assert.AreEqual(nextPageOfStreams.Items.First().StreamPlatform, StreamingPlatform.twitch);
+            Assert.AreEqual(nextPageOfStreams.Items.First().StreamTitle, "stream 2");
+            Assert.AreEqual(nextPageOfStreams.Items.Last().StreamPlatform, StreamingPlatform.youtube);
         }
 
         [Test]
         public async Task Should_Return_A_Stream_List_Sorted_By_Views()
         {
-            var paginatorStub = new Mock<IPaginator>();
-            var streamProviderStubA = new Mock<IStreamProvider>();
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamingPlatform.twitch);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
-            paginatorStub.Setup(m => m.decode(It.IsAny<string>())).Returns(new Dictionary<string, string>());
-
-            streamProviderStubA.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() {
                     new GameStreamDto { Views = 1 },
                     new GameStreamDto { Views = 2 }
                 } });
-            streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
 
-            var streamService = new StreamService(paginatorStub.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, streamProviderStubA.Object);
+            var streamService = new StreamService()
+                .RegisterStreamProvider(twitchStreamProviderStub.Object);
 
             var streams = await streamService.GetStreams(streamFilterOptions, 2, null);
 

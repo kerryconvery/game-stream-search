@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Application
 {
@@ -10,6 +10,6 @@ namespace GameStreamSearch.Application
         Task<GameStreamsDto> GetLiveStreams(StreamFilterOptionsDto filterOptions, int pageSize, string pageToken = null);
         Task<StreamerChannelDto> GetStreamerChannel(string channelName);
 
-        string ProviderName { get; }
+        StreamingPlatform Platform { get; }
     }
 }

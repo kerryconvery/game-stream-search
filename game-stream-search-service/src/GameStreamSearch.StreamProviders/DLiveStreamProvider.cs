@@ -16,9 +16,8 @@ namespace GameStreamSearch.StreamProviders
         private readonly IDLiveWatchUrlBuilder urlBuilder;
         private readonly IDLiveApi dliveApi;
 
-        public DLiveStreamProvider(string providerName, IDLiveWatchUrlBuilder urlBuilder, IDLiveApi dliveApi)
+        public DLiveStreamProvider(IDLiveWatchUrlBuilder urlBuilder, IDLiveApi dliveApi)
         {
-            ProviderName = providerName;
             this.urlBuilder = urlBuilder;
             this.dliveApi = dliveApi;
         }
@@ -71,7 +70,7 @@ namespace GameStreamSearch.StreamProviders
                     StreamerAvatarUrl = s.creator.avatar,
                     StreamUrl = urlBuilder.Build(s.creator.displayName),
                     IsLive = true,
-                    PlatformName = ProviderName,
+                    StreamPlatform = Platform,
                     Views = s.watchingCount,
 
                 }),
@@ -106,6 +105,6 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public string ProviderName { get; private set; }
+        public StreamingPlatform Platform => StreamingPlatform.dlive;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
@@ -99,7 +100,7 @@ namespace GameSearchService.StreamProviders.Tests
             youTubeV3ApiStub.Setup(m => m.GetVideos(It.Is<string[]>(i => i.First() == "stream1"))).ReturnsAsync(videos);
             youTubeV3ApiStub.Setup(m => m.GetChannels(It.Is<string[]>(i => i.First() == "channel1"))).ReturnsAsync(channels);
 
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptionsDto { GameName = "fake game" }, 1, "fake page token");
 
@@ -109,6 +110,7 @@ namespace GameSearchService.StreamProviders.Tests
             Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, liveStreams.items.First().snippet.thumbnails.medium.url);
             Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, channels.items.First().snippet.thumbnails.@default.url);
             Assert.AreEqual(streams.Items.First().StreamUrl, watchUrl);
+            Assert.AreEqual(streams.Items.First().StreamPlatform, StreamingPlatform.youtube);
             Assert.AreEqual(streams.Items.First().Views, 5);
             Assert.IsTrue(streams.Items.First().IsLive);
             Assert.AreEqual(streams.NextPageToken, liveStreams.nextPageToken);
@@ -121,7 +123,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             youTubeV3ApiStub.Setup(m => m.SearchGamingVideos(null, VideoEventType.Live, VideoSortType.ViewCount, 1, null)).ReturnsAsync(new YouTubeSearchDto());
 
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1, null);
 
@@ -155,7 +157,7 @@ namespace GameSearchService.StreamProviders.Tests
                 }
             );
 
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
@@ -188,7 +190,7 @@ namespace GameSearchService.StreamProviders.Tests
                 }
             );
 
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
@@ -207,7 +209,7 @@ namespace GameSearchService.StreamProviders.Tests
                 }
             );
 
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider( watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
@@ -221,7 +223,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(new YouTubeChannelsDto());
 
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             Assert.ThrowsAsync<StreamProviderUnavailableException>(() => youTubeStreamProvider.GetStreamerChannel("Test streamer"));
         }

@@ -1,5 +1,4 @@
 using System.Linq;
-using GameStreamSearch.Api.Infrastructor;
 using GameStreamSearch.Api.Controllers;
 using NUnit.Framework;
 using Moq;
@@ -51,14 +50,12 @@ namespace GameStreamSearch.Api.Tests
 
             var youTubeStreamUrl = "https://www.youtube.com";
 
-            var twitchStreamProvider = new TwitchStreamProvider("Twitch", twitchKrakenApiStub.Object);
-            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", new YouTubeWatchUrlBuilder(youTubeStreamUrl), youTubeV3ApiStub.Object);
+            var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(new YouTubeWatchUrlBuilder(youTubeStreamUrl), youTubeV3ApiStub.Object);
 
-            var paginator = new Paginator();
-
-            var streamService = new StreamService(paginator)
-                .RegisterStreamProvider(StreamingPlatform.twitch, twitchStreamProvider)
-                .RegisterStreamProvider(StreamingPlatform.youtube, youTubeStreamProvider);
+            var streamService = new StreamService()
+                .RegisterStreamProvider(twitchStreamProvider)
+                .RegisterStreamProvider(youTubeStreamProvider);
 
             return new StreamController(streamService);
         }
@@ -89,7 +86,7 @@ namespace GameStreamSearch.Api.Tests
             Assert.AreEqual(streams.Items.Count() , 2);
 
             Assert.AreEqual(streams.Items.First().StreamTitle, "game 1");
-            Assert.AreEqual(streams.Items.First().PlatformName, "Twitch");
+            Assert.AreEqual(streams.Items.First().StreamPlatform, StreamingPlatform.twitch);
             Assert.AreEqual(streams.Items.First().StreamerName, "twitch channel 1");
             Assert.AreEqual(streams.Items.First().StreamUrl, "http://fake.twitch.url");
             Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, "http://channel.thumbnail.url");
@@ -99,7 +96,7 @@ namespace GameStreamSearch.Api.Tests
 
 
             Assert.AreEqual(streams.Items.Last().StreamTitle, "game 1");
-            Assert.AreEqual(streams.Items.Last().PlatformName, "YouTube");
+            Assert.AreEqual(streams.Items.Last().StreamPlatform, StreamingPlatform.youtube);
             Assert.AreEqual(streams.Items.Last().StreamerName, "youtube channel 1");
             Assert.AreEqual(streams.Items.Last().StreamUrl, "https://www.youtube.com/watch?v=video1");
             Assert.AreEqual(streams.Items.Last().StreamerAvatarUrl, "http://channel1.thumbnail.url");
@@ -126,10 +123,10 @@ namespace GameStreamSearch.Api.Tests
             Assert.AreEqual(secondPageStreams.Items.Count(), 2);
 
             Assert.AreEqual(secondPageStreams.Items.First().StreamTitle, "game 2");
-            Assert.AreEqual(secondPageStreams.Items.First().PlatformName, "Twitch");
+            Assert.AreEqual(secondPageStreams.Items.First().StreamPlatform, StreamingPlatform.twitch);
 
             Assert.AreEqual(secondPageStreams.Items.Last().StreamTitle, "game 2");
-            Assert.AreEqual(secondPageStreams.Items.Last().PlatformName, "YouTube");
+            Assert.AreEqual(secondPageStreams.Items.Last().StreamPlatform, StreamingPlatform.youtube);
             Assert.AreEqual(secondPageStreams.Items.Last().Views, 2);
 
             Assert.IsNull(thirdPageStreams.NextPageToken);

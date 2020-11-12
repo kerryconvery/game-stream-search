@@ -7,7 +7,7 @@ namespace GameStreamSearch.Application
 {
     public interface IStreamService
     {
-        Task<GameStreamsDto> GetStreams(StreamFilterOptionsDto filterOptions, int pageSize, string pagination);
+        Task<GameStreamsDto> GetStreams(StreamFilterOptionsDto filterOptions, int pageSize, string pageToken);
         Task<StreamerChannelDto> GetStreamerChannel(string streamerName, StreamingPlatform streamingPlatform);
     }
 }

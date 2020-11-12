@@ -16,9 +16,8 @@ namespace GameStreamSearch.StreamProviders
         private readonly IYouTubeWatchUrlBuilder urlBuilder;
         private readonly IYouTubeV3Api youTubeV3Api;
 
-        public YouTubeStreamProvider(string providerName, IYouTubeWatchUrlBuilder urlBuilder, IYouTubeV3Api youTubeV3Api)
+        public YouTubeStreamProvider(IYouTubeWatchUrlBuilder urlBuilder, IYouTubeV3Api youTubeV3Api)
         {
-            ProviderName = providerName;
             this.urlBuilder = urlBuilder;
             this.youTubeV3Api = youTubeV3Api;
         }
@@ -38,7 +37,7 @@ namespace GameStreamSearch.StreamProviders
                     StreamTitle = v.snippet.title,
                     StreamThumbnailUrl = v.snippet.thumbnails.medium.url,
                     StreamerAvatarUrl = channelSnippet?.thumbnails.@default.url,
-                    PlatformName = ProviderName,
+                    StreamPlatform = Platform,
                     StreamUrl = urlBuilder.Build(v.id.videoId),
                     IsLive = true,
                     Views = streamDetails != null ? streamDetails.concurrentViewers : 0,
@@ -117,6 +116,6 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public string ProviderName { get; private set;  }
+        public StreamingPlatform Platform => StreamingPlatform.youtube;
     }
 }

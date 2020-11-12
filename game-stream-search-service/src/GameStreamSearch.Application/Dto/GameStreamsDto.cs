@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Application.Dto
 {
@@ -10,7 +11,7 @@ namespace GameStreamSearch.Application.Dto
         public string StreamUrl { get; set; }
         public string StreamerName { get; set; }
         public string StreamerAvatarUrl { get; set; }
-        public string PlatformName { get; set; }
+        public StreamingPlatform StreamPlatform { get; set; }
         public bool IsLive { get; set; }
         public int Views { get; set; }
     }

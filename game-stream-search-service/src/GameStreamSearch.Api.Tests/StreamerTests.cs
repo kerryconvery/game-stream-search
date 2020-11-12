@@ -42,18 +42,16 @@ namespace GameStreamSearch.Api.Tests
         [SetUp]
         public void Setup()
         {
-            Mock<IPaginator> paginator = new Mock<IPaginator>();
-
             twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
             youTubeApiStub = new Mock<IYouTubeV3Api>();
 
-            twitchStreamProvider = new TwitchStreamProvider(StreamingPlatform.twitch.GetFriendlyName(), twitchKrakenApiStub.Object);
-            youTubeStreamProvider = new YouTubeStreamProvider(StreamingPlatform.dlive.GetFriendlyName(), new YouTubeWatchUrlBuilder(""), youTubeApiStub.Object);
+            twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
+            youTubeStreamProvider = new YouTubeStreamProvider(new YouTubeWatchUrlBuilder(""), youTubeApiStub.Object);
 
 
-            streamService = new StreamService(paginator.Object)
-                .RegisterStreamProvider(StreamingPlatform.twitch, twitchStreamProvider)
-                .RegisterStreamProvider(StreamingPlatform.youtube, youTubeStreamProvider);
+            streamService = new StreamService()
+                .RegisterStreamProvider(twitchStreamProvider)
+                .RegisterStreamProvider(youTubeStreamProvider);
               
 
             streamerRepository = new StreamerRepository();

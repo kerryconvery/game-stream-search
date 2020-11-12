@@ -1,6 +1,4 @@
 using AspNetCoreRateLimit;
-using GameStreamSearch.Api.Infrastructor;
-using GameStreamSearch.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +11,6 @@ using GameStreamSearch.StreamProviders.ProviderApi.Twitch;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive;
-using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Api
 {
@@ -57,27 +54,17 @@ namespace GameStreamSearch.Api
             });
 
             services.AddControllers();
-            services.AddScoped<IPaginator, Paginator>();
             services.AddScoped(service =>
             {
-                return new StreamService(service.GetService<IPaginator>())
-                    .RegisterStreamProvider(
-                        StreamingPlatform.twitch,
-                        new TwitchStreamProvider(
-                            "Twitch",
+                return new StreamService()
+                    .RegisterStreamProvider(new TwitchStreamProvider(
                             new TwitchKrakenApi(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"])
                     ))
-                    .RegisterStreamProvider(
-                        StreamingPlatform.youtube,
-                        new YouTubeStreamProvider(
-                            "YouTube",
+                    .RegisterStreamProvider(new YouTubeStreamProvider(
                             new YouTubeWatchUrlBuilder(Configuration["YouTube:WatchUrl"]),
                             new YouTubeV3Api(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"])
                     ))
-                    .RegisterStreamProvider(
-                        StreamingPlatform.dlive,
-                        new DLiveStreamProvider(
-                            "DLive",
+                    .RegisterStreamProvider(new DLiveStreamProvider(
                             new DLiveWatchUrlBuilder(Configuration["DLive:WatchUrl"]),
                             new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
             });

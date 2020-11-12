@@ -16,9 +16,8 @@ namespace GameStreamSearch.StreamProviders
     {
         private readonly ITwitchKrakenApi twitchStreamApi;
 
-        public TwitchStreamProvider(string providerName, ITwitchKrakenApi twitchStreamApi)
+        public TwitchStreamProvider(ITwitchKrakenApi twitchStreamApi)
         {
-            ProviderName = providerName;
             this.twitchStreamApi = twitchStreamApi;
         }
 
@@ -56,7 +55,7 @@ namespace GameStreamSearch.StreamProviders
                 StreamerName = s.channel.display_name,
                 StreamerAvatarUrl = s.channel.logo,
                 StreamThumbnailUrl = s.preview.medium,
-                PlatformName = ProviderName,
+                StreamPlatform = Platform,
                 StreamUrl = s.channel.url,
                 IsLive = true,
                 Views = s.viewers,
@@ -119,6 +118,6 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public string ProviderName { get; private set; }
+        public StreamingPlatform Platform => StreamingPlatform.twitch;
     }
 }
