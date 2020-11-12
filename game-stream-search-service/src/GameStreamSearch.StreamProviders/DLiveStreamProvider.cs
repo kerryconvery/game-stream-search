@@ -6,6 +6,8 @@ using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive.Interfaces;
+using GameStreamSearch.Application.Exceptions;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -57,11 +59,11 @@ namespace GameStreamSearch.StreamProviders
 
             var pageOffset = GetPageOffset(pageToken);
 
-            var liveStreams = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
+            var response = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
 
             return new GameStreamsDto
             {
-                Items = liveStreams.data.livestreams.list.Select(s => new GameStreamDto
+                Items = response.data.livestreams.list.Select(s => new GameStreamDto
                 {
                     StreamTitle = s.title,
                     StreamerName = s.creator.displayName,
@@ -73,13 +75,35 @@ namespace GameStreamSearch.StreamProviders
                     Views = s.watchingCount,
 
                 }),
-                NextPageToken = GetNextPageToken(liveStreams.data.livestreams.list.Any(), pageSize, pageOffset),
+                NextPageToken = GetNextPageToken(response.data.livestreams.list.Any(), pageSize, pageOffset),
             };
         }
 
-        public Task<StreamerChannelDto> GetStreamerChannel(string channelName)
+        public async Task<StreamerChannelDto> GetStreamerChannel(string channelName)
         {
-            throw new System.NotImplementedException();
+            var response = await dliveApi.GetUserByDisplayName(channelName);
+
+            if (response.data == null)
+            {
+                throw new StreamProviderUnavailableException();
+            }
+
+            if (response.data.userByDisplayName == null)
+            {
+                return null;
+            }
+
+            if (!response.data.userByDisplayName.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            return new StreamerChannelDto
+            {
+                ChannelName = response.data.userByDisplayName.displayName,
+                AvatarUrl = response.data.userByDisplayName.avatar,
+                Platform = StreamingPlatform.dlive,
+            };
         }
 
         public string ProviderName { get; private set; }

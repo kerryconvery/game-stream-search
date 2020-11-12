@@ -7,6 +7,7 @@ using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Interfaces;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Dto.YouTubeV3;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.Application.Exceptions;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -108,7 +109,12 @@ namespace GameStreamSearch.StreamProviders
                 return null;
             }
 
-            return new StreamerChannelDto();
+            return new StreamerChannelDto
+            {
+                ChannelName = channels.items.First().snippet.title,
+                AvatarUrl = channels.items.First().snippet.thumbnails.@default.url,
+                Platform = StreamingPlatform.youtube,
+            };
         }
 
         public string ProviderName { get; private set;  }

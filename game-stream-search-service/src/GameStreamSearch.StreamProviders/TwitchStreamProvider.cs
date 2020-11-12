@@ -8,6 +8,7 @@ using Base64Url;
 using System.Security.Cryptography;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Dto.Kraken;
 using GameStreamSearch.Application.Exceptions;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -110,7 +111,12 @@ namespace GameStreamSearch.StreamProviders
                 return null;
             }
 
-            return new StreamerChannelDto();
+            return new StreamerChannelDto
+            {
+                ChannelName = channels.Channels.First().display_name,
+                AvatarUrl = channels.Channels.First().logo,
+                Platform = StreamingPlatform.twitch
+            };
         }
 
         public string ProviderName { get; private set; }

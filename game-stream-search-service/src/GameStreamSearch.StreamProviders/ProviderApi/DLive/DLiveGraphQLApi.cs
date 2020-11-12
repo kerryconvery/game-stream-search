@@ -36,5 +36,26 @@ namespace GameStreamSearch.StreamProviders.ProviderApi.DLive
 
             return response.Data;
         }
+
+        public async Task<DLiveUserByDisplayNameDto> GetUserByDisplayName(string displayName)
+        {
+            var graphQuery = new
+            {
+                query = $"query {{userByDisplayName(displayname: \"{displayName}\") {{ displayname, avatar }} }}",
+            };
+
+            var client = new RestClient(this.dliveGraphQLApiUrl);
+
+            var request = new RestRequest(Method.POST);
+
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+
+            request.AddJsonBody(graphQuery);
+
+            var response = await client.ExecuteAsync<DLiveUserByDisplayNameDto>(request);
+
+            return response.Data;
+        }
     }
 }

@@ -139,7 +139,17 @@ namespace GameSearchService.StreamProviders.Tests
                 {
                     items = new List<YouTubeChannelDto> {
                         new YouTubeChannelDto {
-                            snippet = new YouTubeChannelSnippetDto { title = "Test Streamer" }
+                            snippet = new YouTubeChannelSnippetDto
+                            {
+                                title = "Test Streamer",
+                                thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                                {
+                                    @default = new YouTubeChannelSnippetThumbnailDto
+                                    {
+                                        url = "test.url"
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -162,7 +172,17 @@ namespace GameSearchService.StreamProviders.Tests
                 {
                     items = new List<YouTubeChannelDto> {
                         new YouTubeChannelDto {
-                            snippet = new YouTubeChannelSnippetDto { title = "Test Streamer Two" }
+                            snippet = new YouTubeChannelSnippetDto
+                            {
+                                title = "Test Streamer Two",
+                                thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                                {
+                                    @default = new YouTubeChannelSnippetThumbnailDto
+                                    {
+                                        url = "test.url"
+                                    }
+                                }
+                            }
                         }
                     }
                 }

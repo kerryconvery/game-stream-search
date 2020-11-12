@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive.Dto;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive.Interfaces;
@@ -21,16 +22,16 @@ namespace GameStreamSearch.StreamProviders.Tests
             {
                 data = new DLiveStreamDataDto
                 {
-                    livestreams = new DLiveLiveStreamsDto
+                    livestreams = new DLiveStreamsDto
                     {
-                        list = new List<DLiveLiveStreamItemDto>
+                        list = new List<DLiveStreamItemDto>
                         {
-                            new DLiveLiveStreamItemDto
+                            new DLiveStreamItemDto
                             {
                                 title = "fake dlive stream",
                                 thumbnailUrl = "http://fake.dlive.thumbnail",
                                 watchingCount = 100,
-                                creator = new DLiveLiveStreamCreatorDto
+                                creator = new DLiveUserDto
                                 {
                                     displayName = "FakeStreamer",
                                     avatar = "http://fake.avatar.url"
@@ -85,16 +86,16 @@ namespace GameStreamSearch.StreamProviders.Tests
             {
                 data = new DLiveStreamDataDto
                 {
-                    livestreams = new DLiveLiveStreamsDto
+                    livestreams = new DLiveStreamsDto
                     {
-                        list = new List<DLiveLiveStreamItemDto>
+                        list = new List<DLiveStreamItemDto>
                         {
-                            new DLiveLiveStreamItemDto
+                            new DLiveStreamItemDto
                             {
                                 title = "fake dlive stream page 1",
                                 thumbnailUrl = "http://fake.dlive.thumbnail",
                                 watchingCount = 100,
-                                creator = new DLiveLiveStreamCreatorDto
+                                creator = new DLiveUserDto
                                 {
                                     displayName = "FakeStreamer",
                                     avatar = "http://fake.avatar.url"
@@ -109,16 +110,16 @@ namespace GameStreamSearch.StreamProviders.Tests
             {
                 data = new DLiveStreamDataDto
                 {
-                    livestreams = new DLiveLiveStreamsDto
+                    livestreams = new DLiveStreamsDto
                     {
-                        list = new List<DLiveLiveStreamItemDto>
+                        list = new List<DLiveStreamItemDto>
                         {
-                            new DLiveLiveStreamItemDto
+                            new DLiveStreamItemDto
                             {
                                 title = "fake dlive stream page 2",
                                 thumbnailUrl = "http://fake.dlive.thumbnail",
                                 watchingCount = 100,
-                                creator = new DLiveLiveStreamCreatorDto
+                                creator = new DLiveUserDto
                                 {
                                     displayName = "FakeStreamer",
                                     avatar = "http://fake.avatar.url"
@@ -153,9 +154,9 @@ namespace GameStreamSearch.StreamProviders.Tests
             {
                 data = new DLiveStreamDataDto
                 {
-                    livestreams = new DLiveLiveStreamsDto
+                    livestreams = new DLiveStreamsDto
                     {
-                        list = new List<DLiveLiveStreamItemDto>()
+                        list = new List<DLiveStreamItemDto>()
                     }
                 }
             };
@@ -171,6 +172,96 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             Assert.IsFalse(streams.Items.Any());
             Assert.Null(streams.NextPageToken);
+        }
+
+        [Test]
+        public async Task Should_Return_Streamer_Channel_If_A_Channel_Was_Found_And_The_Name_Matched()
+        {
+            var dliveApiStub = new Mock<IDLiveApi>();
+
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
+                new DLiveUserByDisplayNameDto
+                {
+                    data = new DLiveUserByDisplayNameDataDto
+                    {
+                        userByDisplayName = new DLiveUserDto
+                        {
+                            displayName = "Test Streamer"
+                        }
+                    }
+                }
+            );
+
+            var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
+
+            var dliveStreamProvider = new DLiveStreamProvider("DLive", dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
+
+            var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNotNull(streamerChannel);
+        }
+
+        [Test]
+        public async Task Should_Return_Null_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        {
+            var dliveApiStub = new Mock<IDLiveApi>();
+
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
+                new DLiveUserByDisplayNameDto
+                {
+                    data = new DLiveUserByDisplayNameDataDto
+                    {
+                        userByDisplayName = new DLiveUserDto
+                        {
+                            displayName = "Test Streamer Two"
+                        }
+                    }
+                }
+            );
+
+            var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
+
+            var dliveStreamProvider = new DLiveStreamProvider("DLive", dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
+
+            var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNull(streamerChannel);
+        }
+
+        [Test]
+        public async Task Should_Return_Null_If_A_Channel_Was_Not_Found()
+        {
+            var dliveApiStub = new Mock<IDLiveApi>();
+
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
+                new DLiveUserByDisplayNameDto
+                {
+                    data = new DLiveUserByDisplayNameDataDto()
+                }
+            );
+
+            var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
+
+            var dliveStreamProvider = new DLiveStreamProvider("DLive", dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
+
+            var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNull(streamerChannel);
+        }
+
+        [Test]
+        public void Should_Throw_An_Excepton_If_The_Provider_Returns_An_Error()
+        {
+            var dliveApiStub = new Mock<IDLiveApi>();
+
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(new DLiveUserByDisplayNameDto());
+
+            var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
+
+            var dliveStreamProvider = new DLiveStreamProvider("DLive", dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
+
+
+            Assert.ThrowsAsync<StreamProviderUnavailableException>(() => dliveStreamProvider.GetStreamerChannel("Test streamer"));
         }
     }
 }

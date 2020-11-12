@@ -95,7 +95,13 @@ namespace GameStreamSearch.Api.Tests
             twitchKrakenApiStub.Setup(s => s.SearchChannels(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(new TwitchChannelsDto
                 {
-                    Channels = new List<TwitchChannelDto> { new TwitchChannelDto() }
+                    Channels = new List<TwitchChannelDto>
+                    {
+                        new TwitchChannelDto
+                        {
+                            display_name = "Test Streamer",
+                        }
+                    }
                 });
 
             var streamer = new RegisterStreamerDto
@@ -126,7 +132,35 @@ namespace GameStreamSearch.Api.Tests
             twitchKrakenApiStub.Setup(s => s.SearchChannels(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(new TwitchChannelsDto
                 {
-                    Channels = new List<TwitchChannelDto> { new TwitchChannelDto() }
+                    Channels = new List<TwitchChannelDto>
+                    {
+                        new TwitchChannelDto
+                        {
+                            display_name = "Test Streamer"
+                        }
+                    }
+                });
+
+            youTubeApiStub.Setup(s => s.SearchChannelsByUsername(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(new YouTubeChannelsDto
+                {
+                    items = new List<YouTubeChannelDto>
+                    {
+                        new YouTubeChannelDto
+                        {
+                            snippet = new YouTubeChannelSnippetDto
+                            {
+                                title = "Test Streamer",
+                                thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                                {
+                                    @default = new YouTubeChannelSnippetThumbnailDto
+                                    {
+                                        url = "test.url"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 });
 
             var twitchStreamer = new RegisterStreamerDto
@@ -161,7 +195,13 @@ namespace GameStreamSearch.Api.Tests
             twitchKrakenApiStub.Setup(s => s.SearchChannels(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(new TwitchChannelsDto
                 {
-                    Channels = new List<TwitchChannelDto> { new TwitchChannelDto() }
+                    Channels = new List<TwitchChannelDto>
+                    {
+                        new TwitchChannelDto
+                        {
+                            display_name = "Existing Streamer"
+                        }
+                    }
                 });
 
             var streamer = new RegisterStreamerDto
