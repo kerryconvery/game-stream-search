@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Services.Interfaces;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Interfaces;
 using Base64Url;
 using System.Security.Cryptography;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Dto.Kraken;
 
-namespace GameStreamSearch.StreamProviders
+namespace GameStreamSearch.Providers
 {
     public class TwitchStreamProvider : IStreamProvider
     {

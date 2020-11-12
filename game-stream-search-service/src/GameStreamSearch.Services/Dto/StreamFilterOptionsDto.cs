@@ -1,5 +1,5 @@
 ﻿using System;
-namespace GameStreamSearch.Application.Dto
+namespace GameStreamSearch.Services.Dto
 {
     public class StreamFilterOptionsDto
     {

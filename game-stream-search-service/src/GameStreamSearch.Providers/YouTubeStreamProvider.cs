@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Services.Interfaces;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Interfaces;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Dto.YouTubeV3;
 using GameStreamSearch.StreamProviders.Builders;

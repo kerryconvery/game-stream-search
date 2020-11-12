@@ -4,7 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
-  </ItemGroup>
 </Project>

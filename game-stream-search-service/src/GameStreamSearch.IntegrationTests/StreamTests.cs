@@ -1,19 +1,20 @@
 using System.Linq;
 using GameStreamSearch.Api.Infrastructor;
+using GameStreamSearch.Providers;
+using GameStreamSearch.Services;
 using GameStreamSearch.Api.Controllers;
 using NUnit.Framework;
 using Moq;
+using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Interfaces;
+using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Interfaces;
+using GameStreamSearch.StreamProviders;
 using System.Threading.Tasks;
+using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Dto.Kraken;
+using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Dto.YouTubeV3;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
-using GameStreamSearch.Application.Services;
-using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Dto.Kraken;
-using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Interfaces;
-using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Interfaces;
-using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Dto.YouTubeV3;
-using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
 
 namespace GameStreamSearch.Api.Tests
@@ -53,7 +54,7 @@ namespace GameStreamSearch.Api.Tests
 
             var paginator = new Paginator();
 
-            var streamService = new StreamAggregationService(paginator)
+            var streamService = new StreamService(paginator)
                 .RegisterStreamProvider(twitchStreamProvider)
                 .RegisterStreamProvider(youTubeStreamProvider);
 

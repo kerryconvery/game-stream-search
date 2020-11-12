@@ -1,16 +1,18 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Services.Interfaces;
+using System;
 
-namespace GameStreamSearch.Application.Services
+namespace GameStreamSearch.Services
 {
-    public class StreamAggregationService : IStreamService
+    public class StreamService : IStreamService
     {
         private readonly IPaginator paginator;
         private List<IStreamProvider> streamProviders;
 
-        public StreamAggregationService(IPaginator paginator)
+        public StreamService(IPaginator paginator)
         {
             streamProviders = new List<IStreamProvider>();
             this.paginator = paginator;
@@ -56,7 +58,7 @@ namespace GameStreamSearch.Application.Services
             };
         }
 
-        public StreamAggregationService RegisterStreamProvider(IStreamProvider streamProvider)
+        public StreamService RegisterStreamProvider(IStreamProvider streamProvider)
         {
             streamProviders.Add(streamProvider);
 

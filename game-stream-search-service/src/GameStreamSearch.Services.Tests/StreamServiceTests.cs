@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Services.Interfaces;
 using Moq;
 using NUnit.Framework;
-using GameStreamSearch.Application.Services;
 
-namespace GameStreamSearch.Application.Tests
+namespace GameStreamSearch.Services.Tests
 {
     public class StreaServiceTests
     {
@@ -29,7 +28,7 @@ namespace GameStreamSearch.Application.Tests
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } } );
             streamProviderStubB.SetupGet(m => m.ProviderName).Returns("streamB");
 
-            var streamService = new StreamAggregationService(paginatorStub.Object)
+            var streamService = new StreamService(paginatorStub.Object)
                 .RegisterStreamProvider(streamProviderStubA.Object)
                 .RegisterStreamProvider(streamProviderStubB.Object);
 
@@ -51,7 +50,7 @@ namespace GameStreamSearch.Application.Tests
                 .ReturnsAsync(GameStreamsDto.Empty());
             streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
 
-            var streamService = new StreamAggregationService(paginatorStub.Object)
+            var streamService = new StreamService(paginatorStub.Object)
                 .RegisterStreamProvider(streamProviderStubA.Object);
 
             var streams = await streamService.GetStreams(streamFilterOptions, 1, null);
@@ -83,7 +82,7 @@ namespace GameStreamSearch.Application.Tests
                 return $"{p[streamProviderStubA.Object.ProviderName]}{p[streamProviderStubB.Object.ProviderName]}";
             });
 
-            var streamService = new StreamAggregationService(paginatorStub.Object)
+            var streamService = new StreamService(paginatorStub.Object)
                 .RegisterStreamProvider(streamProviderStubA.Object)
                 .RegisterStreamProvider(streamProviderStubB.Object);
 
@@ -115,7 +114,7 @@ namespace GameStreamSearch.Application.Tests
                 return p[streamProviderStubB.Object.ProviderName];
             });
 
-            var streamService = new StreamAggregationService(paginatorStub.Object)
+            var streamService = new StreamService(paginatorStub.Object)
                 .RegisterStreamProvider(streamProviderStubA.Object)
                 .RegisterStreamProvider(streamProviderStubB.Object);
 
@@ -147,7 +146,7 @@ namespace GameStreamSearch.Application.Tests
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } });
             streamProviderStubB.SetupGet(m => m.ProviderName).Returns("streamB");
 
-            var streamService = new StreamAggregationService(paginatorStub.Object)
+            var streamService = new StreamService(paginatorStub.Object)
                 .RegisterStreamProvider(streamProviderStubA.Object)
                 .RegisterStreamProvider(streamProviderStubB.Object);
 
@@ -172,7 +171,7 @@ namespace GameStreamSearch.Application.Tests
                 } });
             streamProviderStubA.SetupGet(m => m.ProviderName).Returns("streamA");
 
-            var streamService = new StreamAggregationService(paginatorStub.Object)
+            var streamService = new StreamService(paginatorStub.Object)
                 .RegisterStreamProvider(streamProviderStubA.Object);
 
             var streams = await streamService.GetStreams(streamFilterOptions, 2, null);

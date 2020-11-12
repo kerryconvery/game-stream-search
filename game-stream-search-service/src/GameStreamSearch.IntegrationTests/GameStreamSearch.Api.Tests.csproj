@@ -14,6 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameStreamSearch.Providers\GameStreamSearch.StreamProviders.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Services\GameStreamSearch.Services.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Api\GameStreamSearch.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="TestData\" />
   </ItemGroup>
   <ItemGroup>
@@ -29,9 +34,5 @@
     <None Update="TestData\YouTubeChannels.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj" />
-    <ProjectReference Include="..\GameStreamSearch.Api\GameStreamSearch.Api.csproj" />
   </ItemGroup>
 </Project>

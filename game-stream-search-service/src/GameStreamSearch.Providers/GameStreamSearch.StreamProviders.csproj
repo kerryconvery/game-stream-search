@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameStreamSearch.Services\GameStreamSearch.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="ProviderApi\Twitch\Dto\" />
     <Folder Include="ProviderApi\" />
     <Folder Include="ProviderApi\Twitch\" />
@@ -25,8 +28,5 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="GraphQL.Client" Version="3.2.0" />
     <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
   </ItemGroup>
 </Project>

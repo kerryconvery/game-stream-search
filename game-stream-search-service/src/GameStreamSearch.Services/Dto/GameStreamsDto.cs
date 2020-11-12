@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.Application.Dto
+namespace GameStreamSearch.Services.Dto
 {
     public class GameStreamDto
     {

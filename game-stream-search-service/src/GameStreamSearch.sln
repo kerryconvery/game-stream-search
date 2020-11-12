@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Api", "GameStreamSearch.Api\GameStreamSearch.Api.csproj", "{B4D0AF4F-C58D-4D2E-BA0C-29073CA6755B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.StreamProviders", "GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj", "{56EFD8B9-34F1-41AA-A84A-25F05D955A7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Services", "GameStreamSearch.Services\GameStreamSearch.Services.csproj", "{B7BBCEF9-CAF5-4271-AD80-369CE8082D7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Application.Tests", "GameStreamSearch.Application.Tests\GameStreamSearch.Application.Tests.csproj", "{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.StreamProviders", "GameStreamSearch.Providers\GameStreamSearch.StreamProviders.csproj", "{56EFD8B9-34F1-41AA-A84A-25F05D955A7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Api.Tests", "GameStreamSearch.IntegrationTests\GameStreamSearch.Api.Tests.csproj", "{8E490256-8612-42B2-BB63-85F8C77EDD64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Services.Tests", "GameStreamSearch.Services.Tests\GameStreamSearch.Services.Tests.csproj", "{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.StreamProviders.Tests", "GameSearchService.StreamProviders.Tests\GameStreamSearch.StreamProviders.Tests.csproj", "{74E44024-7E3D-4DF2-A09B-EC1F3633B471}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Repositories", "GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj", "{13C4F243-346B-4B7E-ABF6-03EA2F27B022}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Application", "GameStreamSearch.Application\GameStreamSearch.Application.csproj", "{C7C9BDBF-DD4F-4CB6-8B56-430CAFCFF206}"
-EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "GameStreamSearch.Api.Tests", "GameStreamSearch.Api.Tests\GameStreamSearch.Api.Tests.csproj", "{4E913CCE-339F-4394-AD2A-4D3F0666D444}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,18 @@ Global
 		{B4D0AF4F-C58D-4D2E-BA0C-29073CA6755B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4D0AF4F-C58D-4D2E-BA0C-29073CA6755B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4D0AF4F-C58D-4D2E-BA0C-29073CA6755B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7BBCEF9-CAF5-4271-AD80-369CE8082D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7BBCEF9-CAF5-4271-AD80-369CE8082D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7BBCEF9-CAF5-4271-AD80-369CE8082D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7BBCEF9-CAF5-4271-AD80-369CE8082D7B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{56EFD8B9-34F1-41AA-A84A-25F05D955A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56EFD8B9-34F1-41AA-A84A-25F05D955A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56EFD8B9-34F1-41AA-A84A-25F05D955A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56EFD8B9-34F1-41AA-A84A-25F05D955A7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E490256-8612-42B2-BB63-85F8C77EDD64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E490256-8612-42B2-BB63-85F8C77EDD64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E490256-8612-42B2-BB63-85F8C77EDD64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E490256-8612-42B2-BB63-85F8C77EDD64}.Release|Any CPU.Build.0 = Release|Any CPU
 		{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,17 +43,5 @@ Global
 		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7C9BDBF-DD4F-4CB6-8B56-430CAFCFF206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7C9BDBF-DD4F-4CB6-8B56-430CAFCFF206}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7C9BDBF-DD4F-4CB6-8B56-430CAFCFF206}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7C9BDBF-DD4F-4CB6-8B56-430CAFCFF206}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E913CCE-339F-4394-AD2A-4D3F0666D444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E913CCE-339F-4394-AD2A-4D3F0666D444}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E913CCE-339F-4394-AD2A-4D3F0666D444}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E913CCE-339F-4394-AD2A-4D3F0666D444}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

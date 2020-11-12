@@ -2,8 +2,8 @@
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Base64Url;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Services.Interfaces;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive.Interfaces;
 

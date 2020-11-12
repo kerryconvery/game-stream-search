@@ -7,8 +7,8 @@ http://app-stream-machine.s3-website-ap-southeast-2.amazonaws.com/
 
 ### Requirements to develop
 * Lerna v3.22+ `npm install --global lerna`
+* NodeJs v14+
 * Npm 6.14+
-* .Net Core 3.1
 * AWS Credentials for the account
 
 ### Commands
@@ -45,15 +45,14 @@ http://app-stream-machine.s3-website-ap-southeast-2.amazonaws.com/
 1. Change to the folder /devops
 2. Deploy the application by running ```deploy-application-components.sh <env name> <build no>``` e.g ./deploy-application-components.sh prodA 123
 
-### Future Improvements
-#### Application
-* Provide a way to discover new streamers
+### Improvements
+#### Application improvements
 * Filter by langauge
+* Provide a way to support new streamers
 
-#### Technical
+#### Technical improvements
 * Setup a CICD build pipeline
-* CloudFront CDN integration
-* Telemtry and service monitoring
+* Service monitoring
 * Error logging frontend and backend
 * E2E UI Tests
 * Blue-Gree deployment

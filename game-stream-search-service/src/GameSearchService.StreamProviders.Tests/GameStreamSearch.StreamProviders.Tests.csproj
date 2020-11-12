@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj" />
-    <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Providers\GameStreamSearch.StreamProviders.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Services\GameStreamSearch.Services.csproj" />
   </ItemGroup>
 </Project>
