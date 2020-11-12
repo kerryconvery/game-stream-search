@@ -23,8 +23,6 @@ namespace GameStreamSearch.Api.Tests
         private IStreamerRepository streamerRepository;
         private IInteractor<StreamerDto, IRegisterStreamerPresenter> registerStreamerInteractor;
         private IInteractor<string, IGetStreamerByIdPresenter> getStreamerByIdInteractor;
-        private IStreamProvider twitchStreamProvider;
-        private IStreamProvider youTubeStreamProvider;
         private Mock<ITimeProvider> timeProviderStub;
 
         private readonly DateTime registrationDate = DateTime.Now;
