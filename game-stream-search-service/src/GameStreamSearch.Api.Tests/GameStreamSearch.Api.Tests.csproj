@@ -14,24 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestData\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="TestData\TwitchLiveStreams.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestData\YouTubeLiveStreams.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestData\YouTubeVideos.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestData\YouTubeChannels.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Api\GameStreamSearch.Api.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj" />
