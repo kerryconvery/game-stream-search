@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using GameStreamSearch.Services.Interfaces;
+using GameStreamSearch.Application;
 using Base64Url;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace GameStreamSearch.Api.Infrastructor
 {

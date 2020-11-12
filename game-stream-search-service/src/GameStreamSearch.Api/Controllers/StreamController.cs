@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Services.Dto;
-using GameStreamSearch.Services.Interfaces;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,8 +19,7 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpGet]
         [Route("streams")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<GameStreamsDto>> GetStreams(
+        public async Task<IActionResult> GetStreams(
             [FromQuery(Name = "game")] string gameName = null,
             [FromQuery(Name = "pageSize")] int pageSize = 8,
             [FromQuery(Name = "pageToken")] string pageToken = null)
@@ -32,7 +31,7 @@ namespace GameStreamSearch.Api.Controllers
 
             var streams = await streamService.GetStreams(filterOptions, pageSize, pageToken);
 
-            return streams;
+            return Ok(streams);
         }
     }
 }

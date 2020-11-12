@@ -1,12 +1,13 @@
-using GameStreamSearch.Providers;
 using NUnit.Framework;
 using Moq;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Interfaces;
-using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Application.Dto;
 using System.Threading.Tasks;
 using System.Linq;
 using GameStreamSearch.StreamProviders.ProviderApi.Twitch.Dto.Kraken;
 using System.Collections.Generic;
+using GameStreamSearch.StreamProviders;
+using GameStreamSearch.Application.Exceptions;
 
 namespace GameSearchService.StreamProviders.Tests
 {
@@ -192,6 +193,75 @@ namespace GameSearchService.StreamProviders.Tests
             var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto() { GameName = "fake game" }, 1, streamsPage1.NextPageToken);
 
             Assert.IsNull(streamsPage2.NextPageToken);
+        }
+
+        [Test]
+        public async Task Should_Return_Streamer_Channel_If_A_Channel_Was_Found_And_The_Name_Matched()
+        {
+            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
+
+            twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
+                new TwitchChannelsDto
+                {
+                    Channels = new List<TwitchChannelDto> { new TwitchChannelDto { display_name = "Test Streamer" } }
+                }
+            );
+            
+            var twitchStreamProvider = new TwitchStreamProvider("Twitch", twitchKrakenApiStub.Object);
+
+            var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNotNull(streamerChannel);
+        }
+
+        [Test]
+        public async Task Should_Return_Null_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        {
+            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
+
+            twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
+                new TwitchChannelsDto
+                {
+                    Channels = new List<TwitchChannelDto> { new TwitchChannelDto { display_name = "Test Streamer Two" } }
+                }
+            );
+
+            var twitchStreamProvider = new TwitchStreamProvider("Twitch", twitchKrakenApiStub.Object);
+
+            var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNull(streamerChannel);
+        }
+
+        [Test]
+        public async Task Should_Return_Null_If_A_Channel_Was_Not_Found()
+        {
+            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
+
+            twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
+                new TwitchChannelsDto
+                {
+                    Channels = new List<TwitchChannelDto>()
+                }
+            );
+
+            var twitchStreamProvider = new TwitchStreamProvider("Twitch", twitchKrakenApiStub.Object);
+
+            var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNull(streamerChannel);
+        }
+
+        [Test]
+        public void Should_Throw_An_Excepton_If_The_Provider_Returns_An_Error()
+        {
+            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
+
+            twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(new TwitchChannelsDto());
+
+            var twitchStreamProvider = new TwitchStreamProvider("Twitch", twitchKrakenApiStub.Object);
+
+            Assert.ThrowsAsync<StreamProviderUnavailableException>(() => twitchStreamProvider.GetStreamerChannel("Test streamer"));
         }
     }
 }

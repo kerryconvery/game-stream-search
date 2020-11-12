@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive.Dto;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive.Interfaces;

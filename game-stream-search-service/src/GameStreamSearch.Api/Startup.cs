@@ -1,19 +1,19 @@
 using AspNetCoreRateLimit;
 using GameStreamSearch.Api.Infrastructor;
-using GameStreamSearch.Providers;
-using GameStreamSearch.Services;
-using GameStreamSearch.Services.Interfaces;
-using GameStreamSearch.StreamProviders;
-using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.StreamProviders.ProviderApi.DLive;
-using GameStreamSearch.StreamProviders.ProviderApi.Twitch;
-using GameStreamSearch.StreamProviders.ProviderApi.YouTube;
+using GameStreamSearch.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using GameStreamSearch.Application.Services;
+using GameStreamSearch.StreamProviders;
+using GameStreamSearch.StreamProviders.ProviderApi.Twitch;
+using GameStreamSearch.StreamProviders.Builders;
+using GameStreamSearch.StreamProviders.ProviderApi.YouTube;
+using GameStreamSearch.StreamProviders.ProviderApi.DLive;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Api
 {
@@ -58,22 +58,28 @@ namespace GameStreamSearch.Api
 
             services.AddControllers();
             services.AddScoped<IPaginator, Paginator>();
-            services.AddScoped<IStreamService>(service =>
+            services.AddScoped(service =>
             {
                 return new StreamService(service.GetService<IPaginator>())
-                    .RegisterStreamProvider(new TwitchStreamProvider(
-                        "Twitch",
-                        new TwitchKrakenApi(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"])
+                    .RegisterStreamProvider(
+                        StreamingPlatform.twitch,
+                        new TwitchStreamProvider(
+                            "Twitch",
+                            new TwitchKrakenApi(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"])
                     ))
-                    .RegisterStreamProvider(new YouTubeStreamProvider(
-                        "YouTube",
-                        new YouTubeWatchUrlBuilder(Configuration["YouTube:WatchUrl"]),
-                        new YouTubeV3Api(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"])
+                    .RegisterStreamProvider(
+                        StreamingPlatform.youtube,
+                        new YouTubeStreamProvider(
+                            "YouTube",
+                            new YouTubeWatchUrlBuilder(Configuration["YouTube:WatchUrl"]),
+                            new YouTubeV3Api(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"])
                     ))
-                    .RegisterStreamProvider(new DLiveStreamProvider(
-                        "DLive",
-                        new DLiveWatchUrlBuilder(Configuration["DLive:WatchUrl"]),
-                        new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
+                    .RegisterStreamProvider(
+                        StreamingPlatform.dlive,
+                        new DLiveStreamProvider(
+                            "DLive",
+                            new DLiveWatchUrlBuilder(Configuration["DLive:WatchUrl"]),
+                            new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
             });
         }
 

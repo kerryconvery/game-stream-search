@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Services.Dto;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.StreamProviders.ProviderApi.YouTube;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Dto.YouTubeV3;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube.Interfaces;
 using Moq;
@@ -127,6 +127,83 @@ namespace GameSearchService.StreamProviders.Tests
 
             Assert.IsEmpty(streams.Items);
             Assert.IsNull(streams.NextPageToken);
+        }
+
+        [Test]
+        public async Task Should_Return_Streamer_Channel_If_A_Channel_Was_Found_And_The_Name_Matched()
+        {
+            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
+
+            youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
+                new YouTubeChannelsDto
+                {
+                    items = new List<YouTubeChannelDto> {
+                        new YouTubeChannelDto {
+                            snippet = new YouTubeChannelSnippetDto { title = "Test Streamer" }
+                        }
+                    }
+                }
+            );
+
+            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+
+            var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNotNull(streamerChannel);
+        }
+
+        [Test]
+        public async Task Should_Return_Null_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        {
+            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
+
+            youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
+                new YouTubeChannelsDto
+                {
+                    items = new List<YouTubeChannelDto> {
+                        new YouTubeChannelDto {
+                            snippet = new YouTubeChannelSnippetDto { title = "Test Streamer Two" }
+                        }
+                    }
+                }
+            );
+
+            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+
+            var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNull(streamerChannel);
+        }
+
+        [Test]
+        public async Task Should_Return_Null_If_A_Channel_Was_Not_Found()
+        {
+            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
+
+            youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
+                new YouTubeChannelsDto
+                {
+                    items = new List<YouTubeChannelDto>()
+                }
+            );
+
+            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+
+            var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsNull(streamerChannel);
+        }
+
+        [Test]
+        public void Should_Throw_An_Excepton_If_The_Provider_Returns_An_Error()
+        {
+            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
+
+            youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(new YouTubeChannelsDto());
+
+            var youTubeStreamProvider = new YouTubeStreamProvider("YouTube", watchUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+
+            Assert.ThrowsAsync<StreamProviderUnavailableException>(() => youTubeStreamProvider.GetStreamerChannel("Test streamer"));
         }
     }
 }
