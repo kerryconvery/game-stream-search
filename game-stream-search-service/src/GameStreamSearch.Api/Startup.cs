@@ -16,6 +16,7 @@ using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Interactors;
 using GameStreamSearch.Application.Providers;
 using GameStreamSearch.Repositories.InMemoryRepositories;
+using Newtonsoft.Json.Converters;
 
 namespace GameStreamSearch.Api
 {
@@ -58,7 +59,9 @@ namespace GameStreamSearch.Api
                 });
             });
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter()));
+
             services.AddScoped< IStreamService>(service =>
             {
                 return new StreamService()
