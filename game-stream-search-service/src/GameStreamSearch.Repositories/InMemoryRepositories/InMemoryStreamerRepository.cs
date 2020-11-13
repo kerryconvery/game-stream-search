@@ -8,11 +8,11 @@ using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Repositories.InMemoryRepositories
 {
-    public class StreamerRepository : IStreamerRepository
+    public class InMemoryStreamerRepository : IStreamerRepository
     {
         private Dictionary<string, StreamerDto> streamerStore;
 
-        public StreamerRepository()
+        public InMemoryStreamerRepository()
         {
             streamerStore = new Dictionary<string, StreamerDto>();
         }

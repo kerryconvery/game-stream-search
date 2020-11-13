@@ -1,7 +1,7 @@
 ﻿using System;
 namespace GameStreamSearch.Application.Providers
 {
-    public class IdProvider : IIdProvider
+    public class GuidIdProvider : IIdProvider
     {
         public string GetNextId()
         {

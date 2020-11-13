@@ -33,7 +33,7 @@ namespace GameStreamSearch.Api.Tests
         {
             streamServiceStub = new Mock<IStreamService>();
 
-            streamerRepository = new StreamerRepository();
+            streamerRepository = new InMemoryStreamerRepository();
             registerStreamerInteractor = new RegisterStreamerInteractor(streamerRepository, streamServiceStub.Object);
             getStreamerByIdInteractor = new GetStreamerByIdInteractor(streamerRepository);
 
@@ -47,7 +47,7 @@ namespace GameStreamSearch.Api.Tests
                 getStreamerByIdInteractor,
                 streamerRepository,
                 timeProviderStub.Object,
-                new IdProvider());
+                new GuidIdProvider());
 
 
             Mock<IUrlHelper> urlHelper = new Mock<IUrlHelper>();

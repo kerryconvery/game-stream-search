@@ -67,7 +67,7 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpGet]
         [Route("streamers/{id}", Name = "GetStreamerById")]
-        public async Task<IActionResult> GetStreamer([FromRoute] string id)
+        public async Task<IActionResult> GetStreamerById([FromRoute] string id)
         {
             var presenter = new GetStreamerByIdPresenter();
 

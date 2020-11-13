@@ -19,7 +19,7 @@ namespace GameStreamSearch.Api.Presenters
 
         public void PresentStreamerRegistered(string streamerId)
         {
-            Result = new CreatedResult(urlHelper.Link(nameof(controller.GetStreamer), new GetStreamerByIdParams { Id = streamerId }), null);
+            Result = new CreatedResult(urlHelper.Link(nameof(controller.GetStreamerById), new GetStreamerByIdParams { Id = streamerId }), null);
         }
 
         public void PresentStreamerDoesNotHaveAChannel(string streamerName, StreamingPlatform platform)

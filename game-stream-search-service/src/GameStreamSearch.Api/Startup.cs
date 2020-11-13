@@ -12,6 +12,10 @@ using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.StreamProviders.ProviderApi.YouTube;
 using GameStreamSearch.StreamProviders.ProviderApi.DLive;
 using GameStreamSearch.Application;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Interactors;
+using GameStreamSearch.Application.Providers;
+using GameStreamSearch.Repositories.InMemoryRepositories;
 
 namespace GameStreamSearch.Api
 {
@@ -68,7 +72,17 @@ namespace GameStreamSearch.Api
                     .RegisterStreamProvider(new DLiveStreamProvider(
                             new DLiveWatchUrlBuilder(Configuration["DLive:WatchUrl"]),
                             new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
-            });        }
+
+
+            });
+
+
+            services.AddScoped<IInteractor<StreamerDto, IRegisterStreamerPresenter>, RegisterStreamerInteractor>();
+            services.AddScoped<IInteractor<string, IGetStreamerByIdPresenter>, GetStreamerByIdInteractor>();
+            services.AddScoped<ITimeProvider, UtcTimeProvider>();
+            services.AddScoped<IIdProvider, GuidIdProvider>();
+            services.AddSingleton<IStreamerRepository, InMemoryStreamerRepository>();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)

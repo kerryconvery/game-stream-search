@@ -1,7 +1,7 @@
 ﻿using System;
 namespace GameStreamSearch.Application.Providers
 {
-    public class TimeProvider : ITimeProvider
+    public class UtcTimeProvider : ITimeProvider
     {
         public DateTime GetNow()
         {

@@ -27,5 +27,8 @@
     <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>
