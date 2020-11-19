@@ -123,7 +123,7 @@ const useLoadingTileStyles = makeStyles(() => ({
   detailsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    paddingTop: '1rem',
+    paddingTop: '0.5rem',
     width: '100%',
   },
   details: {
