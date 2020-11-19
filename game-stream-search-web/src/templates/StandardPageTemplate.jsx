@@ -15,7 +15,6 @@ const useStyles = makeStyles(() => ({
     borderBottom: '1px outset white',
   },
   content: {
-    backgroundColor: '#F8F9F9',
     width: '100%',
   },
 }));

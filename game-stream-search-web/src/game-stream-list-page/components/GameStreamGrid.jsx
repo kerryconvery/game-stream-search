@@ -38,7 +38,7 @@ const useStreamTileStyles = makeStyles(() => ({
   detailsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    paddingTop: '1rem',
+    paddingTop: '0.5rem',
   },
   streamDetails: {
     paddingLeft: '0.5rem',

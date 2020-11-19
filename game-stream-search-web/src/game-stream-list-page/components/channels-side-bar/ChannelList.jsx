@@ -1,16 +1,22 @@
 import React from 'react';
 import { number, shape, string, bool, arrayOf } from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+const useTileStyles = makeStyles({
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    gridAutoFlow: 'row',
+  },
+})
 const ChannelTile = ({ name , streamPlatformDisplayName }) => (
-  <ListItem>
-    <ListItemText
-      primary={name}
-      secondary={<span>{streamPlatformDisplayName}</span>}
-    />
-  </ListItem>
+  <>
+    <h3>{name}</h3>
+    <span>{streamPlatformDisplayName}</span>
+  </>
 )
 
 ChannelTile.propTypes = {
@@ -25,6 +31,8 @@ const LoadingTile = () => (
 )
 
 export const ChannelList = ({ channels, isLoading, numberOfLoadingTiles }) => {
+  const classes = useTileStyles();
+
   const channelTitles = channels.map((channel, index) => (
     <ChannelTile key={index} {...channel} />
   ));
@@ -39,10 +47,12 @@ export const ChannelList = ({ channels, isLoading, numberOfLoadingTiles }) => {
   }
 
   return (
-    <List>
+    <div>
+    <div className={classes.container}>
       {channelTitles}
-      {loadingTiles}
-    </List>
+      {/* {loadingTiles} */}
+    </div>
+    </div>
   )
 }
 

@@ -35,6 +35,73 @@ const getStreamChannelsStub = () => {
       name: 'test channel 3',
       streamPlatformDisplayName: 'Twitch'
     },
+    {
+      name: 'test channel 1',
+      streamPlatformDisplayName: 'YouTube'
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive'
+    },
+    {
+      name: 'test channel 3',
+      streamPlatformDisplayName: 'Twitch'
+    },    {
+      name: 'test channel 1',
+      streamPlatformDisplayName: 'YouTube'
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive'
+    },
+    {
+      name: 'test channel 3',
+      streamPlatformDisplayName: 'Twitch'
+    },    {
+      name: 'test channel 1',
+      streamPlatformDisplayName: 'YouTube'
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive'
+    },
+    {
+      name: 'test channel 3',
+      streamPlatformDisplayName: 'Twitch'
+    },    {
+      name: 'test channel 1',
+      streamPlatformDisplayName: 'YouTube'
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive'
+    },
+    {
+      name: 'test channel 3',
+      streamPlatformDisplayName: 'Twitch'
+    },    {
+      name: 'test channel 1',
+      streamPlatformDisplayName: 'YouTube'
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive'
+    },
+    {
+      name: 'test channel 3',
+      streamPlatformDisplayName: 'Twitch'
+    },    {
+      name: 'test channel 1',
+      streamPlatformDisplayName: 'YouTube'
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive'
+    },
+    {
+      name: 'test channel 3 eee',
+      streamPlatformDisplayName: 'Twitch'
+    },
   ]
 
   return Promise.resolve(channels);
