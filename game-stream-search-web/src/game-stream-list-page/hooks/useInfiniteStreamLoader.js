@@ -56,6 +56,7 @@ const useInfiniteStreamLoader = (onLoadStreams, onLoadError, initialFilters = {}
   return {
     items: state.items,
     isLoading: state.isLoading,
+    filters: state.filters,
     hasMoreStreams,
     loadMoreStreams,
     filterStreams,
