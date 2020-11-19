@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
   sideBar: {
     position: 'fixed',
     width: '280px',
-    height: '100vh',
+    height: '100%',
   },
   mainContent: {
     gridColumnStart: 2,

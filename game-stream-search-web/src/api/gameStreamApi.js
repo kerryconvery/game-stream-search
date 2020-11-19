@@ -34,7 +34,7 @@ const getStreamChannelsStub = () => {
     {
       name: 'test channel 3',
       streamPlatformDisplayName: 'Twitch'
-    }
+    },
   ]
 
   return Promise.resolve(channels);
