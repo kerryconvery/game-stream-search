@@ -23,21 +23,23 @@ const GameStreamListPage = () => {
     <GameStreamPageTemplate
       searchBar={<GameStreamSearchBar onGameChange={gameName => streams.filterStreams({ gameName })} />}
       leftSideBar={<ChannelsSideBar />}
-      // notFoundNotice={<NoStreamsFound searchTerm={streams.filters.gameName} />}
+      notFoundNotice={<NoStreamsFound searchTerm={streams.filters.gameName} />}
       numberOfStreams={streams.items.length}
       isLoadingStreams={streams.isLoading}
     >
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={streams.loadMoreStreams}
-        hasMore={streams.hasMoreStreams}
-      >
-        <GameStreamGrid
-          streams={streams.items}
-          isLoading={streams.isLoading}
-          numberOfLoadingTiles={6}
-        />
-      </InfiniteScroll>
+      <div style={{ overflow: 'visible' }}>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={streams.loadMoreStreams}
+          hasMore={streams.hasMoreStreams}
+        >
+          <GameStreamGrid
+            streams={streams.items}
+            isLoading={streams.isLoading}
+            numberOfLoadingTiles={6}
+          />
+        </InfiniteScroll>
+      </div>
     </GameStreamPageTemplate>
   )
 }

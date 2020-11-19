@@ -14,6 +14,8 @@ const useStreamTileStyles = makeStyles(() => ({
     width:'20rem',
     height:'18rem',
     position: 'relative',
+    paddingLeft: '10px',
+    paddingRight: '10px',
   },
   streamTitle: {
     display: '-webkit-box',
@@ -115,6 +117,8 @@ const useLoadingTileStyles = makeStyles(() => ({
   root: {
     width:'20rem',
     height:'19rem',
+    paddingLeft: '10px',
+    paddingRight: '10px',
   },
   detailsContainer: {
     display: 'flex',
@@ -159,7 +163,6 @@ const useGridTileStyles = makeStyles(() => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     overflow: 'hidden',
-    gap: '20px',
     width: '100%'
   },
 }));

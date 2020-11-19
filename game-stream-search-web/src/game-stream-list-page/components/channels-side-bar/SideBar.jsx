@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   root: {
     'font-family': 'Helvetica',
-    backgroundColor: '#bfbfbf',
+    backgroundColor: 'white',
     height: '100%',
   },
 }));
