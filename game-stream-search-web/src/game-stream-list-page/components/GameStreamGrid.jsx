@@ -140,7 +140,7 @@ const LoadingTile = () => {
   const classes = useLoadingTileStyles();
 
   return (
-    <div className={classes.root}>
+    <div data-testid='loading-tile' className={classes.root}>
       <Skeleton variant='rect' height='60%' animation='wave' />
       <div className={classes.detailsContainer}>
         <Skeleton variant='circle' width={50} height={50} animation='wave' />
@@ -200,12 +200,13 @@ GameStreamGrid.propTypes = {
     streamPlatformName: string.isRequired,
     views: number.isRequired,
   })),
-  isLoading: bool.isRequired,
+  isLoading: bool,
   numberOfLoadingTiles: number.isRequired,
 }
 
 GameStreamGrid.defaultProps = {
   streams: [],
+  isLoading: false,
 }
 
 export default GameStreamGrid;

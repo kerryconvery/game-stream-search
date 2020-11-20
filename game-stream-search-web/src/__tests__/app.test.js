@@ -36,11 +36,50 @@ describe('Application', () => {
       )
 
     const fakeStream = await waitFor(() => screen.getByText('fake stream'));
+    const loadingTiles = await waitFor(() => screen.queryByTestId('loading-tile'));
     
     expect(fakeStream).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     expect(screen.queryByTestId('streams-not-found')).not.toBeInTheDocument();
+    expect(loadingTiles).not.toBeInTheDocument();
   });
+
+  it('should render loading tiles while loading streams', async () => {
+    const streams = {
+      items: [{
+        streamTitle: 'fake stream',
+        streamThumbnailUrl: 'http://fake.stream1.thumbnail',
+        streamUrl: 'fake.stream1.url',
+        streamerName: 'fake steamer',
+        streamerAvatarUrl: 'http://fake.channel1.url',
+        streamPlatformName: 'fake platform',
+        isLive: true,
+        views: 100
+      }],
+      nextPageToken: 'nextPage',
+    }
+
+    nock('http://localhost:5000')
+      .defaultReplyHeaders({
+        'access-control-allow-origin': '*',
+        'access-control-allow-credentials': 'true' 
+      })
+      .get('/api/streams?pageSize=10')
+      .reply(200, streams);
+
+      render(
+        <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
+          <App />
+        </ConfigurationProvider>
+      )
+
+    const loadingTiles = await waitFor(() => screen.getAllByTestId('loading-tile'));
+    
+    expect(loadingTiles[0]).toBeInTheDocument();
+
+    //Wait until screen has finished render to avoid unmount error
+    await waitFor(() => screen.getAllByText('fake stream'));
+  })
 
   it('should display the searched for game stream', async () => {
     const streams = {

@@ -9,6 +9,7 @@ const useTileStyles = makeStyles({
     gridAutoFlow: 'row',
   },
 })
+
 const ChannelTile = ({ name , streamPlatformDisplayName }) => (
   <>
     <h3>{name}</h3>

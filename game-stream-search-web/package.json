@@ -7,6 +7,7 @@
 	"license": "ISC",
 	"scripts": {
 		"test": "jest test --env=jest-environment-jsdom-sixteen --color",
+		"test:app": "npm run test",
 		"test:watch": "jest --env=jest-environment-jsdom-sixteen --watchAll test",
 		"start:local": "cross-env APP_ENV=local webpack-dev-server",
 		"build:local": "cross-env APP_ENV=local webpack",
