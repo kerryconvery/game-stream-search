@@ -14,7 +14,10 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     width: '280px',
     height: 'calc(100vh - 60px)',
-    overflowY: 'auto',
+    overflow: 'hidden',
+    '&:hover': {
+      overflowY: 'auto',
+    }
   },
   mainContent: {
     gridColumnStart: 2,
