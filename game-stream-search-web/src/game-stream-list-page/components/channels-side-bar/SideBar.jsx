@@ -6,7 +6,7 @@ const useStyles = makeStyles(() => ({
   root: {
     'font-family': 'Helvetica',
     backgroundColor: 'white',
-    height: '100%',
+    height: 'auto',
   },
 }));
 

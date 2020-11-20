@@ -13,7 +13,8 @@ const useStyles = makeStyles(() => ({
   sideBar: {
     position: 'fixed',
     width: '280px',
-    height: '100%',
+    height: 'calc(100vh - 60px)',
+    overflowY: 'auto',
   },
   mainContent: {
     gridColumnStart: 2,
