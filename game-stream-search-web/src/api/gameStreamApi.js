@@ -24,6 +24,20 @@ const getStreamChannelsRequest = (baseUrl) => () => (
 const getStreamChannelsStub = () => {
   const channels = [
     {
+      name: 'test channel 1 aaaa',
+      streamPlatformDisplayName: 'YouTube',
+      streamerAvatarURL: 'https://yt3.ggpht.com/ytc/AAUvwngVV8TZXaMQz3lJakmL-6S4A5LrUBBzjYFWpjZOIg=s88-c-k-c0x00ffffff-no-rj',
+    },
+    {
+      name: 'test channel 2',
+      streamPlatformDisplayName: 'DLive',
+      streamerAvatarURL: "https://yt3.ggpht.com/ytc/AAUvwni-mN_VAh1jj1FFGhNKe1iQZLNqDiXAdiuyw4hz=s88-c-k-c0x00ffffff-no-rj",
+    },
+    {
+      name: 'test channel 3',
+      streamPlatformDisplayName: 'Twitch'
+    },
+    {
       name: 'test channel 1',
       streamPlatformDisplayName: 'YouTube'
     },
@@ -34,8 +48,7 @@ const getStreamChannelsStub = () => {
     {
       name: 'test channel 3',
       streamPlatformDisplayName: 'Twitch'
-    },
-    {
+    },    {
       name: 'test channel 1',
       streamPlatformDisplayName: 'YouTube'
     },
@@ -100,7 +113,8 @@ const getStreamChannelsStub = () => {
     },
     {
       name: 'test channel 3 eee',
-      streamPlatformDisplayName: 'Twitch'
+      streamPlatformDisplayName: 'Twitch',
+      streamerAvatarURL: "https://images.prd.dlivecdn.com/avatar/ea9793cd-a47b-11ea-b737-e2443572cd01"
     },
   ]
 
