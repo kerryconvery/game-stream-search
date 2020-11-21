@@ -1,6 +1,6 @@
 import React from 'react';
 import ChannelList from './ChannelList';
-import { SideBarPanel } from './SideBar';
+import SideBarPanel from './SideBarPanel';
 import { useGameStreamApi } from '../../../api/gameStreamApi';
 import useChannelsLoader from '../../hooks/useChannelsLoader';
 

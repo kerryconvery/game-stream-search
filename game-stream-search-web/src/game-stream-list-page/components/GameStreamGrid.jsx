@@ -1,6 +1,6 @@
 import React from 'react';
 import { shape, string, number, bool, arrayOf } from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, styled } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import IconButton from '@material-ui/core/IconButton';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
@@ -11,11 +11,7 @@ const useStreamTileStyles = makeStyles(() => ({
   root: {
     'font-family': 'Helvetica',
     color: '#231E1D',
-    width:'20rem',
-    height:'18rem',
-    position: 'relative',
-    paddingLeft: '10px',
-    paddingRight: '10px',
+    position: 'relative'
   },
   streamTitle: {
     display: '-webkit-box',
@@ -46,6 +42,9 @@ const useStreamTileStyles = makeStyles(() => ({
   streamSubDetails: {
     color: '#606060',
     fontSize: '14px',
+    ' & > div': {
+      paddingBottom: '0.2rem'
+    }
   },
   playButton: {
     color: 'white',
@@ -114,12 +113,6 @@ StreamTile.propTypes = {
 }
 
 const useLoadingTileStyles = makeStyles(() => ({
-  root: {
-    width:'20rem',
-    height:'19rem',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-  },
   detailsContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -140,7 +133,7 @@ const LoadingTile = () => {
   const classes = useLoadingTileStyles();
 
   return (
-    <div data-testid='loading-tile' className={classes.root}>
+    <div data-testid='loading-tile'>
       <Skeleton variant='rect' height='60%' animation='wave' />
       <div className={classes.detailsContainer}>
         <Skeleton variant='circle' width={50} height={50} animation='wave' />
@@ -156,37 +149,46 @@ const LoadingTile = () => {
   )
 }
 
-const useGridTileStyles = makeStyles(() => ({
-  gridLayout: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    overflow: 'hidden',
-    width: '100%'
-  },
-}));
+const Grid = styled('div')({
+  display: 'flex',
+  flexWrap: 'wrap',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  overflow: 'hidden',
+  width: '100%'
+});
+
+const GridTile = styled('div')({
+  width:'20rem',
+  height:'19rem',
+  paddingLeft: '10px',
+  paddingRight: '10px',
+});
 
 const GameStreamGrid = ({ streams, isLoading, numberOfLoadingTiles }) => {
-  const classes = useGridTileStyles();
-
-  const streamTitle = streams.map((stream, index) => <StreamTile key={index} {...stream} />);
+  const streamTitle = streams.map((stream, index) => (
+    <GridTile key={index} >
+      <StreamTile {...stream} />
+    </GridTile>
+  ))
 
   const loadingTiles = [];
 
   if (isLoading) {
     for (let index = 0; index < numberOfLoadingTiles; index++) {
       loadingTiles.push(
-        <LoadingTile key={index} />
+        <GridTile key={index}>
+          <LoadingTile />
+        </GridTile>
       )
     }
   }
 
   return (
-    <div className={classes.gridLayout}>
+    <Grid>
       {streamTitle}
       {loadingTiles}
-    </div>
+    </Grid>
   )
 }
 

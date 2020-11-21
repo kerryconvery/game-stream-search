@@ -13,11 +13,13 @@ const useStyles = makeStyles(() => ({
   sideBar: {
     position: 'fixed',
     width: '280px',
-    height: 'calc(100vh - 60px)',
+    height: 'calc(100vh - 75px)',
     overflow: 'hidden',
     '&:hover': {
       overflowY: 'auto',
-    }
+    },
+    paddingTop: '1rem',
+    paddingLeft: '0.5rem' 
   },
   mainContent: {
     gridColumnStart: 2,
