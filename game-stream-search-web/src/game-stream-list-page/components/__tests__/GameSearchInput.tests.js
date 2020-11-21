@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import GameSearchInput from '../components/GameSearchInput';
+import GameSearchInput from '../GameSearchInput';
 
 describe('Game Search Input', () => {
   it('should match the snapshot', () => {

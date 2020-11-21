@@ -20,7 +20,7 @@ const ChannelsSideBar = () => {
 
   return (
     <div className={classes.sidebarContent}>
-    <UpAndComingChannels />
+      <UpAndComingChannels />
     </div>
   )
 }

@@ -36,7 +36,7 @@ describe('Application', () => {
       )
 
     const fakeStream = await waitFor(() => screen.getByText('fake stream'));
-    const loadingTiles = await waitFor(() => screen.queryByTestId('loading-tile'));
+    const loadingTiles = await waitFor(() => screen.queryByTestId('stream-loading-tile'));
     
     expect(fakeStream).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
@@ -73,7 +73,7 @@ describe('Application', () => {
         </ConfigurationProvider>
       )
 
-    const loadingTiles = await waitFor(() => screen.getAllByTestId('loading-tile'));
+    const loadingTiles = await waitFor(() => screen.getAllByTestId('stream-loading-tile'));
     
     expect(loadingTiles[0]).toBeInTheDocument();
 

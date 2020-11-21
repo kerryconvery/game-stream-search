@@ -2,6 +2,7 @@ import React from 'react';
 import { number, shape, string, bool, arrayOf } from 'prop-types';
 import { makeStyles, styled } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Link from '../Link';
 
 const useChannelTileStyles = makeStyles({
@@ -34,14 +35,14 @@ const ChannelName = styled('div')({
   fontWeight: 'bold'
 })
 
-const ChannelTile = ({ name , streamPlatformDisplayName, channelAvatarURL, channelUrl }) => {
+const ChannelTile = ({ name , streamPlatformDisplayName, channelAvatarUrl, channelUrl }) => {
   const classes = useChannelTileStyles();
 
   return (
     <Link href={channelUrl} target='_blank'>
       <div className={classes.hover}>
         <div className={classes.channelTile}>
-          <Avatar src={channelAvatarURL} />
+          <Avatar src={channelAvatarUrl} />
           <div className={classes.channelDetails}>
             <ChannelName>{name}</ChannelName>
             <StreamPlatformName>{streamPlatformDisplayName}</StreamPlatformName>
@@ -56,14 +57,26 @@ ChannelTile.propTypes = {
   channel: shape({
     name: string.isRequired,
     streamPlatformDisplayName: string.isRequired,
-    channelAvatarURL: string,
-    channelUrl: string,
+    channelAvatarUrl: string.isRequired,
+    channelUrl: string.isRequired,
   })
 }
 
-const LoadingTile = () => (
-  <div />
-)
+const LoadingTile = () => {
+  const classes = useChannelTileStyles();
+
+  return (
+    <div data-testid='channel-loading-tile'>
+      <div className={classes.channelTile}>
+        <Skeleton variant='circle' width={50} height={50} animation='wave' />
+        <div className={classes.channelDetails}>
+          <Skeleton variant='text' width={120} animation='wave' />
+          <Skeleton variant='text' width={80} animation='wave' />
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const useChannelListStyles = makeStyles({
   channelList: {
@@ -93,7 +106,7 @@ export const ChannelList = ({ channels, isLoading, numberOfLoadingTiles }) => {
     <div>
     <div className={classes.channelList}>
       {channelTitles}
-      {/* {loadingTiles} */}
+      {loadingTiles}
     </div>
     </div>
   )
@@ -103,13 +116,16 @@ ChannelList.propTypes = {
   channels: arrayOf(shape({
     name: string.isRequired,
     streamPlatformDisplayName: string.isRequired,
+    channelAvatarUrl: string.isRequired,
+    channelUrl: string.isRequired,
   })),
-  isLoading: bool.isRequired,
+  isLoading: bool,
   numberOfLoadingTiles: number.isRequired,
 };
 
 ChannelList.defaultProps = {
   streams: [],
+  isLoading: false,
 };
 
 export default ChannelList;

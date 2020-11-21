@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game stream grid should render loading tiles when there are no streams 1`] = `
+<div
+  class="div-root-11"
+>
+  <div
+    class="div-root-12"
+  >
+    <div
+      data-testid="stream-loading-tile"
+    >
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rect MuiSkeleton-wave"
+        style="height: 60%;"
+      />
+      <div
+        class="makeStyles-detailsContainer-13"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-circle MuiSkeleton-wave"
+          style="width: 50px; height: 50px;"
+        />
+        <div
+          class="makeStyles-details-14"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+          />
+          <div
+            class="makeStyles-subDetails-15"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="div-root-12"
+  >
+    <div
+      data-testid="stream-loading-tile"
+    >
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rect MuiSkeleton-wave"
+        style="height: 60%;"
+      />
+      <div
+        class="makeStyles-detailsContainer-13"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-circle MuiSkeleton-wave"
+          style="width: 50px; height: 50px;"
+        />
+        <div
+          class="makeStyles-details-14"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+          />
+          <div
+            class="makeStyles-subDetails-15"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Game stream grid should render stream tiles without loading tiles 1`] = `
+<div
+  class="div-root-1"
+>
+  <div
+    class="div-root-2"
+  >
+    <div
+      class="makeStyles-root-3"
+    >
+      <a
+        class="a-root-10"
+        href="http://test.stream.url"
+        target="_blank"
+      >
+        <button
+          class="MuiButtonBase-root MuiIconButton-root makeStyles-playButton-8"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root makeStyles-playButtonIcon-9"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <img
+          height="180"
+          src="http://test.stream.thumbnail.url"
+          width="320"
+        />
+        <div
+          class="makeStyles-detailsContainer-5"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle"
+          >
+            <img
+              class="MuiAvatar-img"
+              src="http://test.channel.thumbnail.url"
+            />
+          </div>
+          <div
+            class="makeStyles-streamDetails-6"
+          >
+            <h3
+              class="makeStyles-streamTitle-4"
+              title="test stream A"
+            >
+              test stream A
+            </h3>
+            <div
+              class="makeStyles-streamSubDetails-7"
+            >
+              <div>
+                test streamer
+              </div>
+              <span>
+                test platform
+              </span>
+              <span>
+                 • 
+              </span>
+              <span>
+                100 viewers
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div
+    class="div-root-2"
+  >
+    <div
+      class="makeStyles-root-3"
+    >
+      <a
+        class="a-root-10"
+        href="http://test.stream.url"
+        target="_blank"
+      >
+        <button
+          class="MuiButtonBase-root MuiIconButton-root makeStyles-playButton-8"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root makeStyles-playButtonIcon-9"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <img
+          height="180"
+          src="http://test.stream.thumbnail.url"
+          width="320"
+        />
+        <div
+          class="makeStyles-detailsContainer-5"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle"
+          >
+            <img
+              class="MuiAvatar-img"
+              src="http://test.channel.thumbnail.url"
+            />
+          </div>
+          <div
+            class="makeStyles-streamDetails-6"
+          >
+            <h3
+              class="makeStyles-streamTitle-4"
+              title="test stream B"
+            >
+              test stream B
+            </h3>
+            <div
+              class="makeStyles-streamSubDetails-7"
+            >
+              <div>
+                test streamer
+              </div>
+              <span>
+                test platform
+              </span>
+              <span>
+                 • 
+              </span>
+              <span>
+                10 viewers
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+`;

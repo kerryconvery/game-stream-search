@@ -20,12 +20,12 @@ const UpAndComingChannels = () => {
             <Add />
           </IconButton>
         </Tooltip>
-        )}
-      >
+      )}
+    >
       <ChannelList
         channels={channels}
         isLoading={isLoading}
-        numberOfLoadingTiles={5}
+        numberOfLoadingTiles={3}
       />
     </SideBarPanel>
   )

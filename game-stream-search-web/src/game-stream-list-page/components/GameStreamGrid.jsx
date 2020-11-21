@@ -127,7 +127,7 @@ const LoadingTile = () => {
   const classes = useLoadingTileStyles();
 
   return (
-    <div data-testid='loading-tile'>
+    <div data-testid='stream-loading-tile'>
       <Skeleton variant='rect' height='60%' animation='wave' />
       <div className={classes.detailsContainer}>
         <Skeleton variant='circle' width={50} height={50} animation='wave' />

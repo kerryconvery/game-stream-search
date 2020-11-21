@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import useInfiniteStreamLoader from '../hooks/useInfiniteStreamLoader';
+import useInfiniteStreamLoader from '../useInfiniteStreamLoader';
 
 describe('Use game stream data hook', () => {
   it('should start loading game streams when initially invoked', () => {

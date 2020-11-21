@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Channel List should render a list of channels without loading tiles 1`] = `
+<div>
+  <div
+    class="makeStyles-channelList-1"
+  >
+    <a
+      class="a-root-5"
+      href=""
+      target="_blank"
+    >
+      <div
+        class="makeStyles-hover-2"
+      >
+        <div
+          class="makeStyles-channelTile-3"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle MuiAvatar-colorDefault"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiAvatar-fallback"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              />
+            </svg>
+          </div>
+          <div
+            class="makeStyles-channelDetails-4"
+          >
+            <div
+              class="div-root-6"
+            >
+              test channel 1
+            </div>
+            <span
+              class="span-root-7"
+            >
+              YouTube
+            </span>
+          </div>
+        </div>
+      </div>
+    </a>
+    <a
+      class="a-root-5"
+      href=""
+      target="_blank"
+    >
+      <div
+        class="makeStyles-hover-2"
+      >
+        <div
+          class="makeStyles-channelTile-3"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle MuiAvatar-colorDefault"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiAvatar-fallback"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              />
+            </svg>
+          </div>
+          <div
+            class="makeStyles-channelDetails-4"
+          >
+            <div
+              class="div-root-6"
+            >
+              test channel 2
+            </div>
+            <span
+              class="span-root-7"
+            >
+              DLive
+            </span>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`Channel List should render a list of loading tiles 1`] = `
+<div>
+  <div
+    class="makeStyles-channelList-8"
+  >
+    <div
+      data-testid="channel-loading-tile"
+    >
+      <div
+        class="makeStyles-channelTile-10"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-circle MuiSkeleton-wave"
+          style="width: 50px; height: 50px;"
+        />
+        <div
+          class="makeStyles-channelDetails-11"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            style="width: 120px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            style="width: 80px;"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      data-testid="channel-loading-tile"
+    >
+      <div
+        class="makeStyles-channelTile-10"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-circle MuiSkeleton-wave"
+          style="width: 50px; height: 50px;"
+        />
+        <div
+          class="makeStyles-channelDetails-11"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            style="width: 120px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-wave"
+            style="width: 80px;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
