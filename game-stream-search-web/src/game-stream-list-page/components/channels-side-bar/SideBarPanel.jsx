@@ -8,12 +8,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: 'white',
     height: 'auto',
   },
-  children: {
-    paddingLeft: '1rem'
-  }
 }));
 
 const Title = styled('span')({
+  paddingLeft: '1rem',
   fontWeight: 'bold',
 });
 
@@ -23,9 +21,7 @@ const SideBarPanel = ({ children, title }) => {
   return (
     <div className={classes.list}>
       <Title>{title.toUpperCase()}</Title>
-      <div className={classes.children}>
-        {children}
-      </div>
+      {children}
     </div>
   )
 }

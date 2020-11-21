@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import Link from './Link';
 
 const useStreamTileStyles = makeStyles(() => ({
   root: {
@@ -23,13 +24,6 @@ const useStreamTileStyles = makeStyles(() => ({
     whiteSpace: 'normal',
     marginTop: 0,
     marginBottom: '0.25rem',
-  },
-  link: {
-    textDecoration: 'none',
-    color: 'inherit',
-    '&:hover > button': {
-      opacity: 0.7
-    },
   },
   detailsContainer: {
     display: 'flex',
@@ -78,7 +72,7 @@ const StreamTile = ({
 
   return (
     <div className={classes.root}>
-      <a href={streamUrl} target='_blank' className={classes.link}>
+      <Link href={streamUrl} target='_blank'>
         <IconButton size="medium" className={classes.playButton}>
           <PlayCircleOutlineIcon className={classes.playButtonIcon} />
         </IconButton >
@@ -97,7 +91,7 @@ const StreamTile = ({
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   )
 }
