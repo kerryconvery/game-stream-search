@@ -30,20 +30,20 @@ const StreamPlatformName = styled('span')({
   fontSize: '14px',
 });
 
-const StreamerName = styled('div')({
+const ChannelName = styled('div')({
   fontWeight: 'bold'
 })
 
-const ChannelTile = ({ name , streamPlatformDisplayName, streamerAvatarURL, channelUrl }) => {
+const ChannelTile = ({ name , streamPlatformDisplayName, channelAvatarURL, channelUrl }) => {
   const classes = useChannelTileStyles();
 
   return (
     <Link href={channelUrl} target='_blank'>
       <div className={classes.hover}>
         <div className={classes.channelTile}>
-          <Avatar src={streamerAvatarURL} />
+          <Avatar src={channelAvatarURL} />
           <div className={classes.channelDetails}>
-            <StreamerName>{name}</StreamerName>
+            <ChannelName>{name}</ChannelName>
             <StreamPlatformName>{streamPlatformDisplayName}</StreamPlatformName>
           </div>
         </div>
@@ -56,7 +56,7 @@ ChannelTile.propTypes = {
   channel: shape({
     name: string.isRequired,
     streamPlatformDisplayName: string.isRequired,
-    streamerAvatarURL: string,
+    channelAvatarURL: string,
     channelUrl: string,
   })
 }

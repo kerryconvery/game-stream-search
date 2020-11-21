@@ -1,6 +1,6 @@
 import React from 'react'
 import { node, string } from 'prop-types';
-import { makeStyles, styled } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -8,19 +8,34 @@ const useStyles = makeStyles(() => ({
     backgroundColor: 'white',
     height: 'auto',
   },
+  titleBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  title: {
+    paddingLeft: '1rem',
+    fontWeight: 'bold',
+    marginTop: '0.1rem'
+  },
+  action: {
+    marginLeft: '0.5rem',
+  }
 }));
 
-const Title = styled('span')({
-  paddingLeft: '1rem',
-  fontWeight: 'bold',
-});
-
-const SideBarPanel = ({ children, title }) => {
+const SideBarPanel = ({ children, title, action }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.list}>
-      <Title>{title.toUpperCase()}</Title>
+      <div className={classes.titleBar}>
+        <span className={classes.title}>
+          {title.toUpperCase()}
+        </span>
+        <div className={classes.action}>
+          {action}
+        </div>
+      </div>
       {children}
     </div>
   )
@@ -28,6 +43,7 @@ const SideBarPanel = ({ children, title }) => {
 
 SideBarPanel.propTypes = {
   title: string.isRequired,
+  action: node,
   children: node.isRequired,
 }
 

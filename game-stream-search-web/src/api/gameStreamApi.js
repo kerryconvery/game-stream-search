@@ -26,13 +26,13 @@ const getStreamChannelsStub = () => {
     {
       name: 'test channel 1 aaaa',
       streamPlatformDisplayName: 'YouTube',
-      streamerAvatarURL: 'https://yt3.ggpht.com/ytc/AAUvwngVV8TZXaMQz3lJakmL-6S4A5LrUBBzjYFWpjZOIg=s88-c-k-c0x00ffffff-no-rj',
+      channelAvatarURL: 'https://yt3.ggpht.com/ytc/AAUvwngVV8TZXaMQz3lJakmL-6S4A5LrUBBzjYFWpjZOIg=s88-c-k-c0x00ffffff-no-rj',
       channelUrl: 'https://www.twitch.tv/christopherodd',
     },
     {
       name: 'test channel 2',
       streamPlatformDisplayName: 'DLive',
-      streamerAvatarURL: "https://yt3.ggpht.com/ytc/AAUvwni-mN_VAh1jj1FFGhNKe1iQZLNqDiXAdiuyw4hz=s88-c-k-c0x00ffffff-no-rj",
+      channelAvatarURL: "https://yt3.ggpht.com/ytc/AAUvwni-mN_VAh1jj1FFGhNKe1iQZLNqDiXAdiuyw4hz=s88-c-k-c0x00ffffff-no-rj",
       channelUrl: 'https://www.twitch.tv/christopherodd',
     },
     // {
@@ -116,7 +116,7 @@ const getStreamChannelsStub = () => {
     {
       name: 'test channel 3 eee',
       streamPlatformDisplayName: 'Twitch',
-      streamerAvatarURL: "https://images.prd.dlivecdn.com/avatar/ea9793cd-a47b-11ea-b737-e2443572cd01",
+      channelAvatarURL: "https://images.prd.dlivecdn.com/avatar/ea9793cd-a47b-11ea-b737-e2443572cd01",
       channelUrl: 'https://www.twitch.tv/christopherodd',
     },
   ]
