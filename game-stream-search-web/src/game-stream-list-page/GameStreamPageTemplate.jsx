@@ -19,16 +19,6 @@ const useStyles = makeStyles(() => ({
       paddingTop: '1rem',
     },
   },
-  sidebarContent: {   
-    position: 'fixed',
-    width: '280px',
-    height: 'calc(100vh - 75px)',
-    overflow: 'hidden',
-    backgroundColor: 'inherited',
-    '&:hover': {
-      overflowY: 'auto',
-    },
-  },
   mainContent: {
     gridColumnStart: 2,
     gridColumnEnd: 2,
@@ -53,9 +43,7 @@ const GameStreamPageTemplate = ({
     <StandardPageTemplate toolBar={searchBar} >
       <div className={classes.gridContainer}>
         <div className={classes.sideBar}>
-          <div className={classes.sidebarContent}>
-            {leftSideBar}
-          </div>
+          {leftSideBar}
         </div>
         <div className={classes.mainContent}>
           {!hasStreams && notFoundNotice}
