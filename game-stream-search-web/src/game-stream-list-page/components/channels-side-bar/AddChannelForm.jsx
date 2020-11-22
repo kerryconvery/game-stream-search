@@ -1,4 +1,5 @@
 import React from 'react';
+import { func } from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
   }
 });
 
-const AddChannelForm = () => {
+const AddChannelForm = ({ onSave, onCancel }) => {
   const classes = useStyles();
 
   return (
@@ -46,11 +47,16 @@ const AddChannelForm = () => {
         </FormGroup>
       </CardContent>
       <CardActions>
-        <Button>Save</Button>
-        <Button>Cancel</Button>
+        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onCancel}>Cancel</Button>
       </CardActions>
     </Card>
   )
+}
+
+AddChannelForm.propTypes = {
+  onSave: func.isRequired,
+  onCancel: func.isRequired,
 }
 
 export default AddChannelForm;

@@ -9,12 +9,12 @@ import AddChannelForm from './AddChannelForm';
 import { useGameStreamApi } from '../../../api/gameStreamApi';
 import useChannelsLoader from '../../hooks/useChannelsLoader';
 
-const UpAndComingChannels = () => {
+const RisingChannels = () => {
   const { getStreamChannels } = useGameStreamApi();
   const { channels, isLoading } = useChannelsLoader(getStreamChannels, () => {});
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const addClick = (event) => {
+  const addButtonClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -28,8 +28,8 @@ const UpAndComingChannels = () => {
     <SideBarPanel
       title='Rising channels'
       action={(
-        <Tooltip title='Add a new hannel to the list'>
-          <IconButton color='primary' size='small' onClick={addClick}>
+        <Tooltip title='Add a new channel to the list'>
+          <IconButton color='primary' size='small' onClick={addButtonClick}>
             <Add />
           </IconButton>
         </Tooltip>
@@ -48,7 +48,7 @@ const UpAndComingChannels = () => {
           horizontal: 'center',
         }}
       >
-        <AddChannelForm />
+        <AddChannelForm onSave={() => {}} onCancel={handleClose} />
       </Popover>
       <ChannelList
         channels={channels}
@@ -59,4 +59,4 @@ const UpAndComingChannels = () => {
   )
 }
 
-export default UpAndComingChannels;
+export default RisingChannels;

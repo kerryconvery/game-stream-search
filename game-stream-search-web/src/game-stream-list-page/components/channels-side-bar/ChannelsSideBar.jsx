@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import UpAndComingChannels from './UpAndComingChannels';
+import RisingChannels from './RisingChannels';
 
 const useStyles = makeStyles({
   sidebarContent: {   
@@ -20,7 +20,7 @@ const ChannelsSideBar = () => {
 
   return (
     <div className={classes.sidebarContent}>
-      <UpAndComingChannels />
+      <RisingChannels />
     </div>
   )
 }
