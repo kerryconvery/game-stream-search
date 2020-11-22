@@ -128,5 +128,18 @@ describe('Use game stream data hook', () => {
     await act(loadStreamsStub);
  
     expect(result.current.hasMoreStreams).toBeFalsy();
+  });
+
+  it('should report an error when when there is an error loading channels', async () => {
+    const onError = jest.fn();
+    const loadStreamsStub = () => new Promise((resolve, reject) => reject(new Error('test exception')));
+
+    renderHook(() => useInfiniteStreamLoader(loadStreamsStub, onError));
+
+    try {
+      await act(loadStreamsStub);
+    } catch{
+      expect(onError).toHaveBeenCalled();
+    }
   })
 })
