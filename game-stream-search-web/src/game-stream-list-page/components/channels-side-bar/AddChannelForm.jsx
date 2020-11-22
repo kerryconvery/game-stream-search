@@ -37,7 +37,7 @@ const AddChannelForm = ({ onSave, onCancel }) => {
         <FormGroup>
             <TextField label='Channel name' autoFocus />
           <FormControl margin='normal'>
-            <InputLabel>Stream platform</InputLabel>
+            <InputLabel>Streaming platform</InputLabel>
             <Select value='twitch'>
               <MenuItem value='twitch'>Twitch</MenuItem>
               <MenuItem value='youtube'>YouTube</MenuItem>
