@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Domain;
+using GameStreamSearch.Domain.Dto;
 using Base64Url;
 using System.Security.Cryptography;
-using GameStreamSearch.Application.Exceptions;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Domain.Exceptions;
+using GameStreamSearch.Domain.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
 

@@ -21,6 +21,14 @@ const getStreamChannelsRequest = (baseUrl) => () => (
   }).then(res => res.data)
 );
 
+const registerChannelRequest = (baseUrl) => (data) => {
+  axios({
+    url: `${baseUrl}/channels`,
+    method: 'POST',
+    data,
+  }).then(res => res.data)
+}
+
 const getStreamChannelsStub = () => {
   const channels = [
     {
@@ -129,6 +137,7 @@ export const useGameStreamApi = () => {
 
   return {
     getStreams: getStreamsRequest(streamSearchServiceUrl),
+    registerChannel: registerChannelRequest(streamSearchServiceUrl),
     getStreamChannels: getStreamChannelsStub, //getStreamChannelsRequest(streamSearchServiceUrl), 
   }
 }

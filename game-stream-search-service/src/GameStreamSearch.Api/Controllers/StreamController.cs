@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Domain.Dto;
+using GameStreamSearch.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers

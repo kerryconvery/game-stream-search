@@ -1,13 +1,13 @@
 using System.Linq;
-using GameStreamSearch.Api.Controllers;
+using GameStreamSearch.Application.Controllers;
 using NUnit.Framework;
 using Moq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using GameStreamSearch.Domain;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
 
-namespace GameStreamSearch.Api.Tests
+namespace GameStreamSearch.Application.Tests
 {
     public class StreamTests
     {

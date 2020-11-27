@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Api.Controllers;
-using GameStreamSearch.Application;
+using GameStreamSearch.Application.Controllers;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Exceptions;
-using GameStreamSearch.Application.Interactors;
-using GameStreamSearch.Application.Providers;
+using GameStreamSearch.Domain;
+using GameStreamSearch.Domain.Dto;
+using GameStreamSearch.Domain.Enums;
+using GameStreamSearch.Domain.Exceptions;
+using GameStreamSearch.Domain.Interactors;
+using GameStreamSearch.Domain.Providers;
 using GameStreamSearch.Repositories.InMemoryRepositories;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 
-namespace GameStreamSearch.Api.Tests
+namespace GameStreamSearch.Application.Tests
 {
     public class StreamerTests
     {
-        private StreamerController streamerController;
+        private ChannelController streamerController;
         private Mock<IStreamService> streamServiceStub;
-        private IStreamerRepository streamerRepository;
-        private IInteractor<StreamerDto, IRegisterStreamerPresenter> registerStreamerInteractor;
+        private IChannelRepository streamerRepository;
+        private IInteractor<ChannelDto, IRegisterChannelPresenter> RegisterChannelInteractor;
         private IInteractor<string, IGetStreamerByIdPresenter> getStreamerByIdInteractor;
         private Mock<ITimeProvider> timeProviderStub;
 
@@ -33,8 +34,8 @@ namespace GameStreamSearch.Api.Tests
         {
             streamServiceStub = new Mock<IStreamService>();
 
-            streamerRepository = new InMemoryStreamerRepository();
-            registerStreamerInteractor = new RegisterStreamerInteractor(streamerRepository, streamServiceStub.Object);
+            streamerRepository = new InMemoryChannelRepository();
+            RegisterChannelInteractor = new RegisterChannelInteractor(streamerRepository, streamServiceStub.Object);
             getStreamerByIdInteractor = new GetStreamerByIdInteractor(streamerRepository);
 
             timeProviderStub = new Mock<ITimeProvider>();
@@ -42,8 +43,8 @@ namespace GameStreamSearch.Api.Tests
             timeProviderStub.Setup(s => s.GetNow()).Returns(registrationDate);
 
 
-            streamerController = new StreamerController(
-                registerStreamerInteractor,
+            streamerController = new ChannelController(
+                RegisterChannelInteractor,
                 getStreamerByIdInteractor,
                 streamerRepository,
                 timeProviderStub.Object,
@@ -63,26 +64,26 @@ namespace GameStreamSearch.Api.Tests
         [Test]
         public async Task Should_Register_A_New_Streamer()
         {
-            var streamer = new RegisterStreamerDto
+            var channel = new RegisterChannelDto
             {
-                Name = "Test Streamer",
+                ChannelName = "Test Channel",
                 Platform = StreamPlatformType.twitch,
             };
 
-            streamServiceStub.Setup(s => s.GetStreamerChannel(streamer.Name, streamer.Platform)).ReturnsAsync(new StreamerChannelDto());
+            streamServiceStub.Setup(s => s.GetChannel(channel.ChannelName, channel.Platform)).ReturnsAsync(new ChannelDto());
 
-            var createResponse = await streamerController.RegisterStreamer(streamer);
+            var createResponse = await streamerController.RegisterChannel(channel);
             var createResult = createResponse as CreatedResult;
 
             var response = await streamerController.GetStreamers();
 
             var okResult = response as OkObjectResult;
-            var value = okResult.Value as IEnumerable<StreamerDto>;
+            var value = okResult.Value as IEnumerable<ChannelDto>;
 
             Assert.AreEqual(value.Count(), 1);
             Assert.IsNotNull(value.First().Id);
-            Assert.AreEqual(value.First().Name, streamer.Name);
-            Assert.AreEqual(value.First().StreamPlatform, streamer.Platform);
+            Assert.AreEqual(value.First().Name, channel.ChannelName);
+            Assert.AreEqual(value.First().StreamPlatform, channel.Platform);
             Assert.AreEqual(value.First().DateRegistered, registrationDate);
             Assert.AreEqual(createResult.Location, value.First().Id);
         }
@@ -90,55 +91,55 @@ namespace GameStreamSearch.Api.Tests
         [Test]
         public async Task Should_Allow_Registering_The_Same_Streamer_For_Multiple_Platforms()
         {
-            var twitchStreamer = new RegisterStreamerDto
+            var twitchStreamer = new RegisterChannelDto
             {
-                Name = "Test Streamer",
+                ChannelName = "Test Channel",
                 Platform = StreamPlatformType.twitch,
             };
 
-            var youtubeStreamer = new RegisterStreamerDto
+            var youtubeStreamer = new RegisterChannelDto
             {
-                Name = "Test Streamer",
+                ChannelName = "Test Channel",
                 Platform = StreamPlatformType.youtube,
             };
 
-            streamServiceStub.Setup(s => s.GetStreamerChannel(twitchStreamer.Name, twitchStreamer.Platform)).ReturnsAsync(new StreamerChannelDto());
-            streamServiceStub.Setup(s => s.GetStreamerChannel(youtubeStreamer.Name, youtubeStreamer.Platform)).ReturnsAsync(new StreamerChannelDto());
+            streamServiceStub.Setup(s => s.GetChannel(twitchStreamer.ChannelName, twitchStreamer.Platform)).ReturnsAsync(new ChannelDto());
+            streamServiceStub.Setup(s => s.GetChannel(youtubeStreamer.ChannelName, youtubeStreamer.Platform)).ReturnsAsync(new ChannelDto());
 
-            await streamerController.RegisterStreamer(twitchStreamer);
-            await streamerController.RegisterStreamer(youtubeStreamer);
+            await streamerController.RegisterChannel(twitchStreamer);
+            await streamerController.RegisterChannel(youtubeStreamer);
 
             var response = await streamerController.GetStreamers();
 
             var okAction = response as OkObjectResult;
-            var value = okAction.Value as IEnumerable<StreamerDto>;
+            var value = okAction.Value as IEnumerable<ChannelDto>;
 
-            Assert.AreEqual(value.First().Name, twitchStreamer.Name);
+            Assert.AreEqual(value.First().Name, twitchStreamer.ChannelName);
             Assert.AreEqual(value.First().StreamPlatform, twitchStreamer.Platform);
-            Assert.AreEqual(value.Last().Name, youtubeStreamer.Name);
+            Assert.AreEqual(value.Last().Name, youtubeStreamer.ChannelName);
             Assert.AreEqual(value.Last().StreamPlatform, youtubeStreamer.Platform);
         }
 
         [Test]
         public async Task Should_Respond_With_Created_If_The_Streamer_Is_Already_Registered_For_The_Platform()
         {
-            var streamer = new RegisterStreamerDto
+            var channel = new RegisterChannelDto
             {
-                Name = "Existing Streamer",
+                ChannelName = "Existing Channel",
                 Platform = StreamPlatformType.twitch,
             };
 
-            streamServiceStub.Setup(s => s.GetStreamerChannel(streamer.Name, streamer.Platform)).ReturnsAsync(new StreamerChannelDto());
+            streamServiceStub.Setup(s => s.GetChannel(channel.ChannelName, channel.Platform)).ReturnsAsync(new ChannelDto());
 
-            var createResponseNew = await streamerController.RegisterStreamer(streamer);
+            var createResponseNew = await streamerController.RegisterChannel(channel);
             var createNewResult = createResponseNew as CreatedResult;
 
-            var createResponseExisting = await streamerController.RegisterStreamer(streamer);
+            var createResponseExisting = await streamerController.RegisterChannel(channel);
             var createExistingResult = createResponseExisting as CreatedResult;
 
             var response = await streamerController.GetStreamers();
             var okResult = response as OkObjectResult;
-            var value = okResult.Value as IEnumerable<StreamerDto>;
+            var value = okResult.Value as IEnumerable<ChannelDto>;
 
             Assert.AreEqual(value.Count(), 1);
             Assert.AreEqual(createNewResult.Location, createExistingResult.Location);
@@ -147,15 +148,15 @@ namespace GameStreamSearch.Api.Tests
         [Test]
         public async Task Should_Respond_With_Bad_Request_When_Streamer_Does_Not_Exist_On_The_Platform()
         {
-            var streamer = new RegisterStreamerDto
+            var channel = new RegisterChannelDto
             {
-                Name = "Fake Streamer",
+                ChannelName = "Fake Channel",
                 Platform = StreamPlatformType.twitch,
             };
 
-            streamServiceStub.Setup(s => s.GetStreamerChannel(streamer.Name, streamer.Platform)).Returns(Task.FromResult<StreamerChannelDto>(null));
+            streamServiceStub.Setup(s => s.GetChannel(channel.ChannelName, channel.Platform)).Returns(Task.FromResult<ChannelDto>(null));
 
-            var response = await streamerController.RegisterStreamer(streamer);
+            var response = await streamerController.RegisterChannel(channel);
 
             Assert.IsInstanceOf<BadRequestObjectResult>(response);
         }
@@ -163,15 +164,15 @@ namespace GameStreamSearch.Api.Tests
         [Test]
         public async Task Should_Register_The_Streamer_If_The_Stream_Provider_Is_Not_Available()
         {
-            var streamer = new RegisterStreamerDto
+            var channel = new RegisterChannelDto
             {
-                Name = "New Streamer",
+                ChannelName = "New Channel",
                 Platform = StreamPlatformType.twitch,
             };
 
-            streamServiceStub.Setup(s => s.GetStreamerChannel(streamer.Name, streamer.Platform)).ThrowsAsync(new StreamProviderUnavailableException());
+            streamServiceStub.Setup(s => s.GetChannel(channel.ChannelName, channel.Platform)).ThrowsAsync(new StreamProviderUnavailableException());
 
-            await streamerController.RegisterStreamer(streamer);
+            await streamerController.RegisterChannel(channel);
 
             var response = await streamerController.GetStreamers();
 

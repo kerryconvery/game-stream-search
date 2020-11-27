@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Domain;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.Application.Exceptions;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Domain.Exceptions;
+using GameStreamSearch.Domain.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -89,7 +89,7 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<StreamerChannelDto> GetStreamerChannel(string channelName)
+        public async Task<ChannelDto> GetStreamerChannel(string channelName)
         {
             var channels = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
@@ -108,7 +108,7 @@ namespace GameStreamSearch.StreamProviders
                 return null;
             }
 
-            return new StreamerChannelDto
+            return new ChannelDto
             {
                 ChannelName = channels.items.First().snippet.title,
                 AvatarUrl = channels.items.First().snippet.thumbnails.@default.url,

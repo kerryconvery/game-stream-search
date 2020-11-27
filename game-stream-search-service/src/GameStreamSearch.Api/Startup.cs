@@ -5,13 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GameStreamSearch.Application.Services;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Interactors;
-using GameStreamSearch.Application.Providers;
 using GameStreamSearch.Repositories.InMemoryRepositories;
 using Newtonsoft.Json.Converters;
 using GameStreamSearch.StreamPlatformApi.Twitch;
@@ -80,11 +75,11 @@ namespace GameStreamSearch.Api
             });
 
 
-            services.AddScoped<IInteractor<StreamerDto, IRegisterStreamerPresenter>, RegisterStreamerInteractor>();
+            services.AddScoped<IInteractor<PlatformChannelDto, IRegisterChannelPresenter>, RegisterChannelInteractor>();
             services.AddScoped<IInteractor<string, IGetStreamerByIdPresenter>, GetStreamerByIdInteractor>();
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
             services.AddScoped<IIdProvider, GuidIdProvider>();
-            services.AddSingleton<IStreamerRepository, InMemoryStreamerRepository>();
+            services.AddSingleton<IChannelRepository, InMemoryChannelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

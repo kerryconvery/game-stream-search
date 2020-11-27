@@ -6,10 +6,6 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Nullable></Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
@@ -18,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj" />
-    <ProjectReference Include="..\GameStreamSearch.StreamPlatformApi\GameStreamSearch.StreamPlatformApi.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Api\GameStreamSearch.Api.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj" />
   </ItemGroup>
 </Project>

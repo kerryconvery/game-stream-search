@@ -1,5 +1,5 @@
 ﻿
-using GameStreamSearch.Application;
+using GameStreamSearch.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers

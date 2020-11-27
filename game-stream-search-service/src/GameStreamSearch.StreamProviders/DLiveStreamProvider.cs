@@ -2,12 +2,12 @@
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Base64Url;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Domain;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.Application.Exceptions;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Domain.Exceptions;
+using GameStreamSearch.Domain.Enums;
 using GameStreamSearch.StreamPlatformApi;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -78,7 +78,7 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<StreamerChannelDto> GetStreamerChannel(string channelName)
+        public async Task<ChannelDto> GetStreamerChannel(string channelName)
         {
             var response = await dliveApi.GetUserByDisplayName(channelName);
 
@@ -97,7 +97,7 @@ namespace GameStreamSearch.StreamProviders
                 return null;
             }
 
-            return new StreamerChannelDto
+            return new ChannelDto
             {
                 ChannelName = response.data.userByDisplayName.displayName,
                 AvatarUrl = response.data.userByDisplayName.avatar,
