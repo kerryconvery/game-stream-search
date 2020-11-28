@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
 import ChannelList from './ChannelList';
 import SideBarPanel from './SideBarPanel';
-import AddChannelForm from './AddChannelForm';
+import AddChannelForm from './add-channel-form/AddChannelForm';
 import { useGameStreamApi } from '../../../api/gameStreamApi';
 import useChannelsLoader from '../../hooks/useChannelsLoader';
 
@@ -48,7 +48,7 @@ const RisingChannels = () => {
           horizontal: 'center',
         }}
       >
-        <AddChannelForm onSave={() => {}} onCancel={handleClose} />
+        <AddChannelForm onCancel={handleClose} />
       </Popover>
       <ChannelList
         channels={channels}

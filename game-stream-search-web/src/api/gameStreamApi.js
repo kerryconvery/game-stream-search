@@ -13,6 +13,14 @@ const getStreamsRequest = (baseUrl) => (filters = {}, pageToken) => (
   }).then(res => res.data)
 );
 
+const registerChannelRequest = (baseUrl) => (data) => {
+  axios({
+    url: `${baseUrl}/channels`,
+    method: 'PUT',
+    data,
+  }).then(res => res.data)
+}
+
 const getStreamChannelsRequest = (baseUrl) => () => (
   axios({
     url: `${baseUrl}/channels`,
@@ -129,6 +137,7 @@ export const useGameStreamApi = () => {
 
   return {
     getStreams: getStreamsRequest(streamSearchServiceUrl),
+    registerChannel: registerChannelRequest(streamSearchServiceUrl),
     getStreamChannels: getStreamChannelsStub, //getStreamChannelsRequest(streamSearchServiceUrl), 
   }
 }
