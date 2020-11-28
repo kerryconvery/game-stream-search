@@ -9,7 +9,7 @@ using Base64Url;
 
 namespace GameStreamSearch.Application.Services
 {
-    public class StreamService : IStreamService
+    public class StreamService
     {
         private Dictionary<StreamPlatformType, IStreamProvider> streamProviders;
 

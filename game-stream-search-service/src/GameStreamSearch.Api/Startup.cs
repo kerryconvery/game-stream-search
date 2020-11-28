@@ -9,14 +9,16 @@ using GameStreamSearch.Application.Services;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Interactors;
 using GameStreamSearch.Application.Providers;
-using GameStreamSearch.Repositories.InMemoryRepositories;
 using Newtonsoft.Json.Converters;
 using GameStreamSearch.StreamPlatformApi.Twitch;
 using GameStreamSearch.StreamPlatformApi.YouTube;
 using GameStreamSearch.StreamPlatformApi.DLive;
+using Microsoft.AspNetCore.Mvc;
+using GameStreamSearch.Api.Presenters;
+using GameStreamSearch.Repositories.InMemoryRepositories;
+using GameStreamSearch.Application.Interactors;
+using System;
 
 namespace GameStreamSearch.Api
 {
@@ -62,7 +64,7 @@ namespace GameStreamSearch.Api
             services.AddControllers()
                 .AddNewtonsoftJson(opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
-            services.AddScoped< IStreamService>(service =>
+            services.AddScoped(service =>
             {
                 return new StreamService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
@@ -79,12 +81,12 @@ namespace GameStreamSearch.Api
 
             });
 
-
-            services.AddScoped<IInteractor<StreamerDto, IRegisterStreamerPresenter>, RegisterStreamerInteractor>();
-            services.AddScoped<IInteractor<string, IGetStreamerByIdPresenter>, GetStreamerByIdInteractor>();
+            services.AddScoped<UpsertChannelInteractor>();
+            services.AddScoped<GetChannelInteractor>();
+            
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
-            services.AddScoped<IIdProvider, GuidIdProvider>();
-            services.AddSingleton<IStreamerRepository, InMemoryStreamerRepository>();
+
+            services.AddSingleton<IChannelRepository, InMemoryChannelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

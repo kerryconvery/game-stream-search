@@ -13,8 +13,8 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'GameStreamSearch.Api' " />
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Dto\" />
     <Folder Include="Presenters\" />
+    <Folder Include="Providers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCoreRateLimit" Version="3.2.2" />

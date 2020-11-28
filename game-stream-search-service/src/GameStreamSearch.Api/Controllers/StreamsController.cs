@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
+using GameStreamSearch.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers
 {
     [ApiController]
     [Route("api")]
-    public class StreamController : ControllerBase
+    public class StreamsController : ControllerBase
     {
-        private readonly IStreamService streamService;
+        private readonly StreamService streamService;
 
-        public StreamController(IStreamService streamService)
+        public StreamsController(StreamService streamService)
         {
             this.streamService = streamService;
         }

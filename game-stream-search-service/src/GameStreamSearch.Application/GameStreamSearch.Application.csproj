@@ -8,9 +8,11 @@
     <Folder Include="Dto\" />
     <Folder Include="Services\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Interactors\" />
     <Folder Include="Providers\" />
     <Folder Include="Enums\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Interactors\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
