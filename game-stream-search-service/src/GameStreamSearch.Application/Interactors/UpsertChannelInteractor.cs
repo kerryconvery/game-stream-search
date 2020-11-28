@@ -35,20 +35,6 @@ namespace GameStreamSearch.Application.Interactors
             this.streamService = streamService;
         }
 
-        private Task AddChannel(UpsertChannelRequest request, StreamerChannelDto streamerChannel)
-        {
-            var platformChannel = new Channel
-            {
-                ChannelName = request.ChannelName,
-                StreamPlatform = request.StreamPlatform,
-                DateRegistered = request.RegistrationDate,
-                AvatarUrl = streamerChannel.AvatarUrl,
-                ChannelUrl = streamerChannel.ChannelUrl,
-            };
-
-            return channelRepository.Add(platformChannel);
-        }
-
         public async Task<Result> Invoke<Result>(UpsertChannelRequest request, IUpsertChannelPresenter<Result> presenter)
         {
             var streamerChannel = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
@@ -58,18 +44,27 @@ namespace GameStreamSearch.Application.Interactors
                 return presenter.PresentChannelNotFoundOnPlatform(request.ChannelName, request.StreamPlatform);
             }
 
+            var platformChannel = new Channel
+            {
+                ChannelName = request.ChannelName,
+                StreamPlatform = request.StreamPlatform,
+                DateRegistered = request.RegistrationDate,
+                AvatarUrl = streamerChannel.AvatarUrl,
+                ChannelUrl = streamerChannel.ChannelUrl,
+            };
+
             var existingChannel = await channelRepository.Get(request.StreamPlatform, request.ChannelName);
 
             if (existingChannel != null)
             {
                 await channelRepository.Remove(existingChannel.StreamPlatform, existingChannel.ChannelName);
 
-                await AddChannel(request, streamerChannel);
+                await channelRepository.Add(platformChannel);
 
                 return presenter.PresentChannelUpdated();
             }
 
-            await AddChannel(request, streamerChannel);
+            await channelRepository.Add(platformChannel);
 
             return presenter.PresentChannelAdded(request.ChannelName, request.StreamPlatform);
         }

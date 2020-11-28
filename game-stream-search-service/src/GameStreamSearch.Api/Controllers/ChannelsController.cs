@@ -9,8 +9,8 @@ namespace GameStreamSearch.Api.Controllers
 {
     public class GetChannelParams
     {
-        public string ChannelName { get; init; }
-        public StreamPlatformType StreamPlatform { get; init; }
+        public string Channel { get; init; }
+        public StreamPlatformType Platform { get; init; }
     }
 
     [ApiController]
@@ -36,7 +36,7 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpPut]
         [Route("channels/{platform}/{channel}")]
-        public async Task<IActionResult> AddChannel([FromBody] StreamPlatformType streamPlatform, string channel)
+        public async Task<IActionResult> AddChannel([FromRoute] StreamPlatformType streamPlatform, string channel)
         {
             var request = new UpsertChannelRequest
             {

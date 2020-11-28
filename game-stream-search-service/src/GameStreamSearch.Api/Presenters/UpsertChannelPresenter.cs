@@ -19,8 +19,8 @@ namespace GameStreamSearch.Api.Presenters
         {
             var urlParams = new GetChannelParams
             {
-                ChannelName = channelName,
-                StreamPlatform = streamPlatform,
+                Channel = channelName,
+                Platform = streamPlatform,
             };
 
             return new CreatedResult(controller.Url.Link(nameof(controller.GetChannel), urlParams), null);

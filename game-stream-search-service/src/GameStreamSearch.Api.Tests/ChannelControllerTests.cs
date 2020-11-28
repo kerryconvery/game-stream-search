@@ -74,7 +74,7 @@ namespace GameStreamSearch.Api.Tests
 
             urlHelper.Setup(s => s.Link(nameof(channelController.GetChannel), It.IsAny<object>())).Returns<string, GetChannelParams>((routeName, routeParams) =>
             {
-                return routeParams.ChannelName;
+                return routeParams.Channel;
             });
 
             channelController.Url = urlHelper.Object;
