@@ -3,7 +3,7 @@ import { func } from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import Button from '@material-ui/core/Button';
 import FormTemplate, { SubmitButton } from '../../../../templates/FormTemplate';
-import AddChannelFormFields, { validateForm } from './AddChannelFormFields';
+import AddChannelFormFields, { validateForm, mapApiErrorsToFields } from './AddChannelFormFields';
 import { useGameStreamApi } from '../../../../api/gameStreamApi';
 
 const reducer = (state, action) => {
@@ -45,7 +45,7 @@ const reducer = (state, action) => {
 }
 
 const initialState = {
-  formValues: { streamPlatform: 'twitch' },
+  formValues: { streamPlatform: 'Twitch' },
   errors: {},
   isSaving: false,
   submitted: false,
@@ -61,13 +61,13 @@ const AddChannelForm = ({ onCancel, afterChannelAdded }) => {
     const errors = validateForm(state.formValues);
 
     if (_isEmpty(errors)) {
-      const errors = await addChannel(state.formValues);
+      const result = await addChannel(state.formValues);
 
-      if (errors) {
-        dispatch({ type: 'SAVE_FAILED', errors });
+      if (result.errors) {
+        dispatch({ type: 'SAVE_FAILED', errors: mapApiErrorsToFields(result.errors) });
       } else {
         dispatch({ type: 'SAVE_SUCCESS' })
-        afterChannelAdded();
+        afterChannelAdded(result);
       }
     } else {
       dispatch({ type: 'SAVE_FAILED', errors })

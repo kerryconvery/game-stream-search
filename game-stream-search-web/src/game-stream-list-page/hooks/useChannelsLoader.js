@@ -9,11 +9,10 @@ const reducer = (state, action) => {
         isLoading: false
       }
     }
-    case 'RELOAD_CHANNELS': {
+    case 'APPEND_CHANNEL': {
       return {
         ...state,
-        time: new Date().toLocaleTimeString(),
-        isLoading: true,
+        channels: state.channels.concat(action.channel),
       }
     }
   }
@@ -21,27 +20,24 @@ const reducer = (state, action) => {
 
 const initialState = {
   channels: [],
-  time: new Date().toLocaleTimeString(),
   isLoading: true,
 }
 
 const useChannelsLoader = (onLoadChannels, onLoadError) => {
   const [ state, dispatch ] = useReducer(reducer, initialState);
 
-  const reloadChannels = () => {
-    dispatch({ type: 'RELOAD_CHANNELS' });
-  }
+  const appendChannel = channel => dispatch({ type: 'APPEND_CHANNEL', channel });
 
   useEffect(() => {
     onLoadChannels()
       .then(channels => dispatch({ type: 'CHANNELS_LOADED', channels }))
       .catch(onLoadError)
-  }, [state.time])
+  }, [])
 
   return {
     channels: state.channels,
     isLoading: state.isLoading,
-    reloadChannels,
+    appendChannel,
   };
 }
 

@@ -32,9 +32,9 @@ const AddChannelFormFields = ({ formValues, errors, onChange }) => {
       <FormControl margin='normal'>
         <InputLabel>Streaming platform</InputLabel>
         <Select value={_get(formValues, 'streamPlatform')} onChange={onFormChange('streamPlatform')}>
-          <MenuItem value='twitch'>Twitch</MenuItem>
-          <MenuItem value='youtube'>YouTube</MenuItem>
-          <MenuItem value='dlive'>DLive</MenuItem>
+          <MenuItem value='Twitch'>Twitch</MenuItem>
+          <MenuItem value='YouTube'>YouTube</MenuItem>
+          <MenuItem value='DLive'>DLive</MenuItem>
         </Select>
       </FormControl>
     </FormGroup>
@@ -62,5 +62,18 @@ export const validateForm = ({ channelName }) => {
 
   return errors;
 }
+
+export const mapApiErrorsToFields = (apiErrors) => {
+  const fieldErrors = {};
+
+  apiErrors.forEach(error => {
+    if (error.errorCode === 'ChannelNotFoundOnPlatform') {
+      fieldErrors['channelName'] = error.errorMessage
+    }
+  })
+
+  return fieldErrors;
+}
+
 
 export default AddChannelFormFields;

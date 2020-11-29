@@ -73,7 +73,7 @@ namespace GameSearchService.StreamProviders.Tests
             Assert.AreEqual(streams.Items.First().StreamTitle, liveStreams.streams.First().channel.status);
             Assert.AreEqual(streams.Items.First().StreamerName, liveStreams.streams.First().channel.display_name);
             Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, liveStreams.streams.First().channel.logo);
-            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.twitch.GetFriendlyName());
+            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.Twitch.GetFriendlyName());
             Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, liveStreams.streams.First().preview.medium);
             Assert.AreEqual(streams.Items.First().StreamUrl, liveStreams.streams.First().channel.url);
             Assert.AreEqual(streams.Items.First().Views, liveStreams.streams.First().viewers);
@@ -95,7 +95,7 @@ namespace GameSearchService.StreamProviders.Tests
             Assert.AreEqual(streams.Items.First().StreamTitle, liveStreams.streams.First().channel.status);
             Assert.AreEqual(streams.Items.First().StreamerName, liveStreams.streams.First().channel.display_name);
             Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, liveStreams.streams.First().channel.logo);
-            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.twitch.GetFriendlyName());
+            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.Twitch.GetFriendlyName());
             Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, liveStreams.streams.First().preview.medium);
             Assert.AreEqual(streams.Items.First().StreamUrl, liveStreams.streams.First().channel.url);
             Assert.AreEqual(streams.Items.First().Views, liveStreams.streams.First().viewers);

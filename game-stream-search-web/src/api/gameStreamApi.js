@@ -17,7 +17,9 @@ const addChannelRequest = (baseUrl) => (data) => (
   axios({
     url: `${baseUrl}/channels/${data.streamPlatform}/${data.channelName}`,
     method: 'PUT',
-  }).then(() => null)
+  })
+  .then(res => res.data)
+  .catch(error => error.response.data)
 )
 
 const getChannelsRequest = (baseUrl) => () => (

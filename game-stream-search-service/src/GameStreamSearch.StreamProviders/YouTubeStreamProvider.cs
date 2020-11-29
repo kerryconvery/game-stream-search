@@ -113,6 +113,6 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public StreamPlatformType Platform => StreamPlatformType.youtube;
+        public StreamPlatformType Platform => StreamPlatformType.YouTube;
     }
 }

@@ -16,8 +16,8 @@ namespace GameStreamSearch.Application.Interactors
 
     public interface IUpsertChannelPresenter<Result>
     {
-        Result PresentChannelAdded(string channelName, StreamPlatformType streamPlatform);
-        Result PresentChannelUpdated();
+        Result PresentChannelAdded(Channel channel);
+        Result PresentChannelUpdated(Channel channel);
         Result PresentChannelNotFoundOnPlatform(string channelName, StreamPlatformType platform);
     }
 
@@ -44,7 +44,7 @@ namespace GameStreamSearch.Application.Interactors
                 return presenter.PresentChannelNotFoundOnPlatform(request.ChannelName, request.StreamPlatform);
             }
 
-            var platformChannel = new Channel
+            var channel = new Channel
             {
                 ChannelName = request.ChannelName,
                 StreamPlatform = request.StreamPlatform,
@@ -59,14 +59,14 @@ namespace GameStreamSearch.Application.Interactors
             {
                 await channelRepository.Remove(existingChannel.StreamPlatform, existingChannel.ChannelName);
 
-                await channelRepository.Add(platformChannel);
+                await channelRepository.Add(channel);
 
-                return presenter.PresentChannelUpdated();
+                return presenter.PresentChannelUpdated(channel);
             }
 
-            await channelRepository.Add(platformChannel);
+            await channelRepository.Add(channel);
 
-            return presenter.PresentChannelAdded(request.ChannelName, request.StreamPlatform);
+            return presenter.PresentChannelAdded(channel);
         }
     }
 }

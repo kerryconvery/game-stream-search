@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Api.Controllers;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Interactors;
 using GameStreamSearch.Application.Services;
@@ -27,7 +27,7 @@ namespace GameStreamSearch.Api.Tests
         private readonly StreamerChannelDto youtubeChannelDto = new StreamerChannelDto
         {
             ChannelName = "Youtube channel",
-            Platform = StreamPlatformType.youtube,
+            Platform = StreamPlatformType.YouTube,
             AvatarUrl = "avatar url",
             ChannelUrl = "channel url",
         };
@@ -35,7 +35,7 @@ namespace GameStreamSearch.Api.Tests
         private readonly StreamerChannelDto twitchChannelDto = new StreamerChannelDto
         {
             ChannelName = "Twitch channel",
-            Platform = StreamPlatformType.twitch,
+            Platform = StreamPlatformType.Twitch,
             AvatarUrl = "avatar url",
             ChannelUrl = "channel url",
         };
@@ -44,11 +44,11 @@ namespace GameStreamSearch.Api.Tests
         public void Setup()
         {
             youTubeStreamProviderStub = new Mock<IStreamProvider>();
-            youTubeStreamProviderStub.SetupGet(s => s.Platform).Returns(StreamPlatformType.youtube);
+            youTubeStreamProviderStub.SetupGet(s => s.Platform).Returns(StreamPlatformType.YouTube);
             youTubeStreamProviderStub.Setup(s => s.GetStreamerChannel(youtubeChannelDto.ChannelName)).ReturnsAsync(youtubeChannelDto);
 
             twitchtreamProviderStub = new Mock<IStreamProvider>();
-            twitchtreamProviderStub.SetupGet(s => s.Platform).Returns(StreamPlatformType.twitch);
+            twitchtreamProviderStub.SetupGet(s => s.Platform).Returns(StreamPlatformType.Twitch);
             twitchtreamProviderStub.Setup(s => s.GetStreamerChannel(twitchChannelDto.ChannelName)).ReturnsAsync(twitchChannelDto);
 
             StreamService streamService = new StreamService()
@@ -83,13 +83,9 @@ namespace GameStreamSearch.Api.Tests
         [Test]
         public async Task Should_Add_A_New_Channel()
         {
-            var createResponse = await channelController.AddChannel(StreamPlatformType.youtube, "Youtube channel");
+            var createResponse = await channelController.AddChannel(StreamPlatformType.YouTube, "Youtube channel");
             var createResult = createResponse as CreatedResult;
-
-            var response = await channelController.GetChannel(StreamPlatformType.youtube, "Youtube channel");
-
-            var okResult = response as OkObjectResult;
-            var value = okResult.Value as Channel;
+            var value = createResult.Value as ChannelDto;
 
 
             Assert.IsInstanceOf<CreatedResult>(createResponse);
@@ -97,7 +93,6 @@ namespace GameStreamSearch.Api.Tests
 
             Assert.AreEqual(value.ChannelName, youtubeChannelDto.ChannelName);
             Assert.AreEqual(value.StreamPlatform, youtubeChannelDto.Platform);
-            Assert.AreEqual(value.DateRegistered, registrationDate);
             Assert.AreEqual(value.AvatarUrl, youtubeChannelDto.AvatarUrl);
             Assert.AreEqual(value.ChannelUrl, youtubeChannelDto.ChannelUrl);
         }
@@ -105,8 +100,8 @@ namespace GameStreamSearch.Api.Tests
         [Test]
         public async Task Should_Allow_Adding_The_Same_Channel_For_Multiple_Platforms()
         {
-            await channelController.AddChannel(StreamPlatformType.twitch, "Twitch channel");
-            await channelController.AddChannel(StreamPlatformType.youtube, "Youtube channel");
+            await channelController.AddChannel(StreamPlatformType.Twitch, "Twitch channel");
+            await channelController.AddChannel(StreamPlatformType.YouTube, "Youtube channel");
 
             var response = await channelController.GetChannels();
 
@@ -114,44 +109,51 @@ namespace GameStreamSearch.Api.Tests
             var value = okAction.Value as ChannelListDto;
 
             Assert.AreEqual(value.Items.First().ChannelName, "Twitch channel");
-            Assert.AreEqual(value.Items.First().StreamPlatform, StreamPlatformType.twitch);
+            Assert.AreEqual(value.Items.First().StreamPlatform, StreamPlatformType.Twitch);
             Assert.AreEqual(value.Items.Last().ChannelName, "Youtube channel");
-            Assert.AreEqual(value.Items.Last().StreamPlatform, StreamPlatformType.youtube);
+            Assert.AreEqual(value.Items.Last().StreamPlatform, StreamPlatformType.YouTube);
         }
 
         [Test]
-        public async Task Should_Update_The_Channel_And_Respond_With_No_Content_If_The_Channel_Is_Already_Exists_For_The_Platform()
+        public async Task Should_Update_The_Channel_And_Respond_With_The_Channel_If_The_Channel_Is_Already_Exists_For_The_Platform()
         {
             StreamerChannelDto updatedChannelDto = new StreamerChannelDto
             {
                 ChannelName = "Youtube channel",
-                Platform = StreamPlatformType.youtube,
+                Platform = StreamPlatformType.YouTube,
                 AvatarUrl = "new avatar url",
                 ChannelUrl = "new channel url",
             };
 
             youTubeStreamProviderStub.Setup(s => s.GetStreamerChannel(updatedChannelDto.ChannelName)).ReturnsAsync(updatedChannelDto);
 
-            await channelController.AddChannel(StreamPlatformType.youtube, "Youtube channel");
+            await channelController.AddChannel(StreamPlatformType.YouTube, "Youtube channel");
 
-            var updateResponse = await channelController.AddChannel(StreamPlatformType.youtube, "Youtube channel");
+            var updateResponse = await channelController.AddChannel(StreamPlatformType.YouTube, "Youtube channel");
+
+            var result = updateResponse as OkObjectResult;
+            var value = result.Value as ChannelDto;
+
 
             var getResponse = await channelController.GetChannels();
             var getResult = getResponse as OkObjectResult;
-            var value = getResult.Value as ChannelListDto;
+            var getValue = getResult.Value as ChannelListDto;
 
-            Assert.AreEqual(value.Items.Count(), 1);
-            Assert.IsInstanceOf<NoContentResult>(updateResponse);
-            Assert.AreEqual(value.Items.First().AvatarUrl, updatedChannelDto.AvatarUrl);
-            Assert.AreEqual(value.Items.First().ChannelUrl, updatedChannelDto.ChannelUrl);
+            Assert.AreEqual(getValue.Items.Count(), 1);
+            Assert.IsInstanceOf<OkObjectResult>(updateResponse);
+            Assert.AreEqual(value.AvatarUrl, updatedChannelDto.AvatarUrl);
+            Assert.AreEqual(value.ChannelUrl, updatedChannelDto.ChannelUrl);
         }
 
         [Test]
-        public async Task Should_Respond_With_Bad_Request_When_Channel_Does_Not_Exist_On_The_Platform()
+        public async Task Should_Respond_With_Bad_Request_With_Error_When_Channel_Does_Not_Exist_On_The_Platform()
         {
-            var response = await channelController.AddChannel(StreamPlatformType.twitch, "Fake Streamer");
+            var response = await channelController.AddChannel(StreamPlatformType.Twitch, "Fake Streamer");
+            var result = response as BadRequestObjectResult;
+            var value = result.Value as ErrorResponseContract;
 
             Assert.IsInstanceOf<BadRequestObjectResult>(response);
+            Assert.AreEqual(value.Errors.First().ErrorCode, ErrorCodeType.ChannelNotFoundOnPlatform);
         }
     }
 }

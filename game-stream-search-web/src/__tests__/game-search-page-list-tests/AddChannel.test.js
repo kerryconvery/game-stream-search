@@ -69,15 +69,11 @@ describe('Add channel form', () => {
   });
 
   it('should save the new channel and close the form when the save button is pressed', async () => {
-    const channelList = {
-      items: [
-        {
-          channelName: 'newchannel',
-          streamPlatformDisplayName: 'twitch',
-          avatarUrl: '',
-          channelUrl: '',
-        }
-      ]
+    const channel = {
+      channelName: 'newchannel',
+      streamPlatformDisplayName: 'Twitch',
+      avatarUrl: '',
+      channelUrl: '',
     };
 
     nock('http://localhost:5000')
@@ -85,12 +81,10 @@ describe('Add channel form', () => {
         'access-control-allow-origin': '*',
         'access-control-allow-credentials': 'true' ,
       })
-      .options('/api/channels/twitch/newchannel')
+      .options('/api/channels/Twitch/newchannel')
       .reply(200)
-      .put('/api/channels/twitch/newchannel')
-      .reply(201)
-      .get('/api/channels')
-      .reply(200, channelList);
+      .put('/api/channels/Twitch/newchannel')
+      .reply(201, channel)
 
     renderApplication();
 
@@ -129,7 +123,7 @@ describe('Add channel form', () => {
 
     fireEvent.click(addButton);
 
-    const addChannelForm = await waitFor(() => screen.getByText('Add Channel'));
+    await waitFor(() => screen.getByText('Add Channel'));
 
     const saveButton = screen.getByText('Save');
 
@@ -138,6 +132,49 @@ describe('Add channel form', () => {
     const validationError = await waitFor(() => screen.getByText('Please enter a channel name'));
 
     expect(validationError).toBeInTheDocument();
-    expect(addChannelForm).toBeInTheDocument();
+  });
+
+  it('should save the new channel and close the form when the save button is pressed', async () => {
+    const errorResponse = {
+      errors: [
+        {
+          errorCode: 'ChannelNotFoundOnPlatform',
+          errorMessage: 'channel not found on twitch',
+        }
+      ]
+    };
+
+    nock('http://localhost:5000')
+      .defaultReplyHeaders({
+        'access-control-allow-origin': '*',
+        'access-control-allow-credentials': 'true' ,
+      })
+      .options('/api/channels/Twitch/newchannel')
+      .reply(200)
+      .put('/api/channels/Twitch/newchannel')
+      .reply(400, errorResponse)
+
+    renderApplication();
+
+    // We must wait for this to avoid updated state after the component is unmounted.
+    await waitFor(() => screen.getByTestId('streams-not-found'));
+
+    const addButton = screen.getByTitle('Add a new channel to the list');
+
+    fireEvent.click(addButton);
+
+    await waitFor(() => screen.getByText('Add Channel'));
+
+    const channelField = screen.getByLabelText('Channel name');
+
+    fireEvent.change(channelField, { target: { value: 'newchannel' } })
+
+    const saveButton = screen.getByText('Save');
+
+    fireEvent.click(saveButton);
+
+    const errorMessage = await waitFor(() => screen.getByText('channel not found on twitch'));
+
+    expect(errorMessage).toBeInTheDocument();
   });
 });

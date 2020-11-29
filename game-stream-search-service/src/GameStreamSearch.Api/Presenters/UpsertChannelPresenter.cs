@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Api.Controllers;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Interactors;
 using Microsoft.AspNetCore.Mvc;
@@ -15,25 +19,36 @@ namespace GameStreamSearch.Api.Presenters
             this.controller = controller;
         }
 
-        public IActionResult PresentChannelAdded(string channelName, StreamPlatformType streamPlatform)
+        public IActionResult PresentChannelAdded(Channel channel)
         {
             var urlParams = new GetChannelParams
             {
-                Channel = channelName,
-                Platform = streamPlatform,
+                Channel = channel.ChannelName,
+                Platform = channel.StreamPlatform,
             };
 
-            return new CreatedResult(controller.Url.Link(nameof(controller.GetChannel), urlParams), null);
+            var channelDto = ChannelDto.FromEntity(channel);
+
+            return new CreatedResult(controller.Url.Link(nameof(controller.GetChannel), urlParams), channelDto);
         }
 
         public IActionResult PresentChannelNotFoundOnPlatform(string channelName, StreamPlatformType platform)
         {
-            return new BadRequestObjectResult($"A channel for {channelName} was not found on { platform.GetFriendlyName()}");
+            var errorResponse = new ErrorResponseContract()
+                .AddError(new ErrorContract
+                {
+                    ErrorCode = ErrorCodeType.ChannelNotFoundOnPlatform,
+                    ErrorMessage = $"A channel for {channelName} was not found on { platform.GetFriendlyName()}"
+                });
+
+            return new BadRequestObjectResult(errorResponse);
         }
 
-        public IActionResult PresentChannelUpdated()
+        public IActionResult PresentChannelUpdated(Channel channel)
         {
-            return new NoContentResult();
+            var channelDto = ChannelDto.FromEntity(channel);
+
+            return new OkObjectResult(channelDto);
         }
     }
 }

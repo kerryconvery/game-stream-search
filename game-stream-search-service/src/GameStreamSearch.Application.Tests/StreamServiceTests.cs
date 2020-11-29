@@ -23,8 +23,8 @@ namespace GameStreamSearch.Application.Tests
         [Test]
         public async Task Should_Return_An_Aggregated_List_Of_Streams_From_All_Registered_Providers()
         {
-            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.twitch);
-            var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.youtube);
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
+            var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.YouTube);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
             twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
@@ -45,7 +45,7 @@ namespace GameStreamSearch.Application.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_When_No_Streams_Were_Found()
         {
-            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.twitch);
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
             twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
@@ -62,8 +62,8 @@ namespace GameStreamSearch.Application.Tests
         [Test]
         public async Task Should_Pass_Page_Tokens_Where_A_Page_Token_For_The_Provider_Exists()
         {
-            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.twitch);
-            var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.youtube);
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
+            var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.YouTube);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
             twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), null))
@@ -115,15 +115,15 @@ namespace GameStreamSearch.Application.Tests
             var nextPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, firstPageOfStreams.NextPageToken);
 
             Assert.AreEqual(nextPageOfStreams.Items.Count(), 2);
-            Assert.AreEqual(nextPageOfStreams.Items.First().StreamPlatformName, StreamPlatformType.twitch.GetFriendlyName());
+            Assert.AreEqual(nextPageOfStreams.Items.First().StreamPlatformName, StreamPlatformType.Twitch.GetFriendlyName());
             Assert.AreEqual(nextPageOfStreams.Items.First().StreamTitle, "stream 2");
-            Assert.AreEqual(nextPageOfStreams.Items.Last().StreamPlatformName, StreamPlatformType.youtube.GetFriendlyName());
+            Assert.AreEqual(nextPageOfStreams.Items.Last().StreamPlatformName, StreamPlatformType.YouTube.GetFriendlyName());
         }
 
         [Test]
         public async Task Should_Return_A_Stream_List_Sorted_By_Views()
         {
-            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.twitch);
+            var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
             var streamFilterOptions = new StreamFilterOptionsDto();
 
             twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))

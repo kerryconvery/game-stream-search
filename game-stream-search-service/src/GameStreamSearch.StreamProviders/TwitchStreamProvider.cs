@@ -114,6 +114,6 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public StreamPlatformType Platform => StreamPlatformType.twitch;
+        public StreamPlatformType Platform => StreamPlatformType.Twitch;
     }
 }

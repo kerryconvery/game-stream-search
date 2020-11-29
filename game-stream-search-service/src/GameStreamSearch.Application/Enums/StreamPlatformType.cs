@@ -3,9 +3,9 @@ namespace GameStreamSearch.Application.Enums
 {
     public enum StreamPlatformType
     {
-        twitch,
-        dlive,
-        youtube,
+        Twitch,
+        DLive,
+        YouTube,
     }
 
     public static class TypeExtensions
@@ -14,9 +14,9 @@ namespace GameStreamSearch.Application.Enums
         {
             switch(streamingPlatform)
             {
-                case StreamPlatformType.twitch: return "Twitch";
-                case StreamPlatformType.youtube: return "YouTube";
-                case StreamPlatformType.dlive: return "DLive";
+                case StreamPlatformType.Twitch: return "Twitch";
+                case StreamPlatformType.YouTube: return "YouTube";
+                case StreamPlatformType.DLive: return "DLive";
                 default: return streamingPlatform.ToString();
             }
         }

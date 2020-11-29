@@ -29,7 +29,7 @@ describe('Rising channels side bar', () => {
       items: [
         {
           channelName: 'testchannel',
-          streamPlatformDisplayName: 'twitch',
+          streamPlatformDisplayName: 'Twitch',
           avatarUrl: '',
           channelUrl: '',
         }

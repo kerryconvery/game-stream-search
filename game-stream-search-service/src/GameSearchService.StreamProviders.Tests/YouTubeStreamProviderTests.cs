@@ -115,7 +115,7 @@ namespace GameSearchService.StreamProviders.Tests
             Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, liveStreams.items.First().snippet.thumbnails.medium.url);
             Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, channels.items.First().snippet.thumbnails.@default.url);
             Assert.AreEqual(streams.Items.First().StreamUrl, watchUrl);
-            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.youtube.GetFriendlyName());
+            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.YouTube.GetFriendlyName());
             Assert.AreEqual(streams.Items.First().Views, 5);
             Assert.IsTrue(streams.Items.First().IsLive);
             Assert.AreEqual(streams.NextPageToken, liveStreams.nextPageToken);
