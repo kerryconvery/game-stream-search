@@ -10,9 +10,9 @@ import { useGameStreamApi } from '../../../api/gameStreamApi';
 import useChannelsLoader from '../../hooks/useChannelsLoader';
 
 const RisingChannels = () => {
-  const { getStreamChannels } = useGameStreamApi();
-  const { channels, isLoading } = useChannelsLoader(getStreamChannels, () => {});
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { getChannels } = useGameStreamApi();
+  const { channels, isLoading, reloadChannels } = useChannelsLoader(getChannels, () => {});
+  const [ anchorEl, setAnchorEl ] = React.useState(null);
 
   const addButtonClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +21,11 @@ const RisingChannels = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleChannelAdded = () => {
+    setAnchorEl(null);
+    reloadChannels();
+  }
 
   const open = Boolean(anchorEl);
 
@@ -48,7 +53,7 @@ const RisingChannels = () => {
           horizontal: 'center',
         }}
       >
-        <AddChannelForm onCancel={handleClose} />
+        <AddChannelForm onCancel={handleClose} afterChannelAdded={handleChannelAdded} />
       </Popover>
       <ChannelList
         channels={channels}

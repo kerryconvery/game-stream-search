@@ -45,15 +45,15 @@ const reducer = (state, action) => {
 }
 
 const initialState = {
-  formValues: { streamingPlatform: 'twitch' },
+  formValues: { streamPlatform: 'twitch' },
   errors: {},
   isSaving: false,
   submitted: false,
 }
 
-const AddChannelForm = ({ onCancel }) => {
+const AddChannelForm = ({ onCancel, afterChannelAdded }) => {
   const [ state, dispatch ] = useReducer(reducer, initialState)
-  const { registerChannel } = useGameStreamApi();
+  const { addChannel } = useGameStreamApi();
 
   const onSave = async () => {
     dispatch({ type: 'SAVING' });
@@ -61,12 +61,13 @@ const AddChannelForm = ({ onCancel }) => {
     const errors = validateForm(state.formValues);
 
     if (_isEmpty(errors)) {
-      const result = await registerChannel(state.formValues);
+      const errors = await addChannel(state.formValues);
 
-      if (result.errors) {
-        dispatch({ type: 'SAVE_FAILED', errors: result.errors });
+      if (errors) {
+        dispatch({ type: 'SAVE_FAILED', errors });
       } else {
         dispatch({ type: 'SAVE_SUCCESS' })
+        afterChannelAdded();
       }
     } else {
       dispatch({ type: 'SAVE_FAILED', errors })
@@ -100,6 +101,7 @@ const AddChannelForm = ({ onCancel }) => {
 
 AddChannelForm.propTypes = {
   onCancel: func.isRequired,
+  afterChannelAdded: func.isRequired,
 }
 
 export default AddChannelForm;

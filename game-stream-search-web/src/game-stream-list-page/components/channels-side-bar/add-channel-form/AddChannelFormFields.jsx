@@ -21,6 +21,7 @@ const AddChannelFormFields = ({ formValues, errors, onChange }) => {
   return (
     <FormGroup>
       <TextField
+        id='channel-name'
         label='Channel name'
         defaultValue={_get(formValues, 'channelName')}
         autoFocus
@@ -30,7 +31,7 @@ const AddChannelFormFields = ({ formValues, errors, onChange }) => {
       />
       <FormControl margin='normal'>
         <InputLabel>Streaming platform</InputLabel>
-        <Select value={_get(formValues, 'streamingPlatform')} onChange={onFormChange('streamingPlatform')}>
+        <Select value={_get(formValues, 'streamPlatform')} onChange={onFormChange('streamPlatform')}>
           <MenuItem value='twitch'>Twitch</MenuItem>
           <MenuItem value='youtube'>YouTube</MenuItem>
           <MenuItem value='dlive'>DLive</MenuItem>
@@ -43,7 +44,7 @@ const AddChannelFormFields = ({ formValues, errors, onChange }) => {
 AddChannelFormFields.propTypes = {
   formValues: shape({
     channelName: string,
-    streamingPlatform: string,
+    streamPlatform: string,
   }),
   errors: shape({
     channelName: string,

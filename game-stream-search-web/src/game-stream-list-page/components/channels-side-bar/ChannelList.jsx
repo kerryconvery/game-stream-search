@@ -35,17 +35,17 @@ const ChannelName = styled('div')({
   fontWeight: 'bold'
 })
 
-const ChannelTile = ({ name , streamPlatformDisplayName, channelAvatarUrl, channelUrl }) => {
+const ChannelTile = ({ channelName , streamPlatform, avatarUrl, channelUrl }) => {
   const classes = useChannelTileStyles();
 
   return (
     <Link href={channelUrl} target='_blank'>
       <div className={classes.hover}>
         <div className={classes.channelTile}>
-          <Avatar src={channelAvatarUrl} />
+          <Avatar src={avatarUrl} />
           <div className={classes.channelDetails}>
-            <ChannelName>{name}</ChannelName>
-            <StreamPlatformName>{streamPlatformDisplayName}</StreamPlatformName>
+            <ChannelName>{channelName}</ChannelName>
+            <StreamPlatformName>{streamPlatform}</StreamPlatformName>
           </div>
         </div>
       </div>
@@ -55,9 +55,9 @@ const ChannelTile = ({ name , streamPlatformDisplayName, channelAvatarUrl, chann
 
 ChannelTile.propTypes = {
   channel: shape({
-    name: string.isRequired,
-    streamPlatformDisplayName: string.isRequired,
-    channelAvatarUrl: string.isRequired,
+    channelName: string.isRequired,
+    streamPlatform: string.isRequired,
+    avatarUrl: string.isRequired,
     channelUrl: string.isRequired,
   })
 }
@@ -114,9 +114,9 @@ export const ChannelList = ({ channels, isLoading, numberOfLoadingTiles }) => {
 
 ChannelList.propTypes = {
   channels: arrayOf(shape({
-    name: string.isRequired,
-    streamPlatformDisplayName: string.isRequired,
-    channelAvatarUrl: string.isRequired,
+    channelName: string.isRequired,
+    streamPlatform: string.isRequired,
+    avatarUrl: string.isRequired,
     channelUrl: string.isRequired,
   })),
   isLoading: bool,

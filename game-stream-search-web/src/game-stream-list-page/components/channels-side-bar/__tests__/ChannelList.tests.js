@@ -6,15 +6,15 @@ describe('Channel List', () => {
   it('should render a list of channels without loading tiles', () => {
     const channels = [
       {
-        name: 'test channel 1',
-        streamPlatformDisplayName: 'YouTube',
-        channelAvatarUrl: '',
+        channelName: 'test channel 1',
+        streamPlatform: 'YouTube',
+        avatarUrl: '',
         channelUrl: '',
       },
       {
-        name: 'test channel 2',
-        streamPlatformDisplayName: 'DLive',
-        channelAvatarUrl: '',
+        channelName: 'test channel 2',
+        streamPlatform: 'DLive',
+        avatarUrl: '',
         channelUrl: '',
       }
     ];

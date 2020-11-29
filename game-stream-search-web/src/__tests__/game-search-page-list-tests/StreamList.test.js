@@ -1,11 +1,29 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import nock from 'nock';
-import { ConfigurationProvider } from '../providers/ConfigurationProvider';
-import App from '../app';
+import { ConfigurationProvider } from '../../providers/ConfigurationProvider';
+import App from '../../app';
 import '@testing-library/jest-dom/extend-expect';
 
-describe('Application', () => {
+describe('Game search page list', () => {
+  beforeEach(() => {
+    nock('http://localhost:5000')
+    .defaultReplyHeaders({
+      'access-control-allow-origin': '*',
+      'access-control-allow-credentials': 'true' ,
+    })
+    .get('/api/channels')
+    .reply(200, { items: [] });
+  })
+  
+  const renderApplication = () => {
+    return render(
+      <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
+        <App />
+      </ConfigurationProvider>
+    )
+  }
+
   it('should render streams without errors', async () => {
     const streams = {
       items: [{
@@ -29,11 +47,7 @@ describe('Application', () => {
       .get('/api/streams?pageSize=10')
       .reply(200, streams);
 
-      render(
-        <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-          <App />
-        </ConfigurationProvider>
-      )
+    renderApplication();
 
     const fakeStream = await waitFor(() => screen.getByText('fake stream'));
     const loadingTiles = await waitFor(() => screen.queryByTestId('stream-loading-tile'));
@@ -67,11 +81,7 @@ describe('Application', () => {
       .get('/api/streams?pageSize=10')
       .reply(200, streams);
 
-      render(
-        <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-          <App />
-        </ConfigurationProvider>
-      )
+    renderApplication();
 
     const loadingTiles = await waitFor(() => screen.getAllByTestId('stream-loading-tile'));
     
@@ -126,11 +136,7 @@ describe('Application', () => {
       .get('/api/streams?game=testGame&pageSize=10')
       .reply(200, foundStreams);
 
-    const { rerender } = render(
-      <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-        <App />
-      </ConfigurationProvider>
-    )
+    const { rerender } = renderApplication();
 
     await waitFor(() => screen.getByText('fake stream 1'));
 
@@ -161,11 +167,7 @@ describe('Application', () => {
       .get('/api/streams?pageSize=10')
       .reply(500);
 
-    render(
-        <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-          <App />
-        </ConfigurationProvider>
-      )
+    renderApplication();
 
     const alert = await waitFor(() => { 
       return screen.getByText('The application is currently offline. Please try back later.');
@@ -183,72 +185,10 @@ describe('Application', () => {
       .get('/api/streams?pageSize=10')
       .reply(200, { items: [] });
 
-      render(
-        <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-          <App />
-        </ConfigurationProvider>
-      )
+    renderApplication();
 
     const noStreamsFound = await waitFor(() => screen.getByTestId('streams-not-found'));
     
     expect(noStreamsFound).toBeInTheDocument();
   });
-
-  it('should display a form when the add button is pressed', async () => {
-    nock('http://localhost:5000')
-      .defaultReplyHeaders({
-        'access-control-allow-origin': '*',
-        'access-control-allow-credentials': 'true' 
-      })
-      .get('/api/streams?pageSize=10')
-      .reply(200, { items: [] });
-
-    render(
-      <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-        <App />
-      </ConfigurationProvider>
-    );
-    
-    // We must wait for this to avoid updated state after the component is unmounted.
-    await waitFor(() => screen.getByTestId('streams-not-found'));
-
-    const addButton = screen.getByTitle('Add a new channel to the list');
-
-    fireEvent.click(addButton);
-
-    const addChannelForm = await waitFor(() => screen.getByText('Add Channel'));
-
-    expect(addChannelForm).toBeInTheDocument();
-  });
-
-  it('should close the add channel form when the cancel button is pressed', async () => {
-    nock('http://localhost:5000')
-      .defaultReplyHeaders({
-        'access-control-allow-origin': '*',
-        'access-control-allow-credentials': 'true' 
-      })
-      .get('/api/streams?pageSize=10')
-      .reply(200, { items: [] });
-
-    render(
-      <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-        <App />
-      </ConfigurationProvider>
-    );
-
-    // We must wait for this to avoid updated state after the component is unmounted.
-    await waitFor(() => screen.getByTestId('streams-not-found'));
-
-    const addButton = screen.getByTitle('Add a new channel to the list');
-
-    fireEvent.click(addButton);
-
-    const cancelButton = await waitFor(() => screen.getByText('Cancel'));
-
-    fireEvent.click(cancelButton);
-
-    const addChannelForm = await waitFor(() => screen.queryByText('Add Channel'));
-
-    expect(addChannelForm).not.toBeInTheDocument();
-  });
-})
+});
