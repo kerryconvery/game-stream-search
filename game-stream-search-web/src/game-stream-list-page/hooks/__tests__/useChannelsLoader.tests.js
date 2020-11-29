@@ -47,4 +47,46 @@ describe('Channels loader hook', () => {
       expect(onError).toHaveBeenCalled();
     }
   })
+
+  it('should replace channels with a new list of channels', async () => {
+    const channels = [
+      {
+        channelName: 'test channel 1',
+        streamPlatformDisplayName: 'YouTube',
+        avatarUrl: '',
+        channelUrl: '',
+      },
+    ];
+
+    const newChannels = [
+      {
+        channelName: 'test channel 1',
+        streamPlatformDisplayName: 'YouTube',
+        avatarUrl: 'updated url',
+        channelUrl: '',
+      },
+      {
+        channelName: 'test channel 2',
+        streamPlatformDisplayName: 'DLive',
+        avatarUrl: '',
+        channelUrl: '',
+      }
+    ];
+
+    const loadChannelsStub = () => new Promise((resolve) => resolve(channels));
+    const { result } = renderHook(() => useChannelsLoader(loadChannelsStub,jest.fn()));
+
+    await act(loadChannelsStub);
+
+    const updateChannels = result.current.updateChannels;
+
+    act(() => {
+      updateChannels(newChannels);
+    });
+  
+    expect(result.current.channels.length).toEqual(2);  
+    expect(result.current.channels[0].channelName).toEqual(channels[0].channelName);
+    expect(result.current.channels[0].avatarUrl).toEqual(newChannels[0].avatarUrl);
+    expect(result.current.channels[1].channelName).toEqual(newChannels[1].channelName);    
+  })
 })

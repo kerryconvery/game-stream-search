@@ -11,7 +11,7 @@ import useChannelsLoader from '../../hooks/useChannelsLoader';
 
 const RisingChannels = () => {
   const { getChannels } = useGameStreamApi();
-  const { channels, isLoading, appendChannel } = useChannelsLoader(getChannels, () => {});
+  const { channels, isLoading, updateChannels } = useChannelsLoader(getChannels, () => {});
   const [ anchorEl, setAnchorEl ] = React.useState(null);
 
   const addButtonClick = (event) => {
@@ -22,9 +22,9 @@ const RisingChannels = () => {
     setAnchorEl(null);
   };
 
-  const handleChannelAdded = (channel) => {
+  const handleChannelAdded = (channels) => {
     setAnchorEl(null);
-    appendChannel(channel);
+    updateChannels(channels);
   }
 
   const open = Boolean(anchorEl);

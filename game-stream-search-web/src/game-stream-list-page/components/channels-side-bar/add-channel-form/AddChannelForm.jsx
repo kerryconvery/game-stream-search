@@ -53,7 +53,7 @@ const initialState = {
 
 const AddChannelForm = ({ onCancel, afterChannelAdded }) => {
   const [ state, dispatch ] = useReducer(reducer, initialState)
-  const { addChannel } = useGameStreamApi();
+  const { addChannel, getChannels } = useGameStreamApi();
 
   const onSave = async () => {
     dispatch({ type: 'SAVING' });
@@ -66,8 +66,11 @@ const AddChannelForm = ({ onCancel, afterChannelAdded }) => {
       if (result.errors) {
         dispatch({ type: 'SAVE_FAILED', errors: mapApiErrorsToFields(result.errors) });
       } else {
-        dispatch({ type: 'SAVE_SUCCESS' })
-        afterChannelAdded(result);
+        const channels = await getChannels();
+
+        dispatch({ type: 'SAVE_SUCCESS' });
+        
+        afterChannelAdded(channels);
       }
     } else {
       dispatch({ type: 'SAVE_FAILED', errors })

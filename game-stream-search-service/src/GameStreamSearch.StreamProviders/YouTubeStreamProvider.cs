@@ -94,7 +94,8 @@ namespace GameStreamSearch.StreamProviders
         {
             var channels = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
-            if (channels.items.Count() == 0)
+            // This means the channel was not found on YouTube
+            if (channels.items == null)
             {
                 return null;
             }

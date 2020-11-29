@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const useStyles = makeStyles({
+const useFormTemplateStyles = makeStyles({
   card: {
     '& *': {
       fontFamily: 'Helvetica',
@@ -19,11 +19,11 @@ const useStyles = makeStyles({
   },
   formContent: {
     paddingTop: 0,
-  }
+  },
 });
 
 const FormTemplate = ({ title, content, children }) => {
-  const classes = useStyles();
+  const classes = useFormTemplateStyles();
 
   return (
     <Card className={classes.card}>
@@ -44,12 +44,24 @@ FormTemplate.propTypes = {
   children: node.isRequired,
 }
 
+const useSubmitButtonStyles = makeStyles({
+  root: {
+    width: '4rem',
+  },
+  center: {
+    display: 'block',
+    margin: 'auto'
+  }
+});
+
 export const SubmitButton = ({ children, onClick, submitting }) => {
-    if (submitting) {
-      return <CircularProgress />
-    } else {
-      return <Button onClick={onClick}>{children}</Button>
-    }
+  const classes = useSubmitButtonStyles();
+
+  return (
+    <div className={classes.root}>
+      {submitting ? <CircularProgress className={classes.center} size={30} /> : <Button onClick={onClick}>{children}</Button>}
+    </div>
+  )
 }
 
 SubmitButton.propTypes = {

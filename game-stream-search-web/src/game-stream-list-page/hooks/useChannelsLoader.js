@@ -9,10 +9,10 @@ const reducer = (state, action) => {
         isLoading: false
       }
     }
-    case 'APPEND_CHANNEL': {
+    case 'UPDATE_CHANNELS': {
       return {
         ...state,
-        channels: state.channels.concat(action.channel),
+        channels: action.channels,
       }
     }
   }
@@ -26,7 +26,7 @@ const initialState = {
 const useChannelsLoader = (onLoadChannels, onLoadError) => {
   const [ state, dispatch ] = useReducer(reducer, initialState);
 
-  const appendChannel = channel => dispatch({ type: 'APPEND_CHANNEL', channel });
+  const updateChannels = channels => dispatch({ type: 'UPDATE_CHANNELS', channels });
 
   useEffect(() => {
     onLoadChannels()
@@ -37,7 +37,7 @@ const useChannelsLoader = (onLoadChannels, onLoadError) => {
   return {
     channels: state.channels,
     isLoading: state.isLoading,
-    appendChannel,
+    updateChannels,
   };
 }
 

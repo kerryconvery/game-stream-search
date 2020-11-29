@@ -229,7 +229,7 @@ namespace GameSearchService.StreamProviders.Tests
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
                 new YouTubeChannelsDto
                 {
-                    items = new List<YouTubeChannelDto>()
+                    items = null
                 }
             );
 

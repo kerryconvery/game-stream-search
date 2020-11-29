@@ -38,7 +38,7 @@ namespace GameStreamSearch.Api.Presenters
                 .AddError(new ErrorContract
                 {
                     ErrorCode = ErrorCodeType.ChannelNotFoundOnPlatform,
-                    ErrorMessage = $"A channel for {channelName} was not found on { platform.GetFriendlyName()}"
+                    ErrorMessage = $"Channel {channelName} not found on {platform.GetFriendlyName()}"
                 });
 
             return new BadRequestObjectResult(errorResponse);

@@ -76,6 +76,10 @@ describe('Add channel form', () => {
       channelUrl: '',
     };
 
+    const updateChannels = {
+      items: [channel]
+    }
+
     nock('http://localhost:5000')
       .defaultReplyHeaders({
         'access-control-allow-origin': '*',
@@ -85,6 +89,8 @@ describe('Add channel form', () => {
       .reply(200)
       .put('/api/channels/Twitch/newchannel')
       .reply(201, channel)
+      .get('/api/channels')
+      .reply(200, updateChannels);
 
     renderApplication();
 

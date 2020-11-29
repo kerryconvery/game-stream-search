@@ -92,7 +92,6 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
 
             var request = new RestRequest("/youtube/v3/channels", Method.GET);
 
-
             request.AddParameter("part", "id");
             request.AddParameter("part", "snippet");
             request.AddParameter("forUsername", username);
