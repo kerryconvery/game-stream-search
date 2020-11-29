@@ -8,6 +8,7 @@ namespace GameStreamSearch.Application.Dto
     {
         public string ChannelName { get; init; }
         public StreamPlatformType StreamPlatform { get; init; }
+        public string StreamPlatformDisplayName { get; init; }
         public string AvatarUrl { get; init; }
         public string ChannelUrl { get; init; }
     }

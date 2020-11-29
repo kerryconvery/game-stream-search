@@ -44,6 +44,7 @@ namespace GameStreamSearch.Repositories.InMemoryRepositories
                 Items = dataStore.Values.Select(c => new ChannelDto {
                     ChannelName = c.ChannelName,
                     StreamPlatform = c.StreamPlatform,
+                    StreamPlatformDisplayName = c.StreamPlatform.GetFriendlyName(),
                     AvatarUrl = c.AvatarUrl,
                     ChannelUrl = c.ChannelUrl,
                 })

@@ -73,7 +73,7 @@ describe('Add channel form', () => {
       items: [
         {
           channelName: 'newchannel',
-          streamPlatform: 'twitch',
+          streamPlatformDisplayName: 'twitch',
           avatarUrl: '',
           channelUrl: '',
         }

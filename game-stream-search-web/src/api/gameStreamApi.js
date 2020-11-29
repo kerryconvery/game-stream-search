@@ -13,12 +13,12 @@ const getStreamsRequest = (baseUrl) => (filters = {}, pageToken) => (
   }).then(res => res.data)
 );
 
-const addChannelRequest = (baseUrl) => (data) => {
+const addChannelRequest = (baseUrl) => (data) => (
   axios({
     url: `${baseUrl}/channels/${data.streamPlatform}/${data.channelName}`,
     method: 'PUT',
-  })
-}
+  }).then(() => null)
+)
 
 const getChannelsRequest = (baseUrl) => () => (
   axios({

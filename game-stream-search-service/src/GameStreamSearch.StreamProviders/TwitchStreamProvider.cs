@@ -96,11 +96,6 @@ namespace GameStreamSearch.StreamProviders
         {
             var channels = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
-            if (channels.Channels == null)
-            {
-                throw new StreamProviderUnavailableException();
-            }
-
             if (channels.Channels.Count() == 0) {
                 return null;
             }
@@ -114,6 +109,7 @@ namespace GameStreamSearch.StreamProviders
             {
                 ChannelName = channels.Channels.First().display_name,
                 AvatarUrl = channels.Channels.First().logo,
+                ChannelUrl = channels.Channels.First().url,
                 Platform = Platform,
             };
         }

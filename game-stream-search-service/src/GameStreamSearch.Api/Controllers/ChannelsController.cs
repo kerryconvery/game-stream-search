@@ -36,16 +36,16 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpPut]
         [Route("channels/{platform}/{channel}")]
-        public async Task<IActionResult> AddChannel([FromRoute] StreamPlatformType streamPlatform, string channel)
+        public Task<IActionResult> AddChannel([FromRoute] StreamPlatformType platform, string channel)
         {
             var request = new UpsertChannelRequest
             {
                 ChannelName = channel,
-                StreamPlatform = streamPlatform,
+                StreamPlatform = platform,
                 RegistrationDate = timeProvider.GetNow(),
             };
 
-            return await addChannelInteractor.Invoke(request, new UpsertChannelPresenter(this));
+            return addChannelInteractor.Invoke(request, new UpsertChannelPresenter(this));
         }
 
         [HttpGet]
@@ -59,9 +59,9 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpGet]
         [Route("channels/{platform}/{channel}", Name = "GetChannel")]
-        public Task<IActionResult> GetChannel([FromRoute] StreamPlatformType streamPlatform, string channel)
+        public Task<IActionResult> GetChannel([FromRoute] StreamPlatformType platform, string channel)
         {
-            return getChannelInteractor.Invoke(streamPlatform, channel, new GetChannelPresenter());
+            return getChannelInteractor.Invoke(platform, channel, new GetChannelPresenter());
         }
     }
 }

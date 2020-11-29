@@ -35,7 +35,7 @@ const ChannelName = styled('div')({
   fontWeight: 'bold'
 })
 
-const ChannelTile = ({ channelName , streamPlatform, avatarUrl, channelUrl }) => {
+const ChannelTile = ({ channelName , streamPlatformDisplayName, avatarUrl, channelUrl }) => {
   const classes = useChannelTileStyles();
 
   return (
@@ -45,7 +45,7 @@ const ChannelTile = ({ channelName , streamPlatform, avatarUrl, channelUrl }) =>
           <Avatar src={avatarUrl} />
           <div className={classes.channelDetails}>
             <ChannelName>{channelName}</ChannelName>
-            <StreamPlatformName>{streamPlatform}</StreamPlatformName>
+            <StreamPlatformName>{streamPlatformDisplayName}</StreamPlatformName>
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@ const ChannelTile = ({ channelName , streamPlatform, avatarUrl, channelUrl }) =>
 ChannelTile.propTypes = {
   channel: shape({
     channelName: string.isRequired,
-    streamPlatform: string.isRequired,
+    streamPlatformDisplayName: string.isRequired,
     avatarUrl: string.isRequired,
     channelUrl: string.isRequired,
   })
@@ -115,7 +115,7 @@ export const ChannelList = ({ channels, isLoading, numberOfLoadingTiles }) => {
 ChannelList.propTypes = {
   channels: arrayOf(shape({
     channelName: string.isRequired,
-    streamPlatform: string.isRequired,
+    streamPlatformDisplayName: string.isRequired,
     avatarUrl: string.isRequired,
     channelUrl: string.isRequired,
   })),

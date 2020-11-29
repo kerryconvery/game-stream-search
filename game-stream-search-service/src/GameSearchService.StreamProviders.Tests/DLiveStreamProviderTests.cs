@@ -249,20 +249,5 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             Assert.IsNull(streamerChannel);
         }
-
-        [Test]
-        public void Should_Throw_An_Excepton_If_The_Provider_Returns_An_Error()
-        {
-            var dliveApiStub = new Mock<IDLiveApi>();
-
-            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(new DLiveUserByDisplayNameDto());
-
-            var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
-
-            var dliveStreamProvider = new DLiveStreamProvider(dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
-
-
-            Assert.ThrowsAsync<StreamProviderUnavailableException>(() => dliveStreamProvider.GetStreamerChannel("Test streamer"));
-        }
     }
 }

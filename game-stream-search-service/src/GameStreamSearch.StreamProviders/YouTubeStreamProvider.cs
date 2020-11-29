@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
@@ -14,11 +13,13 @@ namespace GameStreamSearch.StreamProviders
     public class YouTubeStreamProvider : IStreamProvider
     {
         private readonly IYouTubeWatchUrlBuilder urlBuilder;
+        private readonly IYouTubeChannelUrlBuilder channelUrlBuilder;
         private readonly IYouTubeV3Api youTubeV3Api;
 
-        public YouTubeStreamProvider(IYouTubeWatchUrlBuilder urlBuilder, IYouTubeV3Api youTubeV3Api)
+        public YouTubeStreamProvider(IYouTubeWatchUrlBuilder watchUrlBuilder, IYouTubeChannelUrlBuilder channelUrlBuilder, IYouTubeV3Api youTubeV3Api)
         {
-            this.urlBuilder = urlBuilder;
+            this.urlBuilder = watchUrlBuilder;
+            this.channelUrlBuilder = channelUrlBuilder;
             this.youTubeV3Api = youTubeV3Api;
         }
 
@@ -93,11 +94,6 @@ namespace GameStreamSearch.StreamProviders
         {
             var channels = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
-            if (channels.items == null)
-            {
-                throw new StreamProviderUnavailableException();
-            }
-
             if (channels.items.Count() == 0)
             {
                 return null;
@@ -112,6 +108,7 @@ namespace GameStreamSearch.StreamProviders
             {
                 ChannelName = channels.items.First().snippet.title,
                 AvatarUrl = channels.items.First().snippet.thumbnails.@default.url,
+                ChannelUrl = channelUrlBuilder.Build(channels.items.First().snippet.title),
                 Platform = Platform,
             };
         }

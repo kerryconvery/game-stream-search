@@ -72,13 +72,12 @@ namespace GameStreamSearch.Api
                     ))
                     .RegisterStreamProvider(new YouTubeStreamProvider(
                             new YouTubeWatchUrlBuilder(Configuration["YouTube:WatchUrl"]),
+                            new YouTubeChannelUrlBuilder(Configuration["YouTube:ChannelUrl"]),
                             new YouTubeV3Api(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"])
                     ))
                     .RegisterStreamProvider(new DLiveStreamProvider(
                             new DLiveWatchUrlBuilder(Configuration["DLive:WatchUrl"]),
                             new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
-
-
             });
 
             services.AddScoped<UpsertChannelInteractor>();

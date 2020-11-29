@@ -12,7 +12,7 @@ namespace GameStreamSearch.StreamProviders.Builders
 
         public string Build(string videoId)
         {
-            return string.Format("{0}/watch?v={1}", baseUrl, videoId);
+            return $"{baseUrl}/watch?v={videoId}";
         }
     }
 }

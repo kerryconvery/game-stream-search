@@ -82,11 +82,6 @@ namespace GameStreamSearch.StreamProviders
         {
             var response = await dliveApi.GetUserByDisplayName(channelName);
 
-            if (response.data == null)
-            {
-                throw new StreamProviderUnavailableException();
-            }
-
             if (response.data.userByDisplayName == null)
             {
                 return null;
@@ -101,6 +96,7 @@ namespace GameStreamSearch.StreamProviders
             {
                 ChannelName = response.data.userByDisplayName.displayName,
                 AvatarUrl = response.data.userByDisplayName.avatar,
+                ChannelUrl = urlBuilder.Build(response.data.userByDisplayName.displayName),
                 Platform = Platform,
             };
         }
