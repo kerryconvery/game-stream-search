@@ -3,9 +3,9 @@ namespace GameStreamSearch.Application.Enums
 {
     public enum StreamPlatformType
     {
-        Twitch = 0,
-        DLive = 1,
-        YouTube = 2,
+        Twitch,
+        DLive,
+        YouTube,
     }
 
     public static class TypeExtensions

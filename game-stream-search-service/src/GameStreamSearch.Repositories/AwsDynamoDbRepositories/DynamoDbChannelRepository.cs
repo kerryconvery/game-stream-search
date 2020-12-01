@@ -20,14 +20,7 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public Task Add(Channel channel)
         {
-            DynamoDbChannelDto channelDto = new DynamoDbChannelDto
-            {
-                ChannelName = channel.ChannelName,
-                StreamPlatform = channel.StreamPlatform,
-                DateRegistered = channel.DateRegistered,
-                AvatarUrl = channel.AvatarUrl,
-                ChannelUrl = channel.ChannelUrl,
-            };
+            DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
 
             return awsDynamoDbTable.PutItem(channelDto);
         }
@@ -36,14 +29,7 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
         {
             var channelDto = await awsDynamoDbTable.GetItem(channelName, streamPlatform.ToString());
 
-            return new Channel
-            {
-                ChannelName = channelDto.ChannelName,
-                StreamPlatform = channelDto.StreamPlatform,
-                DateRegistered = channelDto.DateRegistered,
-                AvatarUrl = channelDto.AvatarUrl,
-                ChannelUrl = channelDto.ChannelUrl,
-            };
+            return channelDto.ToEntity();
         }
 
         public Task Remove(StreamPlatformType streamPlatform, string channelName)
@@ -74,14 +60,7 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public Task Update(Channel channel)
         {
-            DynamoDbChannelDto channelDto = new DynamoDbChannelDto
-            {
-                ChannelName = channel.ChannelName,
-                StreamPlatform = channel.StreamPlatform,
-                DateRegistered = channel.DateRegistered,
-                AvatarUrl = channel.AvatarUrl,
-                ChannelUrl = channel.ChannelUrl,
-            };
+            DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
 
             return awsDynamoDbTable.PutItem(channelDto);
         }
