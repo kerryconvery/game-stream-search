@@ -5,10 +5,10 @@ using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using Base64Url;
 using System.Security.Cryptography;
-using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
+using GameStreamSearch.Application.Providers;
 
 namespace GameStreamSearch.StreamProviders
 {

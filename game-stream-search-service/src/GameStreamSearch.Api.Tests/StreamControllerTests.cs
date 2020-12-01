@@ -9,6 +9,7 @@ using GameStreamSearch.Application;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.Application.Enums;
 using System.Collections.Generic;
+using GameStreamSearch.Application.Providers;
 
 namespace GameStreamSearch.Api.Tests
 {

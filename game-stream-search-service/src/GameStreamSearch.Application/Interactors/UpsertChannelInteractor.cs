@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Repositories;
 using GameStreamSearch.Application.Services;
 
 namespace GameStreamSearch.Application.Interactors

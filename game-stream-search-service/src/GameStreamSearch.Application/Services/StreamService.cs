@@ -6,6 +6,7 @@ using GameStreamSearch.Application.Enums;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using Base64Url;
+using GameStreamSearch.Application.Providers;
 
 namespace GameStreamSearch.Application.Services
 {

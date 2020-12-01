@@ -20,6 +20,7 @@ http://app-stream-machine.s3-website-ap-southeast-2.amazonaws.com/
 * `lerna run stop:service --stream` - Stops the running service
 * `lerna run test --stream` - run all unit tests
 * `lerna run test:integration --stream` - run the integration tests (web service must be running first)
+* `lerna run lint` - run the linter over the frontend code
 
 ### How to run the application with docker
 1. Clone to repository to your local machine

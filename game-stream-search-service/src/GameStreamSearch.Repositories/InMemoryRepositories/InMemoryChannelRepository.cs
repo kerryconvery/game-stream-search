@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application;
+using GameStreamSearch.Application.Repositories;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;

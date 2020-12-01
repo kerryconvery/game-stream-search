@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Repositories;
 
 namespace GameStreamSearch.Application.Interactors
 {

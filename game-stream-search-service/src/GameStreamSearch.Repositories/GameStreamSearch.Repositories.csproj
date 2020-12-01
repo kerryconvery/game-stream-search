@@ -9,5 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="InMemoryRepositories\" />
+    <Folder Include="AwsDynamoDbRepositories\" />
   </ItemGroup>
 </Project>

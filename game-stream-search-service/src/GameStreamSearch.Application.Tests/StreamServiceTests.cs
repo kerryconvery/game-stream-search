@@ -6,6 +6,7 @@ using Moq;
 using NUnit.Framework;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Providers;
 
 namespace GameStreamSearch.Application.Tests
 {

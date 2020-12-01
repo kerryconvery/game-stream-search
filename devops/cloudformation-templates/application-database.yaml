@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  ApplicationName:
+    Type: String
+    Description: This name will be used for the database
+
+Resources:
+  ChannelsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName:
+        - Fn::Sub: ${ApplicationName}-Channels
+      BillingMode: PROVISIONED
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      AttributeDefinitions:
+        -
+          AttributeName: "ChannelName"
+          AttributeType: "S"
+        -
+          AttributeName: "StreamPlatform"
+          AttributeType: "S"
+        -
+          AttributeName: "AvatarUrl"
+          AttributeType: "S"
+        -
+          AttributeName: "ChannelUrl"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "ChannelName"
+          KeyType: "HASH"
+        -
+          AttributeName: "StreamPlatform"
+          KeyType: "RANGE"
+
+  DatabasePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Sub: '${ApplicationName}-database-read-write'
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:GetItem
+              - dynamodb:BatchGetItem
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+            Resource:
+              Fn::GetAtt: ChannelsTable.Arn
+
+Outputs:
+  DatabasePolicyName:
+    Value:
+      Ref: DatabasePolicy
+    Export:
+      Name: DatabasePolicyName
+
+  

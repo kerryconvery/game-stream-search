@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.Application;
 using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
 using GameStreamSearch.StreamPlatformApi.Twitch;
@@ -19,6 +18,7 @@ using GameStreamSearch.Api.Presenters;
 using GameStreamSearch.Repositories.InMemoryRepositories;
 using GameStreamSearch.Application.Interactors;
 using System;
+using GameStreamSearch.Application.Repositories;
 
 namespace GameStreamSearch.Api
 {

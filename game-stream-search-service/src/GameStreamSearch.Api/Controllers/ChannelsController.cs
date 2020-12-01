@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Api.Presenters;
-using GameStreamSearch.Application;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Interactors;
+using GameStreamSearch.Application.Providers;
+using GameStreamSearch.Application.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers

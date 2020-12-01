@@ -4,7 +4,7 @@ using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Application.Repositories
 {
     public interface IChannelRepository
     {

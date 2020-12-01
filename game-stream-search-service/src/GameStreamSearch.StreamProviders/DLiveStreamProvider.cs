@@ -3,11 +3,10 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Base64Url;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application;
 using GameStreamSearch.StreamProviders.Builders;
-using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
+using GameStreamSearch.Application.Providers;
 
 namespace GameStreamSearch.StreamProviders
 {
