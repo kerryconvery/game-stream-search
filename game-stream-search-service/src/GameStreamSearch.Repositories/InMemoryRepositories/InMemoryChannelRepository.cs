@@ -13,6 +13,11 @@ namespace GameStreamSearch.Repositories.InMemoryRepositories
     {
         private Dictionary<string, Channel> dataStore;
 
+        private string getKey(StreamPlatformType streamPlatform, string channelName)
+        {
+            return streamPlatform + channelName;
+        }
+
         public InMemoryChannelRepository()
         {
             dataStore = new Dictionary<string, Channel>();
@@ -27,7 +32,7 @@ namespace GameStreamSearch.Repositories.InMemoryRepositories
 
         public Task<Channel> Get(StreamPlatformType streamPlatform, string channelName)
         {
-            var key = streamPlatform + channelName;
+            var key = getKey(streamPlatform, channelName);
 
             if (dataStore.ContainsKey(key))
             {
@@ -55,11 +60,23 @@ namespace GameStreamSearch.Repositories.InMemoryRepositories
 
         public Task Remove(StreamPlatformType streamPlatform, string channelName)
         {
-            var key = streamPlatform + channelName;
+            var key = getKey(streamPlatform, channelName);
 
             if (dataStore.ContainsKey(key))
             {
                 dataStore.Remove(key);
+            }
+
+            return Task.FromResult<object>(null);
+        }
+
+        public Task Update(Channel channel)
+        {
+            var key = getKey(channel.StreamPlatform, channel.ChannelName);
+
+            if (dataStore.ContainsKey(key))
+            {
+                dataStore[key] = channel;
             }
 
             return Task.FromResult<object>(null);

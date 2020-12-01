@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.5.4.2" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.5.4.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj" />
   </ItemGroup>
 </Project>

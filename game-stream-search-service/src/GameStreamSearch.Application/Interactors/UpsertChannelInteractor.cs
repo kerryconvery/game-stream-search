@@ -57,9 +57,7 @@ namespace GameStreamSearch.Application.Interactors
 
             if (existingChannel != null)
             {
-                await channelRepository.Remove(existingChannel.StreamPlatform, existingChannel.ChannelName);
-
-                await channelRepository.Add(channel);
+                await channelRepository.Update(channel);
 
                 return presenter.PresentChannelUpdated(channel);
             }
