@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.Runtime;
 using GameStreamSearch.Repositories;
 
 namespace GameStreamSearch.AwsDynamoDb
@@ -14,7 +16,13 @@ namespace GameStreamSearch.AwsDynamoDb
 
         public AwsDynamoDbTable()
         {
-            dynamoDbClient = new AmazonDynamoDBClient();
+            AmazonDynamoDBConfig clientConfig = new AmazonDynamoDBConfig
+            {
+                RegionEndpoint = RegionEndpoint.APSoutheast2,
+                
+            };
+
+            dynamoDbClient = new AmazonDynamoDBClient(clientConfig);
             dynamoDbContext = new DynamoDBContext(dynamoDbClient);
         }
 

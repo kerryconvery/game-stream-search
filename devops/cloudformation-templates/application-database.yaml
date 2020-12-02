@@ -9,7 +9,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName:
-        Fn::Sub: '${ApplicationName}-Channels'
+        Fn::Sub: 'Channels'
       BillingMode: PROVISIONED
       ProvisionedThroughput: 
         ReadCapacityUnits: '5'
@@ -33,7 +33,7 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName:
-        Fn::Sub: '${ApplicationName}-database-read-write'
+        Fn::Sub: '${ApplicationName}-dynamodb-read-write'
       PolicyDocument:
         Version: 2012-10-17
         Statement:

@@ -16,6 +16,10 @@ using GameStreamSearch.StreamPlatformApi.DLive;
 using GameStreamSearch.Repositories.InMemoryRepositories;
 using GameStreamSearch.Application.Interactors;
 using GameStreamSearch.Application;
+using GameStreamSearch.Repositories;
+using GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto;
+using GameStreamSearch.AwsDynamoDb;
+using GameStreamSearch.Repositories.AwsDynamoDbRepositories;
 
 namespace GameStreamSearch.Api
 {
@@ -82,7 +86,8 @@ namespace GameStreamSearch.Api
             
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 
-            services.AddSingleton<IChannelRepository, InMemoryChannelRepository>();
+            services.AddSingleton<IAwsDynamoDbTable<DynamoDbChannelDto>, AwsDynamoDbTable<DynamoDbChannelDto>>();
+            services.AddSingleton<IChannelRepository, DynamoDbChannelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

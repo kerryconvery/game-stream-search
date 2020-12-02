@@ -34,5 +34,8 @@
     <ProjectReference Include="..\GameStreamSearch.StreamPlatformApi\GameStreamSearch.StreamPlatformApi.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\GameStreamSearch.AwsDynamoDb\GameStreamSearch.AwsDynamoDb.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>
