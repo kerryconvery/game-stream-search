@@ -1,6 +1,6 @@
 ﻿using System;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Entities;
-using GameStreamSearch.Application.Interactors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Presenters

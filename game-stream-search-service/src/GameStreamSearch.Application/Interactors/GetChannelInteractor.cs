@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Repositories;
 
 namespace GameStreamSearch.Application.Interactors
 {
-    public interface IGetChannelPresenter<Result>
-    {
-        Result PresentChannel(Channel platformChannel);
-        Result PresentChannelNotFound();
-    }
-
-    public class GetChannelInteractor
+    public class GetChannelInteractor : IGetChannel
     {
         private readonly IChannelRepository channelRepository;
 

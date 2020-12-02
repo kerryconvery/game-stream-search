@@ -13,12 +13,9 @@ using Newtonsoft.Json.Converters;
 using GameStreamSearch.StreamPlatformApi.Twitch;
 using GameStreamSearch.StreamPlatformApi.YouTube;
 using GameStreamSearch.StreamPlatformApi.DLive;
-using Microsoft.AspNetCore.Mvc;
-using GameStreamSearch.Api.Presenters;
 using GameStreamSearch.Repositories.InMemoryRepositories;
 using GameStreamSearch.Application.Interactors;
-using System;
-using GameStreamSearch.Application.Repositories;
+using GameStreamSearch.Application;
 
 namespace GameStreamSearch.Api
 {
@@ -64,7 +61,7 @@ namespace GameStreamSearch.Api
             services.AddControllers()
                 .AddNewtonsoftJson(opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
-            services.AddScoped(service =>
+            services.AddScoped<IStreamService, StreamService>(service =>
             {
                 return new StreamService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
@@ -80,8 +77,8 @@ namespace GameStreamSearch.Api
                             new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
             });
 
-            services.AddScoped<UpsertChannelInteractor>();
-            services.AddScoped<GetChannelInteractor>();
+            services.AddScoped<IUpsertChannel, UpsertChannelInteractor>();
+            services.AddScoped<IGetChannel, GetChannelInteractor>();
             
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 

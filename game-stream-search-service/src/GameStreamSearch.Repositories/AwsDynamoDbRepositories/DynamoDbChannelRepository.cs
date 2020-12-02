@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Repositories;
 using GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto;
 
 namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories

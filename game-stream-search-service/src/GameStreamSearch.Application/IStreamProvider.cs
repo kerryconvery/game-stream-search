@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.Application.Providers
+namespace GameStreamSearch.Application
 {
     public interface IStreamProvider
     {

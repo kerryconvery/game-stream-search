@@ -6,7 +6,7 @@ using GameStreamSearch.Application.Dto;
 using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
-using GameStreamSearch.Application.Providers;
+using GameStreamSearch.Application;
 
 namespace GameStreamSearch.StreamProviders
 {

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ namespace GameStreamSearch.Api.Controllers
     [Route("api")]
     public class StreamsController : ControllerBase
     {
-        private readonly StreamService streamService;
+        private readonly IStreamService streamService;
 
-        public StreamsController(StreamService streamService)
+        public StreamsController(IStreamService streamService)
         {
             this.streamService = streamService;
         }

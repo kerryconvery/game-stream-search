@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Api.Controllers;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Interactors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Presenters

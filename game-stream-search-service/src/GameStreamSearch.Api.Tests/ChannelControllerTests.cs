@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Api.Controllers;
-using GameStreamSearch.Application.Repositories;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Interactors;

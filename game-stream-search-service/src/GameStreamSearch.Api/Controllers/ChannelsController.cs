@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Api.Presenters;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Interactors;
 using GameStreamSearch.Application.Providers;
-using GameStreamSearch.Application.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers
@@ -18,20 +17,20 @@ namespace GameStreamSearch.Api.Controllers
     [Route("api")]
     public class ChannelsController : ControllerBase
     {
-        private readonly UpsertChannelInteractor addChannelInteractor;
-        private readonly GetChannelInteractor getChannelInteractor;
-        private readonly IChannelRepository platformChannelRepository;
+        private readonly IUpsertChannel upsertChannel;
+        private readonly IGetChannel getChannel;
+        private readonly IChannelRepository channelRepository;
         private readonly ITimeProvider timeProvider;
 
         public ChannelsController(
-            UpsertChannelInteractor addChannelInteractor,
-            GetChannelInteractor getChannelInteractor,
-            IChannelRepository platformChannelRepository,
+            IUpsertChannel upsertChannel,
+            IGetChannel getChannel,
+            IChannelRepository channelRepository,
             ITimeProvider timeProvider)
         {
-            this.addChannelInteractor = addChannelInteractor;
-            this.getChannelInteractor = getChannelInteractor;
-            this.platformChannelRepository = platformChannelRepository;
+            this.upsertChannel = upsertChannel;
+            this.getChannel = getChannel;
+            this.channelRepository = channelRepository;
             this.timeProvider = timeProvider;
         }
 
@@ -46,14 +45,14 @@ namespace GameStreamSearch.Api.Controllers
                 RegistrationDate = timeProvider.GetNow(),
             };
 
-            return addChannelInteractor.Invoke(request, new UpsertChannelPresenter(this));
+            return upsertChannel.Invoke(request, new UpsertChannelPresenter(this));
         }
 
         [HttpGet]
         [Route("channels")]
         public async Task<IActionResult> GetChannels()
         {
-            var channels = await platformChannelRepository.SelectAllChannels();
+            var channels = await channelRepository.SelectAllChannels();
 
             return Ok(channels);
         }
@@ -62,7 +61,7 @@ namespace GameStreamSearch.Api.Controllers
         [Route("channels/{platform}/{channel}", Name = "GetChannel")]
         public Task<IActionResult> GetChannel([FromRoute] StreamPlatformType platform, string channel)
         {
-            return getChannelInteractor.Invoke(platform, channel, new GetChannelPresenter());
+            return getChannel.Invoke(platform, channel, new GetChannelPresenter());
         }
     }
 }

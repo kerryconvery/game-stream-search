@@ -1,34 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Entities;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Repositories;
-using GameStreamSearch.Application.Services;
 
 namespace GameStreamSearch.Application.Interactors
 {
-    public class UpsertChannelRequest
-    {
-        public string ChannelName { get; set; }
-        public DateTime RegistrationDate { get; set; }
-        public StreamPlatformType StreamPlatform { get; set; }
-    }
-
-    public interface IUpsertChannelPresenter<Result>
-    {
-        Result PresentChannelAdded(Channel channel);
-        Result PresentChannelUpdated(Channel channel);
-        Result PresentChannelNotFoundOnPlatform(string channelName, StreamPlatformType platform);
-    }
-
-    public class UpsertChannelInteractor
+    public class UpsertChannelInteractor : IUpsertChannel
     {
         private readonly IChannelRepository channelRepository;
-        private readonly StreamService streamService;
+        private readonly IStreamService streamService;
 
         public UpsertChannelInteractor(
             IChannelRepository channelRepository,
-            StreamService streamService
+            IStreamService streamService
         )
         {
             this.channelRepository = channelRepository;
