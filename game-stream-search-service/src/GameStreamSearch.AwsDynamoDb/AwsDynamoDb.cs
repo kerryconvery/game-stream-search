@@ -7,7 +7,7 @@ using GameStreamSearch.Repositories;
 
 namespace GameStreamSearch.AwsDynamoDb
 {
-    public class AwsDynamoDbTable<T> : IAwsDynamoDbTable<T>
+    public class AwsDynamoDbTable<T> : IAwsDynamoDbTable<T>, IDisposable
     {
         private DynamoDBContext dynamoDbContext;
         private AmazonDynamoDBClient dynamoDbClient;
@@ -15,13 +15,22 @@ namespace GameStreamSearch.AwsDynamoDb
         public AwsDynamoDbTable()
         {
             dynamoDbClient = new AmazonDynamoDBClient();
-
             dynamoDbContext = new DynamoDBContext(dynamoDbClient);
         }
 
         public Task PutItem(T item)
         {
             return dynamoDbContext.SaveAsync(item);
+        }
+
+        public Task UpdateItem(T item)
+        {
+            return dynamoDbContext.SaveAsync(item);
+        }
+
+        public Task DeleteItem(string primaryKey, string sortKey)
+        {
+            return dynamoDbContext.DeleteAsync<T>(primaryKey, sortKey);
         }
 
         public Task<T> GetItem(string primaryKey, string sortKey)
@@ -38,14 +47,10 @@ namespace GameStreamSearch.AwsDynamoDb
             return batchGet.Results;
         }
 
-        public Task UpdateItem(T item)
+        public void Dispose()
         {
-            return dynamoDbContext.SaveAsync(item);
-        }
-
-        public Task DeleteItem(string primaryKey, string sortKey)
-        {
-            return dynamoDbContext.DeleteAsync<T>(primaryKey, sortKey);
+            dynamoDbContext.Dispose();
+            dynamoDbClient.Dispose();
         }
     }
 }
