@@ -13,5 +13,5 @@ readonly ECR_REPOSITORY_NAME=$APPLICATION_NAME
 echo "Deploying application database"
 aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file ./cloudformation-templates/application-database.yaml --parameter-overrides ApplicationName=$APPLICATION_NAME --capabilities CAPABILITY_NAMED_IAM
 
-echo "Deploying application infrastructure"
-aws cloudformation deploy --stack-name $APPLICATION_STACK_NAME --template-file ./cloudformation-templates/application-infrastructure.yaml --parameter-overrides ApplicationName=$APPLICATION_NAME FrontendBucketName=$FRONTEND_DEPLOY_BUCKET_NAME EbDeploymentBucketName=$EB_DEPLOY_BUCKET_NAME ContainerRepositoryName=$ECR_REPOSITORY_NAME --capabilities CAPABILITY_NAMED_IAM
+# echo "Deploying application infrastructure"
+# aws cloudformation deploy --stack-name $APPLICATION_STACK_NAME --template-file ./cloudformation-templates/application-infrastructure.yaml --parameter-overrides ApplicationName=$APPLICATION_NAME FrontendBucketName=$FRONTEND_DEPLOY_BUCKET_NAME EbDeploymentBucketName=$EB_DEPLOY_BUCKET_NAME ContainerRepositoryName=$ECR_REPOSITORY_NAME --capabilities CAPABILITY_NAMED_IAM
