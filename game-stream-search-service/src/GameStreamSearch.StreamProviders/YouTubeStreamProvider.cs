@@ -68,7 +68,7 @@ namespace GameStreamSearch.StreamProviders
             return channels.items.ToDictionary(c => c.id, c => c.snippet);
         }
 
-        public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptionsDto filterOptions, int pageSize, string pageToken = null)
+        public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null)
         {
             var liveVideos = await youTubeV3Api.SearchGamingVideos(filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
 

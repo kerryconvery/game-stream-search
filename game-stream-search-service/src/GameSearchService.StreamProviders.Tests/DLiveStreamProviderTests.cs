@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Exceptions;
@@ -51,7 +52,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider(dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
 
             Assert.AreEqual(streams.Items.Count(), 1);
             Assert.NotNull(streams.NextPageToken);
@@ -74,7 +75,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider(dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptionsDto { GameName = "some game" }, 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "some game" }, 1);
 
             Assert.False(streams.Items.Any());
             Assert.IsNull(streams.NextPageToken);
@@ -139,8 +140,8 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider(dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
 
-            var streamsPage1 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
-            var streamsPage2 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1, streamsPage1.NextPageToken);
+            var streamsPage1 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streamsPage2 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, streamsPage1.NextPageToken);
 
 
             Assert.AreEqual(streamsPage2.Items.Count(), 1);
@@ -169,7 +170,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider(dliveWatchUrlBuilderStub.Object, dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
 
             Assert.IsFalse(streams.Items.Any());
             Assert.Null(streams.NextPageToken);

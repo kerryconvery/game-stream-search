@@ -63,7 +63,7 @@ namespace GameStreamSearch.Application.Services
             return PackPageTokens(pageTokens);
         }
 
-        public async Task<GameStreamsDto> GetStreams(StreamFilterOptionsDto filterOptions, int pageSize, string pageToken)
+        public async Task<GameStreamsDto> GetStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             var paginationTokens = UnpackPageTokens(pageToken);
 

@@ -9,6 +9,7 @@ using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
 using GameStreamSearch.StreamPlatformApi;
+using GameStreamSearch.Application;
 
 namespace GameSearchService.StreamProviders.Tests
 {
@@ -67,7 +68,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
+            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
 
             Assert.AreEqual(streams.Items.Count(), 1);
             Assert.AreEqual(streams.Items.First().StreamTitle, liveStreams.streams.First().channel.status);
@@ -89,7 +90,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto { GameName = "fake game" }, 1);
+            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "fake game" }, 1);
 
             Assert.AreEqual(streams.Items.Count(), 1);
             Assert.AreEqual(streams.Items.First().StreamTitle, liveStreams.streams.First().channel.status);
@@ -111,7 +112,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
+            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
 
             Assert.IsEmpty(streams.Items);
         }
@@ -125,7 +126,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto { GameName = "fake game" }, 1);
+            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "fake game" }, 1);
 
             Assert.IsEmpty(streams.Items);
         }
@@ -140,8 +141,8 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
-            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1, streamsPage1.NextPageToken);
+            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, streamsPage1.NextPageToken);
 
             Assert.AreEqual(streamsPage2.Items.Count(), 1);
             Assert.AreEqual(streamsPage2.Items.First().StreamerName, liveStreamsB.streams.First().channel.display_name);
@@ -157,8 +158,8 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto() { GameName = "fake game" }, 1);
-            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto() { GameName = "fake game" }, 1, streamsPage1.NextPageToken);
+            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions() { GameName = "fake game" }, 1);
+            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions() { GameName = "fake game" }, 1, streamsPage1.NextPageToken);
 
             Assert.AreEqual(streamsPage2.Items.Count(), 1);
             Assert.AreEqual(streamsPage2.Items.First().StreamerName, liveStreamsB.streams.First().channel.display_name);
@@ -174,8 +175,8 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1);
-            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1, streamsPage1.NextPageToken);
+            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, streamsPage1.NextPageToken);
 
             Assert.IsNull(streamsPage2.NextPageToken);
         }
@@ -190,8 +191,8 @@ namespace GameSearchService.StreamProviders.Tests
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
-            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto() { GameName = "fake game" }, 1);
-            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptionsDto() { GameName = "fake game" }, 1, streamsPage1.NextPageToken);
+            var streamsPage1 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions() { GameName = "fake game" }, 1);
+            var streamsPage2 = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions() { GameName = "fake game" }, 1, streamsPage1.NextPageToken);
 
             Assert.IsNull(streamsPage2.NextPageToken);
         }

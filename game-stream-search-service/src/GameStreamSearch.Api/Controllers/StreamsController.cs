@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers
@@ -24,7 +22,7 @@ namespace GameStreamSearch.Api.Controllers
             [FromQuery(Name = "pageSize")] int pageSize = 8,
             [FromQuery(Name = "pageToken")] string pageToken = null)
         {
-            var filterOptions = new StreamFilterOptionsDto
+            var filterOptions = new StreamFilterOptions
             {
                 GameName = gameName
             };

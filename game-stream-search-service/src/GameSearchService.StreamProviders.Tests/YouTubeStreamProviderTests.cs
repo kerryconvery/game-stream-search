@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Exceptions;
@@ -107,7 +108,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
-            var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptionsDto { GameName = "fake game" }, 1, "page token");
+            var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "fake game" }, 1, "page token");
 
             Assert.AreEqual(streams.Items.Count(), 1);
             Assert.AreEqual(streams.Items.First().StreamTitle, liveStreams.items.First().snippet.title);
@@ -134,7 +135,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
-            var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1, null);
+            var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, null);
 
             Assert.IsEmpty(streams.Items);
             Assert.IsNull(streams.NextPageToken);
@@ -149,7 +150,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
-            var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptionsDto(), 1, null);
+            var streams = await youTubeStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, null);
 
             Assert.IsEmpty(streams.Items);
             Assert.IsNull(streams.NextPageToken);
