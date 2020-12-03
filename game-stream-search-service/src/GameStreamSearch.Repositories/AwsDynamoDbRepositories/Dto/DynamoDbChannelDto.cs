@@ -23,9 +23,6 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto
         [DynamoDBProperty]
         public string ChannelUrl { get; init; }
 
-        [DynamoDBProperty]
-        public int Rating { get; init; }
-
         public static DynamoDbChannelDto FromEntity(Channel channel)
         {
             return new DynamoDbChannelDto
@@ -35,7 +32,6 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto
                 DateRegistered = channel.DateRegistered,
                 AvatarUrl = channel.AvatarUrl,
                 ChannelUrl = channel.ChannelUrl,
-                Rating = 0,
             };
         }
 

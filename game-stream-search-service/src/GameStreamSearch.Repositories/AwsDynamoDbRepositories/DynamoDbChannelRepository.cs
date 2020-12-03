@@ -43,14 +43,15 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
             ChannelListDto channelList = new ChannelListDto();
 
-            var channelDtos = channels.Select(c => new ChannelDto
-            {
-                ChannelName = c.ChannelName,
-                StreamPlatform = c.StreamPlatform,
-                StreamPlatformDisplayName = c.StreamPlatform.GetFriendlyName(),
-                AvatarUrl = c.AvatarUrl,
-                ChannelUrl = c.ChannelUrl,
-            });
+            var channelDtos = channels.OrderBy(c => c.DateRegistered)
+                .Select(c => new ChannelDto
+                {
+                    ChannelName = c.ChannelName,
+                    StreamPlatform = c.StreamPlatform,
+                    StreamPlatformDisplayName = c.StreamPlatform.GetFriendlyName(),
+                    AvatarUrl = c.AvatarUrl,
+                    ChannelUrl = c.ChannelUrl,
+                });
 
             return new ChannelListDto
             {

@@ -20,7 +20,10 @@ Resources:
           AttributeType: 'N'
         -
           AttributeName: 'ChannelName'
-          AttributeType: 'S'   
+          AttributeType: 'S'
+        -
+          AttributeName: 'DateRegistered'
+          AttributeType: 'S'
       KeySchema:
         -
           AttributeName: 'StreamPlatform'
@@ -28,6 +31,18 @@ Resources:
         -
           AttributeName: 'ChannelName'
           KeyType: 'RANGE'
+      LocalSecondaryIndexes:
+        -
+          IndexName: "DateRegisteredIndex"
+          KeySchema:
+            -
+              AttributeName: 'StreamPlatform'
+              KeyType: 'HASH'
+            -
+              AttributeName: 'DateRegistered'
+              KeyType: 'RANGE'
+          Projection: 
+            ProjectionType: 'ALL'
 
   DatabasePolicy:
     Type: AWS::IAM::ManagedPolicy
