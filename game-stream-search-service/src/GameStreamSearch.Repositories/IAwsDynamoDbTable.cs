@@ -8,7 +8,7 @@ namespace GameStreamSearch.Repositories
     {
         Task PutItem(T document);
         Task<T> GetItem(object partitionKey, object rangeKey);
-        Task<IEnumerable<T>> GetAllItems(object partitionKey);
+        Task<IEnumerable<T>> GetAllItems();
         Task UpdateItem(T document);
         Task DeleteItem(object partitionKey, object rangeKey);
     }

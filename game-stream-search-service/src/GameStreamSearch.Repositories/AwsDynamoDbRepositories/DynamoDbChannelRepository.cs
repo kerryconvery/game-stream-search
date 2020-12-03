@@ -27,20 +27,19 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public async Task<Channel> Get(StreamPlatformType streamPlatform, string channelName)
         {
-            var platform = streamPlatform;
-            var channelDto = await awsDynamoDbTable.GetItem(DynamoDbChannelDto.GetPartitionKey(), DynamoDbChannelDto.MakeRangeKey(platform, channelName));
+            var channelDto = await awsDynamoDbTable.GetItem(streamPlatform, channelName);
 
             return channelDto?.ToEntity();
         }
 
         public Task Remove(StreamPlatformType streamPlatform, string channelName)
         {
-            return awsDynamoDbTable.DeleteItem(channelName, streamPlatform.ToString());
+            return awsDynamoDbTable.DeleteItem(streamPlatform, channelName);
         }
 
         public async Task<ChannelListDto> SelectAllChannels()
         {
-            var channels = await awsDynamoDbTable.GetAllItems(DynamoDbChannelDto.GetPartitionKey());
+            var channels = await awsDynamoDbTable.GetAllItems();
 
             ChannelListDto channelList = new ChannelListDto();
 

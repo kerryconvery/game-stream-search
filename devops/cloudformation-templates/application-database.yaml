@@ -16,47 +16,18 @@ Resources:
         WriteCapacityUnits: '5'
       AttributeDefinitions:
         -
-          AttributeName: 'PartitionKey'
-          AttributeType: 'S'
-        -
-          AttributeName: 'RangeKey'
-          AttributeType: 'S'
-        -
-          AttributeName: 'ChannelName'
-          AttributeType: 'S'
-        -  
           AttributeName: 'StreamPlatform'
           AttributeType: 'N'
+        -
+          AttributeName: 'ChannelName'
+          AttributeType: 'S'   
       KeySchema:
         -
-          AttributeName: 'PartitionKey'
+          AttributeName: 'StreamPlatform'
           KeyType: 'HASH'
         -
-          AttributeName: 'RangeKey'
+          AttributeName: 'ChannelName'
           KeyType: 'RANGE'
-      LocalSecondaryIndexes:
-        -
-          IndexName: ChannelNameIndex
-          KeySchema:
-            -
-              AttributeName: 'PartitionKey'
-              KeyType: 'HASH'
-            -
-              AttributeName: 'ChannelName'
-              KeyType: 'RANGE'  
-          Projection: 
-            ProjectionType: 'ALL'
-        -
-          IndexName: StreamPlatformIndex
-          KeySchema:
-            -
-              AttributeName: 'PartitionKey'
-              KeyType: 'HASH'
-            -
-              AttributeName: 'StreamPlatform'
-              KeyType: 'RANGE'  
-          Projection: 
-            ProjectionType: 'ALL'
 
   DatabasePolicy:
     Type: AWS::IAM::ManagedPolicy

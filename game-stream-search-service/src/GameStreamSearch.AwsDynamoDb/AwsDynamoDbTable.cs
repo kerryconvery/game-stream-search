@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.Runtime;
 using GameStreamSearch.Repositories;
 
 namespace GameStreamSearch.AwsDynamoDb
@@ -46,11 +45,11 @@ namespace GameStreamSearch.AwsDynamoDb
             return dynamoDbContext.LoadAsync<T>(partitionKey, rangeKey);
         }
 
-        public async Task<IEnumerable<T>> GetAllItems(object partitionKey)
+        public async Task<IEnumerable<T>> GetAllItems()
         {
-            var query = dynamoDbContext.QueryAsync<T>(partitionKey);
+            var scan = dynamoDbContext.ScanAsync<T>(null);
 
-            return await query.GetRemainingAsync();
+            return await scan.GetRemainingAsync();
         }
 
         public void Dispose()
