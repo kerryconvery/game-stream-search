@@ -36,23 +36,21 @@ namespace GameStreamSearch.AwsDynamoDb
             return dynamoDbContext.SaveAsync(item);
         }
 
-        public Task DeleteItem(string primaryKey, string sortKey)
+        public Task DeleteItem(object partitionKey, object rangeKey)
         {
-            return dynamoDbContext.DeleteAsync<T>(primaryKey, sortKey);
+            return dynamoDbContext.DeleteAsync<T>(partitionKey, rangeKey);
         }
 
-        public Task<T> GetItem(string primaryKey, string sortKey)
+        public Task<T> GetItem(object partitionKey, object rangeKey)
         {
-            return dynamoDbContext.LoadAsync<T>(primaryKey, sortKey);
+            return dynamoDbContext.LoadAsync<T>(partitionKey, rangeKey);
         }
 
-        public async Task<IEnumerable<T>> GetAllItems()
+        public async Task<IEnumerable<T>> GetAllItems(object partitionKey)
         {
-            var batchGet = dynamoDbContext.CreateBatchGet<T>();
+            var query = dynamoDbContext.QueryAsync<T>(partitionKey);
 
-            await batchGet.ExecuteAsync();
-
-            return batchGet.Results;
+            return await query.GetRemainingAsync();
         }
 
         public void Dispose()

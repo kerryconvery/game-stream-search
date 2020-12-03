@@ -9,9 +9,15 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto
     public class DynamoDbChannelDto
     {
         [DynamoDBHashKey]
-        public string ChannelName { get; init; }
+        public string PartitionKey { get; init; }
 
         [DynamoDBRangeKey]
+        public string RangeKey { get; init; }
+
+        [DynamoDBProperty]
+        public string ChannelName { get; init; }
+
+        [DynamoDBProperty]
         public StreamPlatformType StreamPlatform { get; init; }
 
         [DynamoDBProperty]
@@ -23,10 +29,22 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto
         [DynamoDBProperty]
         public string ChannelUrl { get; set; }
 
+        public static string GetPartitionKey()
+        {
+            return "channel";
+        }
+
+        public static string MakeRangeKey(StreamPlatformType streamPlatform, string channelName)
+        {
+            return $"{streamPlatform}-{channelName}".ToLower();
+        }
+
         public static DynamoDbChannelDto FromEntity(Channel channel)
         {
             return new DynamoDbChannelDto
             {
+                PartitionKey = GetPartitionKey(),
+                RangeKey = MakeRangeKey(channel.StreamPlatform, channel.ChannelName),
                 ChannelName = channel.ChannelName,
                 StreamPlatform = channel.StreamPlatform,
                 DateRegistered = channel.DateRegistered,

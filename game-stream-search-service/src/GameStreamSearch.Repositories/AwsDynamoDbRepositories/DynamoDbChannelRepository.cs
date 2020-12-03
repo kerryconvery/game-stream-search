@@ -27,8 +27,8 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public async Task<Channel> Get(StreamPlatformType streamPlatform, string channelName)
         {
-            var platform = streamPlatform.ToString();
-            var channelDto = await awsDynamoDbTable.GetItem(channelName, platform);
+            var platform = streamPlatform;
+            var channelDto = await awsDynamoDbTable.GetItem(DynamoDbChannelDto.GetPartitionKey(), DynamoDbChannelDto.MakeRangeKey(platform, channelName));
 
             return channelDto?.ToEntity();
         }
@@ -40,7 +40,7 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public async Task<ChannelListDto> SelectAllChannels()
         {
-            var channels = await awsDynamoDbTable.GetAllItems();
+            var channels = await awsDynamoDbTable.GetAllItems(DynamoDbChannelDto.GetPartitionKey());
 
             ChannelListDto channelList = new ChannelListDto();
 

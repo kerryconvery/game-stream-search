@@ -7,9 +7,9 @@ namespace GameStreamSearch.Repositories
     public interface IAwsDynamoDbTable<T>
     {
         Task PutItem(T document);
-        Task<T> GetItem(string primaryKey, string sortKey);
-        Task<IEnumerable<T>> GetAllItems();
+        Task<T> GetItem(object partitionKey, object rangeKey);
+        Task<IEnumerable<T>> GetAllItems(object partitionKey);
         Task UpdateItem(T document);
-        Task DeleteItem(string primaryKey, string sortKey);
+        Task DeleteItem(object partitionKey, object rangeKey);
     }
 }
