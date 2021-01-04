@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import nock from 'nock';
-import { ConfigurationProvider } from '../../providers/ConfigurationProvider';
+import App from '../../app';
+import { StreamServiceProvider } from '../../providers/StreamServiceProvider';
 import { TelemetryTrackerProvider } from '../../providers/TelemetryTrackerProvider';
+import { getStreamServiceApi } from '../../api/streamServiceApi';
 import { getTelemetryTrackerApi } from '../../api/telemetryTrackerApi';
 import { autoMockObject } from '../../test-helpers/mocks';
-
-import App from '../../app';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Game search page list', () => {
@@ -23,11 +23,11 @@ describe('Game search page list', () => {
   const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));
 
   const Application = () => (
-    <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
+    <StreamServiceProvider streamServiceApi={getStreamServiceApi("http://localhost:5000/api")} >
       <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMock}>
         <App />
       </TelemetryTrackerProvider>
-    </ConfigurationProvider>
+    </StreamServiceProvider>
   );
 
   const renderApplication = () => {

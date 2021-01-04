@@ -2,18 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app';
 import config from '../config.json';
-import { ConfigurationProvider } from './providers/ConfigurationProvider';
+import { StreamServiceProvider } from './providers/StreamServiceProvider';
 import { TelemetryTrackerProvider } from './providers/TelemetryTrackerProvider';
+import { getStreamServiceApi } from './api/streamServiceApi';
 import { getTelemetryTrackerApi } from './api/telemetryTrackerApi';
 
 /* eslint-disable-next-line no-undef */
 const configuration = config.env[process.env.APP_ENV];
+const streamServiceApi = getStreamServiceApi(configuration.streamServiceUrl);
+const telemetryTrackerApi = getTelemetryTrackerApi();
 
 ReactDOM.render(
-  <ConfigurationProvider configuration={configuration} >
-    <TelemetryTrackerProvider telemetryTrackerApi={getTelemetryTrackerApi(configuration)} >
+  <StreamServiceProvider streamServiceApi={streamServiceApi} >
+    <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApi} >
       <App />
     </TelemetryTrackerProvider>
-  </ConfigurationProvider>,
+  </StreamServiceProvider>,
   document.getElementById('app')
 );

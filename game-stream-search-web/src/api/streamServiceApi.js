@@ -1,4 +1,3 @@
-import { useConfiguration } from '../providers/ConfigurationProvider';
 import axios from 'axios';
 
 const StatusType = {
@@ -67,13 +66,11 @@ const mapHttpResponse = (httpResponse, mapApiErrorsToFields) => {
   }
 }
 
-export const useGameStreamApi = () => {
-  const { streamSearchServiceUrl } = useConfiguration();
-
+export const getStreamServiceApi = (streamServiceUrl) => {
   return {
     mapHttpResponse,
-    getStreams: getStreamsRequest(streamSearchServiceUrl),
-    addChannel: addChannelRequest(streamSearchServiceUrl),
-    getChannels: getChannelsRequest(streamSearchServiceUrl), 
+    getStreams: getStreamsRequest(streamServiceUrl),
+    addChannel: addChannelRequest(streamServiceUrl),
+    getChannels: getChannelsRequest(streamServiceUrl), 
   }
 }

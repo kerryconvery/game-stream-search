@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import useAddChannelFormController from './useAddChannelFormController';
-import { useGameStreamApi } from '../../../../api/gameStreamApi';
+import { useStreamService } from '../../../../providers/StreamServiceProvider';
 import useChannelsLoader from '../../../hooks/useChannelsLoader';
 
 const useFeaturedChannelsController = () => {
   const [ anchorElement, setAnchorElement ] = useState(null);
-  const { getChannels } = useGameStreamApi();
+  const { getChannels } = useStreamService();
   const { channels, isLoading, updateChannels } = useChannelsLoader(getChannels, () => {});
 
   const handleCloseForm = () => setAnchorElement(null);

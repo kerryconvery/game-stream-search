@@ -1,7 +1,7 @@
 import React from 'react';
 import _get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useGameStreamApi } from '../api/gameStreamApi';
+import { useStreamService } from '../providers/StreamServiceProvider';
 import { useTelemetryTracker } from '../providers/TelemetryTrackerProvider';
 import useEventBus from '../event-bus/eventBus';
 import { postNotificationEvent, buildOfflineAlertEvent } from '../notifications/events';
@@ -13,7 +13,7 @@ import NoStreamsFound from './components/NoStreamsFound';
 import ChannelsSideBar from './components/channels-side-bar/ChannelsSideBar';
 
 const GameStreamListPage = () => {
-  const { getStreams } = useGameStreamApi();
+  const { getStreams } = useStreamService();
   const { dispatchEvent } = useEventBus();
   const { trackStreamOpened, trackStreamSearch } = useTelemetryTracker();
 

@@ -10,7 +10,7 @@ const trackFeaturedChannelOpened = ({ channelName, streamPlatformDisplayName }) 
 
 }
 
-export const getTelemetryTrackerApi = ({ telemetryTrackerServiceUrl, telemetryTrackerServiceKey }) => {
+export const getTelemetryTrackerApi = (telemetryTrackerServiceUrl, telemetryTrackerServiceKey) => {
   return {
     trackStreamOpened,
     trackStreamSearch,

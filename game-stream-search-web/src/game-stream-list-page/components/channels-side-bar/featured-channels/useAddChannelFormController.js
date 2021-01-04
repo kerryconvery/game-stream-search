@@ -1,11 +1,11 @@
 import useFormController from '../../../../components/form/useFormController';
 import { validateForm, mapApiErrorsToFields } from './AddChannelFormView';
-import { useGameStreamApi } from '../../../../api/gameStreamApi';
+import { useStreamService } from '../../../../providers/StreamServiceProvider';
 import useEventBus from '../../../../event-bus/eventBus';
 import { postNotificationEvent, buildToastEvent } from '../../../../notifications/events';
 
 const useAddChannelFormController = (onSaveSuccess) => {
-  const { addChannel, mapHttpResponse } = useGameStreamApi();
+  const { addChannel, mapHttpResponse } = useStreamService();
   const { dispatchEvent } = useEventBus();
 
   const handleSendSuccessNotifcation = (result, formValues) => {
