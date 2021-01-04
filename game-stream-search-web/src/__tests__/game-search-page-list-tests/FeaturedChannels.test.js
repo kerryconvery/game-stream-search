@@ -4,7 +4,8 @@ import nock from 'nock';
 import { ConfigurationProvider } from '../../providers/ConfigurationProvider';
 import App from '../../app';
 import { TelemetryTrackerProvider } from '../../providers/TelemetryTrackerProvider';
-import { telemetryTrackerApiMocks } from '../../test-helpers/mocks';
+import { getTelemetryTrackerApi } from '../../api/telemetryTrackerApi';
+import { autoMockObject } from '../../test-helpers/mocks';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Featured channels side bar', () => {
@@ -18,10 +19,12 @@ describe('Featured channels side bar', () => {
     .reply(200, { items: [] });
   });
 
+  const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));
+
   const renderApplication = () => {
     return render(
       <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-        <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMocks}>
+        <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMock}>
           <App />
         </TelemetryTrackerProvider>
       </ConfigurationProvider>
@@ -85,6 +88,6 @@ describe('Featured channels side bar', () => {
 
     fireEvent.click(featuredChannel);
 
-    expect(telemetryTrackerApiMocks.trackFeaturedChannelOpened).toHaveBeenCalled();
+    expect(telemetryTrackerApiMock.trackFeaturedChannelOpened).toHaveBeenCalled();
   });
 })

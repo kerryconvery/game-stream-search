@@ -3,7 +3,9 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import nock from 'nock';
 import { ConfigurationProvider } from '../../providers/ConfigurationProvider';
 import { TelemetryTrackerProvider } from '../../providers/TelemetryTrackerProvider';
-import { telemetryTrackerApiMocks } from '../../test-helpers/mocks';
+import { getTelemetryTrackerApi } from '../../api/telemetryTrackerApi';
+import { autoMockObject } from '../../test-helpers/mocks';
+
 import App from '../../app';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -16,11 +18,13 @@ describe('Game search page list', () => {
     })
     .get('/api/channels')
     .reply(200, { items: [] });
-  })
-  
+  });
+
+  const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));
+
   const Application = () => (
     <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-      <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMocks}>
+      <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMock}>
         <App />
       </TelemetryTrackerProvider>
     </ConfigurationProvider>
@@ -158,7 +162,7 @@ describe('Game search page list', () => {
 
     expect(fakeStream2).toBeInTheDocument();
     expect(screen.queryByText('fake stream 1')).not.toBeInTheDocument();
-    expect(telemetryTrackerApiMocks.trackStreamSearch).toHaveBeenCalled();
+    expect(telemetryTrackerApiMock.trackStreamSearch).toHaveBeenCalled();
   });
 
   it('should display an error alerts when there is an error getting the streams', async () =>{
@@ -224,6 +228,6 @@ describe('Game search page list', () => {
     
     fireEvent.click(stream);
     
-    expect(telemetryTrackerApiMocks.trackStreamOpened).toHaveBeenCalled();
+    expect(telemetryTrackerApiMock.trackStreamOpened).toHaveBeenCalled();
   });
 });

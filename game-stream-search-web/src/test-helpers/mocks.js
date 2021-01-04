@@ -1,11 +1,9 @@
-export const telemetryTrackerApiMocks = {
-  trackStreamOpened: jest.fn(),
-  trackStreamSearch: jest.fn(),
-  trackFeaturedChannelOpened: jest.fn(),
-}
+export const autoMockObject  = (object) => {
+  const mock = {};
 
-export const automockObject  = (object) => {
   Object.keys(object).forEach(key => {
-    object[key] = jest.fn();
-  })
+    mock[key] = jest.fn();
+  });
+
+  return mock;
 }
