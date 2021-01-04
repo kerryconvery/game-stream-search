@@ -2,6 +2,8 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import nock from 'nock';
 import { ConfigurationProvider } from '../../providers/ConfigurationProvider';
+import { TelemetryTrackerProvider } from '../../providers/TelemetryTrackerProvider';
+import { telemetryTrackerApiMocks } from '../../test-helpers/mocks';
 import App from '../../app';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -16,12 +18,16 @@ describe('Game search page list', () => {
     .reply(200, { items: [] });
   })
   
-  const renderApplication = () => {
-    return render(
-      <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
+  const Application = () => (
+    <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
+      <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMocks}>
         <App />
-      </ConfigurationProvider>
-    )
+      </TelemetryTrackerProvider>
+    </ConfigurationProvider>
+  );
+
+  const renderApplication = () => {
+    return render(<Application />);
   }
 
   it('should render streams without errors', async () => {
@@ -91,7 +97,7 @@ describe('Game search page list', () => {
     await waitFor(() => screen.getAllByText('fake stream'));
   })
 
-  it('should display the searched for game stream', async () => {
+  it('should display the searched for game stream and trigger the stream searched telemetry event', async () => {
     const streams = {
       items: [{
         streamTitle: 'fake stream 1',
@@ -146,16 +152,13 @@ describe('Game search page list', () => {
     fireEvent.change(searchInput, { target: { value: 'testGame' } });
     fireEvent.click(searchButton, { button: 1 })
     
-    rerender(      
-      <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-        <App />
-      </ConfigurationProvider>
-    );
+    rerender(<Application />);
 
     const fakeStream2 = await waitFor(() => screen.getByText('fake stream 2'));
 
     expect(fakeStream2).toBeInTheDocument();
     expect(screen.queryByText('fake stream 1')).not.toBeInTheDocument();
+    expect(telemetryTrackerApiMocks.trackStreamSearch).toHaveBeenCalled();
   });
 
   it('should display an error alerts when there is an error getting the streams', async () =>{
@@ -190,5 +193,37 @@ describe('Game search page list', () => {
     const noStreamsFound = await waitFor(() => screen.getByTestId('streams-not-found'));
     
     expect(noStreamsFound).toBeInTheDocument();
+  });
+
+  it('should trigger a stream opened telemetry event when a stream is clicked on', async () => {
+    const streams = {
+      items: [{
+        streamTitle: 'fake stream',
+        streamThumbnailUrl: 'http://fake.stream1.thumbnail',
+        streamUrl: 'fake.stream1.url',
+        streamerName: 'fake steamer',
+        streamerAvatarUrl: 'http://fake.channel1.url',
+        streamPlatformName: 'fake platform',
+        isLive: true,
+        views: 100
+      }],
+      nextPageToken: 'nextPage',
+    }
+
+    nock('http://localhost:5000')
+      .defaultReplyHeaders({
+        'access-control-allow-origin': '*',
+        'access-control-allow-credentials': 'true' 
+      })
+      .get('/api/streams?pageSize=10')
+      .reply(200, streams);
+
+    renderApplication();
+
+    const stream = await waitFor(() => screen.getByText('fake stream'));
+    
+    fireEvent.click(stream);
+    
+    expect(telemetryTrackerApiMocks.trackStreamOpened).toHaveBeenCalled();
   });
 });

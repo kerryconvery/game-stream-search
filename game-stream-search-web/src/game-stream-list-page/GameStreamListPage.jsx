@@ -2,7 +2,7 @@ import React from 'react';
 import _get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useGameStreamApi } from '../api/gameStreamApi';
-import { telemetryTrackerApi } from '../api/telemetryTrackerApi';
+import { useTelemetryTrackerApi } from '../providers/TelemetryTrackerProvider';
 import useEventBus from '../event-bus/eventBus';
 import { postNotificationEvent, buildOfflineAlertEvent } from '../notifications/events';
 import useInfiniteStreamLoader from './hooks/useInfiniteStreamLoader';
@@ -15,16 +15,16 @@ import ChannelsSideBar from './components/channels-side-bar/ChannelsSideBar';
 const GameStreamListPage = () => {
   const { getStreams } = useGameStreamApi();
   const { dispatchEvent } = useEventBus();
-  const { trackStreamOpened, trackStreamSearch } = telemetryTrackerApi();
+  const { trackStreamOpened, trackStreamSearch } = useTelemetryTrackerApi();
 
   const showErrorAlert = () => postNotificationEvent(dispatchEvent, buildOfflineAlertEvent());
+
+  const streams = useInfiniteStreamLoader(getStreams, showErrorAlert);
 
   const filterStreams = (gameName) => {
     streams.filterStreams({ gameName });
     trackStreamSearch({ gameName });
   }
-
-  const streams = useInfiniteStreamLoader(getStreams, showErrorAlert);
 
   return (
     <GameStreamPageTemplate

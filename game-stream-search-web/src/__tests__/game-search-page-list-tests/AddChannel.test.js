@@ -2,6 +2,8 @@ import React from 'react';
 import { render, fireEvent, waitFor, waitForElementToBeRemoved, screen } from '@testing-library/react';
 import nock from 'nock';
 import { ConfigurationProvider } from '../../providers/ConfigurationProvider';
+import { TelemetryTrackerProvider } from '../../providers/TelemetryTrackerProvider';
+import { telemetryTrackerApiMocks } from '../../test-helpers/mocks';
 import App from '../../app';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -9,7 +11,9 @@ describe('Add channel form', () => {
   const renderApplication = () => {
     return render(
       <ConfigurationProvider configuration={{ "streamSearchServiceUrl": "http://localhost:5000/api" }} >
-        <App />
+        <TelemetryTrackerProvider telemetryTrackerApi={telemetryTrackerApiMocks}>
+          <App />
+        </TelemetryTrackerProvider>
       </ConfigurationProvider>
     )
   }

@@ -6,11 +6,11 @@ const trackStreamSearch = ({ gameName }) => {
 
 }
 
-const trackFeaturedChannelOpened = ({ streamerName, streamPlatformName }) => {
+const trackFeaturedChannelOpened = ({ channelName, streamPlatformDisplayName }) => {
 
 }
 
-export const useTelemetryTrackerApi = () => {
+export const getTelemetryTrackerApi = ({ telemetryTrackerServiceUrl, telemetryTrackerServiceKey }) => {
   return {
     trackStreamOpened,
     trackStreamSearch,
