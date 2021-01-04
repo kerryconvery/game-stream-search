@@ -35,11 +35,11 @@ const ChannelName = styled('div')({
   fontWeight: 'bold'
 })
 
-const ChannelTile = ({ channelName , streamPlatformDisplayName, avatarUrl, channelUrl, afterChannelOpened }) => {
+const ChannelTile = ({ channelName , streamPlatformDisplayName, avatarUrl, channelUrl, onChannelOpened }) => {
   const classes = useChannelTileStyles();
 
   return (
-    <Link href={channelUrl} onClick={afterChannelOpened} target='_blank'>
+    <Link href={channelUrl} onClick={onChannelOpened} target='_blank'>
       <div className={classes.hover}>
         <div className={classes.channelTile}>
           <Avatar src={avatarUrl} />
@@ -60,7 +60,7 @@ ChannelTile.propTypes = {
     avatarUrl: string.isRequired,
     channelUrl: string.isRequired,
   }),
-  afterChannelOpened: func,
+  onChannelOpened: func,
 }
 
 const LoadingTile = () => {
@@ -87,11 +87,11 @@ const useChannelListStyles = makeStyles({
   },
 })
 
-export const ChannelList = ({ channels, isLoading, afterChannelOpened }) => {
+export const ChannelList = ({ channels, isLoading, onChannelOpened }) => {
   const classes = useChannelListStyles();
 
   const channelTitles = channels.map((channel, index) => (
-    <ChannelTile key={index} {...channel} afterChannelOpened={() => afterChannelOpened(channel)} />
+    <ChannelTile key={index} {...channel} onChannelOpened={() => onChannelOpened(channel)} />
   ));
 
   const loadingTiles = [];
@@ -119,7 +119,7 @@ ChannelList.propTypes = {
     channelUrl: string.isRequired,
   })),
   isLoading: bool,
-  afterChannelOpened: func,
+  onChannelOpened: func,
 };
 
 ChannelList.defaultProps = {

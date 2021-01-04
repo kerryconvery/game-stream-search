@@ -14,4 +14,4 @@ TelemetryTrackerProvider.propTypes = {
   children: node.isRequired,
 }
 
-export const useTelemetryTrackerApi = () => useContext(TelemetryTrackerContext);
+export const useTelemetryTracker = () => useContext(TelemetryTrackerContext);

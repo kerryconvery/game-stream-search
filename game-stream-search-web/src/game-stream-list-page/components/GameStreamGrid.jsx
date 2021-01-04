@@ -67,13 +67,13 @@ const StreamTile = ({
   streamerAvatarUrl,
   streamPlatformName,
   views,
-  afterStreamOpened, }) => {
+  onStreamOpened, }) => {
 
   const classes = useStreamTileStyles();
 
   return (
     <div className={classes.root}>
-      <Link href={streamUrl} onClick={afterStreamOpened} target='_blank'>
+      <Link href={streamUrl} onClick={onStreamOpened} target='_blank'>
         <IconButton size="medium" className={classes.playButton}>
           <PlayCircleOutlineIcon className={classes.playButtonIcon} />
         </IconButton >
@@ -105,7 +105,7 @@ StreamTile.propTypes = {
   streamerAvatarUrl: string.isRequired,
   streamPlatformName: string.isRequired,
   views: number.isRequired,
-  afterStreamOpened: func,
+  onStreamOpened: func,
 }
 
 const useLoadingTileStyles = makeStyles(() => ({
@@ -161,10 +161,10 @@ const GridTile = styled('div')({
   paddingRight: '10px',
 });
 
-const GameStreamGrid = ({ streams, isLoading, numberOfLoadingTiles, afterStreamOpened }) => {
+const GameStreamGrid = ({ streams, isLoading, numberOfLoadingTiles, onStreamOpened }) => {
   const streamTitle = streams.map((stream, index) => (
     <GridTile key={index} >
-      <StreamTile {...stream} afterStreamOpened={() => afterStreamOpened(stream)} />
+      <StreamTile {...stream} onStreamOpened={() => onStreamOpened(stream)} />
     </GridTile>
   ))
 
@@ -200,7 +200,7 @@ GameStreamGrid.propTypes = {
   })),
   isLoading: bool,
   numberOfLoadingTiles: number.isRequired,
-  afterStreamOpened: func,
+  onStreamOpened: func,
 }
 
 GameStreamGrid.defaultProps = {
