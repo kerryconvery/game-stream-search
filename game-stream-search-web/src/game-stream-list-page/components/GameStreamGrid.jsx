@@ -1,5 +1,5 @@
 import React from 'react';
-import { shape, string, number, bool, arrayOf } from 'prop-types';
+import { shape, string, number, bool, arrayOf, func } from 'prop-types';
 import { makeStyles, styled } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import IconButton from '@material-ui/core/IconButton';
@@ -198,6 +198,7 @@ GameStreamGrid.propTypes = {
   })),
   isLoading: bool,
   numberOfLoadingTiles: number.isRequired,
+  afterStreamOpened: func,
 }
 
 GameStreamGrid.defaultProps = {

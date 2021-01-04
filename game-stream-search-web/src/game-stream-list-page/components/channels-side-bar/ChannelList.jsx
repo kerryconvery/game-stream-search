@@ -1,5 +1,5 @@
 import React from 'react';
-import { shape, string, bool, arrayOf } from 'prop-types';
+import { shape, string, bool, arrayOf, func } from 'prop-types';
 import { makeStyles, styled } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -118,6 +118,7 @@ ChannelList.propTypes = {
     channelUrl: string.isRequired,
   })),
   isLoading: bool,
+  afterChannelOpened: func,
 };
 
 ChannelList.defaultProps = {

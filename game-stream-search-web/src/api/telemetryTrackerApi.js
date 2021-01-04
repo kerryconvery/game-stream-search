@@ -1,19 +1,19 @@
-const trackStreamClick = (streamTitle, streamerName, streamPlatformName, views) => {
+const trackStreamOpened = ({ streamTitle, streamerName, streamPlatformName, views }) => {
 
 }
 
-const trackStreamSearch = (searchTerm) => {
+const trackStreamSearch = ({ gameName }) => {
 
 }
 
-const trackFeaturedChannelClick = (streamerName, streamPlatformName) => {
+const trackFeaturedChannelOpened = ({ streamerName, streamPlatformName }) => {
 
 }
 
 export const useTelemetryTrackerApi = () => {
   return {
-    trackStreamClick,
+    trackStreamOpened,
     trackStreamSearch,
-    trackFeaturedChannelClick,
+    trackFeaturedChannelOpened,
   }
 }
