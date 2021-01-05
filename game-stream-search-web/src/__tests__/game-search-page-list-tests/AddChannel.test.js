@@ -40,7 +40,7 @@ describe('Add channel form', () => {
       .reply(200, { items: [] })
   })
 
-  it.only('should display a form when the add button is pressed', async () => {
+  it('should display a form when the add button is pressed', async () => {
     renderApplication();
 
     // We must wait for this to avoid updated state after the component is unmounted.
