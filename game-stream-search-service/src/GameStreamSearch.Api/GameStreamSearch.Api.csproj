@@ -13,7 +13,6 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'GameStreamSearch.Api' " />
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Presenters\" />
     <Folder Include="Contracts\" />
   </ItemGroup>
   <ItemGroup>

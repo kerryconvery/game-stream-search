@@ -9,7 +9,7 @@ namespace GameStreamSearch.Application
     public interface IChannelRepository
     {
         Task Add(Channel channel);
-        Task<Channel> Get(StreamPlatformType streamPlatform, string channelName);
+        Task<Channel?> Get(StreamPlatformType streamPlatform, string channelName);
         Task Update(Channel channel);
         Task Remove(StreamPlatformType streamPlatform, string channelName);
         Task<ChannelListDto> SelectAllChannels();

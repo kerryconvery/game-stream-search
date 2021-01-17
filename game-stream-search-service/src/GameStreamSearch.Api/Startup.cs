@@ -13,12 +13,12 @@ using Newtonsoft.Json.Converters;
 using GameStreamSearch.StreamPlatformApi.Twitch;
 using GameStreamSearch.StreamPlatformApi.YouTube;
 using GameStreamSearch.StreamPlatformApi.DLive;
-using GameStreamSearch.Application.Interactors;
 using GameStreamSearch.Application;
 using GameStreamSearch.Repositories;
 using GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto;
 using GameStreamSearch.AwsDynamoDb;
 using GameStreamSearch.Repositories.AwsDynamoDbRepositories;
+using GameStreamSearch.Application.Commands;
 
 namespace GameStreamSearch.Api
 {
@@ -80,8 +80,7 @@ namespace GameStreamSearch.Api
                             new DLiveGraphQLApi(Configuration["DLive:Apiurl"])));
             });
 
-            services.AddScoped<IUpsertChannel, UpsertChannelInteractor>();
-            services.AddScoped<IGetChannel, GetChannelInteractor>();
+            services.AddScoped<IUpsertChannelCommand, UpsertChannelCommand>();
             
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 

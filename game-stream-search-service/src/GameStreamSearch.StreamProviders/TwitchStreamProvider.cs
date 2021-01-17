@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
-using GameStreamSearch.Application.Providers;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -92,26 +91,26 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<StreamerChannelDto> GetStreamerChannel(string channelName)
+        public async Task<GetStreamerChannelResult?> GetStreamerChannel(string channelName)
         {
-            var channels = await twitchStreamApi.SearchChannels(channelName, 1, 0);
+            var result = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
-            if (channels.Channels.Count() == 0) {
-                return null;
+            if (result.Value.Channels.Count() == 0) {
+                return GetStreamerChannelResult.ChannelNotFound();
             }
 
-            if (!channels.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.Value.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return null;
+                return GetStreamerChannelResult.ChannelNotFound();
             }
 
-            return new StreamerChannelDto
+            return GetStreamerChannelResult.ChannelFound(new StreamerChannelDto
             {
-                ChannelName = channels.Channels.First().display_name,
-                AvatarUrl = channels.Channels.First().logo,
-                ChannelUrl = channels.Channels.First().url,
+                ChannelName = result.Value.Channels.First().display_name,
+                AvatarUrl = result.Value.Channels.First().logo,
+                ChannelUrl = result.Value.Channels.First().url,
                 Platform = Platform,
-            };
+            });
         }
 
         public StreamPlatformType Platform => StreamPlatformType.Twitch;

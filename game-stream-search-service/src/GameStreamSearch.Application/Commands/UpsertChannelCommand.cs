@@ -2,29 +2,26 @@
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Entities;
 
-namespace GameStreamSearch.Application.Interactors
+namespace GameStreamSearch.Application.Commands
 {
-    public class UpsertChannelInteractor : IUpsertChannel
+    public class UpsertChannelCommand: IUpsertChannelCommand
     {
         private readonly IChannelRepository channelRepository;
         private readonly IStreamService streamService;
 
-        public UpsertChannelInteractor(
-            IChannelRepository channelRepository,
-            IStreamService streamService
-        )
+        public UpsertChannelCommand(IChannelRepository channelRepository, IStreamService streamService)
         {
             this.channelRepository = channelRepository;
             this.streamService = streamService;
         }
 
-        public async Task<Result> Invoke<Result>(UpsertChannelRequest request, IUpsertChannelPresenter<Result> presenter)
+        public async Task<UpsertChannelResult> Invoke(UpsertChannelRequest request)
         {
-            var streamerChannel = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
+            var getStreamChannelResult = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
 
-            if (streamerChannel == null)
+            if (getStreamChannelResult.Outcome == GetStreamerChannelOutcomeType.ChannelNotFound)
             {
-                return presenter.PresentChannelNotFoundOnPlatform(request.ChannelName, request.StreamPlatform);
+                return UpsertChannelResult.ChannelNotFoundOnPlatform;
             }
 
             var channel = new Channel
@@ -32,8 +29,8 @@ namespace GameStreamSearch.Application.Interactors
                 ChannelName = request.ChannelName,
                 StreamPlatform = request.StreamPlatform,
                 DateRegistered = request.RegistrationDate,
-                AvatarUrl = streamerChannel.AvatarUrl,
-                ChannelUrl = streamerChannel.ChannelUrl,
+                AvatarUrl = getStreamChannelResult.Channel.AvatarUrl,
+                ChannelUrl = getStreamChannelResult.Channel.ChannelUrl,
             };
 
             var existingChannel = await channelRepository.Get(request.StreamPlatform, request.ChannelName);
@@ -42,12 +39,12 @@ namespace GameStreamSearch.Application.Interactors
             {
                 await channelRepository.Update(channel);
 
-                return presenter.PresentChannelUpdated(channel);
+                return UpsertChannelResult.ChannelUpdated;
             }
 
             await channelRepository.Add(channel);
 
-            return presenter.PresentChannelAdded(channel);
+            return UpsertChannelResult.ChannelAdded;
         }
     }
 }

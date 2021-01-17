@@ -95,7 +95,7 @@ namespace GameStreamSearch.Application.Services
             return this;
         }
 
-        public Task<StreamerChannelDto> GetStreamerChannel(string streamerName, StreamPlatformType streamingPlatform)
+        public Task<GetStreamerChannelResult> GetStreamerChannel(string streamerName, StreamPlatformType streamingPlatform)
         {
             var streamProvider = streamProviders[streamingPlatform];
 

@@ -25,7 +25,7 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
             return awsDynamoDbTable.PutItem(channelDto);
         }
 
-        public async Task<Channel> Get(StreamPlatformType streamPlatform, string channelName)
+        public async Task<Channel?> Get(StreamPlatformType streamPlatform, string channelName)
         {
             var channelDto = await awsDynamoDbTable.GetItem(streamPlatform, channelName);
 

@@ -86,7 +86,7 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
             return response.Data;
         }
 
-        public async Task<YouTubeChannelsDto> SearchChannelsByUsername(string username, int pageSize)
+        public async Task<ProviderApiResult<YouTubeChannelsDto>> SearchChannelsByUsername(string username, int pageSize)
         {
             var client = new RestClient(this.googleApiUrl);
 
@@ -102,7 +102,7 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
 
             var response = await client.ExecuteAsync<YouTubeChannelsDto>(request);
 
-            return response.Data;
+            return ProviderApiResult<YouTubeChannelsDto>.Success(response.Data);
         }
     }
 }

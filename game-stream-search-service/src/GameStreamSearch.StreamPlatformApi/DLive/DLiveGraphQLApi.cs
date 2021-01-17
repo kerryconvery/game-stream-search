@@ -36,7 +36,7 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
             return response.Data;
         }
 
-        public async Task<DLiveUserByDisplayNameDto> GetUserByDisplayName(string displayName)
+        public async Task<ProviderApiResult<DLiveUserByDisplayNameDto>> GetUserByDisplayName(string displayName)
         {
             var graphQuery = new
             {
@@ -54,7 +54,7 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
 
             var response = await client.ExecuteAsync<DLiveUserByDisplayNameDto>(request);
 
-            return response.Data;
+            return ProviderApiResult<DLiveUserByDisplayNameDto>.Success(response.Data);
         }
     }
 }

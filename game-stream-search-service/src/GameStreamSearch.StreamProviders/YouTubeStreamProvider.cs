@@ -90,28 +90,27 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<StreamerChannelDto> GetStreamerChannel(string channelName)
+        public async Task<GetStreamerChannelResult?> GetStreamerChannel(string channelName)
         {
-            var channels = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
+            var result = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
-            // This means the channel was not found on YouTube
-            if (channels.items == null)
+            if (result.Value.items == null)
             {
-                return null;
+                return GetStreamerChannelResult.ChannelNotFound();
             }
 
-            if (!channels.items.First().snippet.title.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.Value.items.First().snippet.title.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return null;
+                return GetStreamerChannelResult.ChannelNotFound();
             }
 
-            return new StreamerChannelDto
+            return GetStreamerChannelResult.ChannelFound(new StreamerChannelDto
             {
-                ChannelName = channels.items.First().snippet.title,
-                AvatarUrl = channels.items.First().snippet.thumbnails.@default.url,
-                ChannelUrl = channelUrlBuilder.Build(channels.items.First().snippet.title),
+                ChannelName = result.Value.items.First().snippet.title,
+                AvatarUrl = result.Value.items.First().snippet.thumbnails.@default.url,
+                ChannelUrl = channelUrlBuilder.Build(result.Value.items.First().snippet.title),
                 Platform = Platform,
-            };
+            });
         }
 
         public StreamPlatformType Platform => StreamPlatformType.YouTube;

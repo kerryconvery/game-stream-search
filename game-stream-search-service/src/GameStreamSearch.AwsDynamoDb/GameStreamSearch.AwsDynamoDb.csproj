@@ -10,4 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" />
+  </ItemGroup>
 </Project>

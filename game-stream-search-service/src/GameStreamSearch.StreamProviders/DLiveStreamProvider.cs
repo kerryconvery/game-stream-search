@@ -57,11 +57,11 @@ namespace GameStreamSearch.StreamProviders
 
             var pageOffset = GetPageOffset(pageToken);
 
-            var response = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
+            var result = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
 
             return new GameStreamsDto
             {
-                Items = response.data.livestreams.list.Select(s => new GameStreamDto
+                Items = result.data.livestreams.list.Select(s => new GameStreamDto
                 {
                     StreamTitle = s.title,
                     StreamerName = s.creator.displayName,
@@ -73,31 +73,31 @@ namespace GameStreamSearch.StreamProviders
                     Views = s.watchingCount,
 
                 }),
-                NextPageToken = GetNextPageToken(response.data.livestreams.list.Any(), pageSize, pageOffset),
+                NextPageToken = GetNextPageToken(result.data.livestreams.list.Any(), pageSize, pageOffset),
             };
         }
 
-        public async Task<StreamerChannelDto> GetStreamerChannel(string channelName)
+        public async Task<GetStreamerChannelResult> GetStreamerChannel(string channelName)
         {
             var response = await dliveApi.GetUserByDisplayName(channelName);
 
-            if (response.data.userByDisplayName == null)
+            if (response.Value.data.userByDisplayName == null)
             {
-                return null;
+                return GetStreamerChannelResult.ChannelNotFound();
             }
 
-            if (!response.data.userByDisplayName.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!response.Value.data.userByDisplayName.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return null;
+                return GetStreamerChannelResult.ChannelNotFound();
             }
 
-            return new StreamerChannelDto
+            return GetStreamerChannelResult.ChannelFound(new StreamerChannelDto
             {
-                ChannelName = response.data.userByDisplayName.displayName,
-                AvatarUrl = response.data.userByDisplayName.avatar,
-                ChannelUrl = urlBuilder.Build(response.data.userByDisplayName.displayName),
+                ChannelName = response.Value.data.userByDisplayName.displayName,
+                AvatarUrl = response.Value.data.userByDisplayName.avatar,
+                ChannelUrl = urlBuilder.Build(response.Value.data.userByDisplayName.displayName),
                 Platform = Platform,
-            };
+            });
         }
 
         public StreamPlatformType Platform => StreamPlatformType.DLive;

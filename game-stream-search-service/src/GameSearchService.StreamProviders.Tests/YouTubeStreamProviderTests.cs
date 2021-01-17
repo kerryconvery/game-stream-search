@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Exceptions;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
 using GameStreamSearch.StreamProviders;
@@ -162,7 +160,7 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                new YouTubeChannelsDto
+                ProviderApiResult<YouTubeChannelsDto>.Success(new YouTubeChannelsDto
                 {
                     items = new List<YouTubeChannelDto> {
                         new YouTubeChannelDto {
@@ -179,23 +177,24 @@ namespace GameSearchService.StreamProviders.Tests
                             }
                         }
                     }
-                }
+                })
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNotNull(streamerChannel);
+            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelFound);
+            Assert.IsNotNull(streamerChannel.Channel);
         }
 
         [Test]
-        public async Task Should_Return_Null_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
         {
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                new YouTubeChannelsDto
+                ProviderApiResult<YouTubeChannelsDto>.Success(new YouTubeChannelsDto
                 {
                     items = new List<YouTubeChannelDto> {
                         new YouTubeChannelDto {
@@ -212,33 +211,33 @@ namespace GameSearchService.StreamProviders.Tests
                             }
                         }
                     }
-                }
+                })
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel);
+            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
         }
 
         [Test]
-        public async Task Should_Return_Null_If_A_Channel_Was_Not_Found()
+        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Not_Found()
         {
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                new YouTubeChannelsDto
+                ProviderApiResult<YouTubeChannelsDto>.Success(new YouTubeChannelsDto
                 {
                     items = null
-                }
+                })
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider( watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel);
+            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
         }
     }
 }

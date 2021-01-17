@@ -44,6 +44,6 @@ namespace GameStreamSearch.StreamPlatformApi
         Task<YouTubeSearchDto> SearchGamingVideos(string query, VideoEventType eventType, VideoSortType order, int pageSize, string pageToken);
         Task<YouTubeChannelsDto> GetChannels(string[] channelIds);
         Task<YouTubeVideosDto> GetVideos(string[] videoIds);
-        Task<YouTubeChannelsDto> SearchChannelsByUsername(string username, int pageSize);
+        Task<ProviderApiResult<YouTubeChannelsDto>> SearchChannelsByUsername(string username, int pageSize);
     }
 }

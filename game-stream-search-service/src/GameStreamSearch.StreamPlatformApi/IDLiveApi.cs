@@ -21,6 +21,6 @@ namespace GameStreamSearch.StreamPlatformApi
     public interface IDLiveApi
     {
         Task<DLiveStreamDto> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder);
-        Task<DLiveUserByDisplayNameDto> GetUserByDisplayName(string displayName);
+        Task<ProviderApiResult<DLiveUserByDisplayNameDto>> GetUserByDisplayName(string displayName);
     }
 }
