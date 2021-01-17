@@ -11,6 +11,7 @@ using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Providers;
 using GameStreamSearch.Application.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -188,6 +189,21 @@ namespace GameStreamSearch.Api.Tests
 
             Assert.IsInstanceOf<BadRequestObjectResult>(response);
             Assert.AreEqual(value.Errors.First().ErrorCode, ErrorCodeType.ChannelNotFoundOnPlatform);
+        }
+
+
+        [Test]
+        public async Task Should_Respond_With_Failed_Dependency_If_The_Platform_Service_Is_Not_Available()
+        {
+            youTubeStreamProviderStub.Setup(s => s.GetStreamerChannel("Fake Streamer")).ReturnsAsync(GetStreamerChannelResult.ProviderNotAvailable());
+
+            var response = await channelController.AddChannel(StreamPlatformType.YouTube, "Fake Streamer");
+            var result = response as ObjectResult;
+            var value = result.Value as ErrorResponseContract;
+
+            Assert.AreEqual(result.StatusCode, StatusCodes.Status424FailedDependency);
+            Assert.AreEqual(value.Errors.First().ErrorCode, ErrorCodeType.PlatformServiceIsNotAvailable);
+
         }
     }
 }

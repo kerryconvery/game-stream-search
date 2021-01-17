@@ -5,6 +5,7 @@ using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Providers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers
@@ -56,6 +57,18 @@ namespace GameStreamSearch.Api.Controllers
             return new BadRequestObjectResult(errorResponse);
         }
 
+        private IActionResult PresentPlatformServiceIsUnavilable(StreamPlatformType platform)
+        {
+            var errorResponse = new ErrorResponseContract()
+                .AddError(new ErrorContract
+                {
+                    ErrorCode = ErrorCodeType.PlatformServiceIsNotAvailable,
+                    ErrorMessage = $"The platform {platform.GetFriendlyName()} is not available at this time"
+                });
+
+            return StatusCode(StatusCodes.Status424FailedDependency, errorResponse);
+        }
+
         [HttpPut]
         [Route("channels/{platform}/{channelName}")]
         public async Task<IActionResult> AddChannel([FromRoute] StreamPlatformType platform, string channelName)
@@ -77,6 +90,8 @@ namespace GameStreamSearch.Api.Controllers
                     return PresentChannelAdded(platform, channelName);
                 case UpsertChannelResult.ChannelUpdated:
                     return new NoContentResult();
+                case UpsertChannelResult.PlatformServiceIsNotAvailable:
+                    return PresentPlatformServiceIsUnavilable(platform);
                 default:
                     throw new ArgumentException($"Unsupported channel upsert result {commandResult.ToString()}");
             }

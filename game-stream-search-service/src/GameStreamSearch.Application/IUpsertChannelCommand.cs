@@ -9,6 +9,7 @@ namespace GameStreamSearch.Application
         ChannelNotFoundOnPlatform,
         ChannelAdded,
         ChannelUpdated,
+        PlatformServiceIsNotAvailable,
     }
 
     public class UpsertChannelRequest

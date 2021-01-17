@@ -19,6 +19,11 @@ namespace GameStreamSearch.Application.Commands
         {
             var getStreamChannelResult = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
 
+            if (getStreamChannelResult.Outcome == GetStreamerChannelOutcomeType.ProviderNotAvailable)
+            {
+                return UpsertChannelResult.PlatformServiceIsNotAvailable;
+            }
+
             if (getStreamChannelResult.Outcome == GetStreamerChannelOutcomeType.ChannelNotFound)
             {
                 return UpsertChannelResult.ChannelNotFoundOnPlatform;

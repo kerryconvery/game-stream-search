@@ -230,7 +230,7 @@ describe('Add channel form', () => {
     expect(validationError).not.toBeInTheDocument();
   });
 
-  it('should display errors returned by the service', async () => {
+  it('should display channel related errors returned by the service', async () => {
     const errorResponse = {
       errors: [
         {
@@ -270,6 +270,50 @@ describe('Add channel form', () => {
     fireEvent.click(saveButton);
 
     const errorMessage = await waitFor(() => screen.getByText('channel not found on twitch'));
+
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  it('should display stream platform related errors returned by the service', async () => {
+    const errorResponse = {
+      errors: [
+        {
+          errorCode: 'PlatformServiceIsNotAvailable',
+          errorMessage: 'streaming service is not available',
+        }
+      ]
+    };
+
+    nock('http://localhost:5000')
+      .defaultReplyHeaders({
+        'access-control-allow-origin': '*',
+        'access-control-allow-credentials': 'true' ,
+      })
+      .options('/api/channels/Twitch/newchannel')
+      .reply(200)
+      .put('/api/channels/Twitch/newchannel')
+      .reply(400, errorResponse)
+
+    renderApplication();
+
+    // We must wait for this to avoid updated state after the component is unmounted.
+    await waitFor(() => screen.getByTestId('streams-not-found'));
+
+    const addButton = screen.getByTitle('Add a new channel to the list');
+
+    fireEvent.click(addButton);
+
+    await waitFor(() => screen.getByText('Add Channel'));
+
+    const channelField = screen.getByLabelText('Channel name');
+
+    fireEvent.change(channelField, { target: { value: 'newchannel' } })
+
+    const saveButton = screen.getByText('Save');
+
+    fireEvent.click(saveButton);
+
+    const errorMessage = await waitFor(() => screen.getByText('streaming service is not available'));
 
     expect(errorMessage).toBeInTheDocument();
   });

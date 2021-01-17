@@ -16,4 +16,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Base64Url" Version="2.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameStreamSearch.Result\GameStreamSearch.Result.csproj" />
+  </ItemGroup>
 </Project>

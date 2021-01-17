@@ -6,6 +6,7 @@ namespace GameStreamSearch.Api.Contracts
     public enum ErrorCodeType
     {
         ChannelNotFoundOnPlatform,
+        PlatformServiceIsNotAvailable,
     }
 
     public class ErrorContract

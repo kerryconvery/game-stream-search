@@ -94,6 +94,11 @@ namespace GameStreamSearch.StreamProviders
         {
             var result = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
+            if (result.Outcome == ProviderApiOutcome.ProviderNotAvailable)
+            {
+                return GetStreamerChannelResult.ProviderNotAvailable();
+            }
+
             if (result.Value.items == null)
             {
                 return GetStreamerChannelResult.ChannelNotFound();

@@ -11,7 +11,7 @@ const useAddChannelFormController = (onSaveSuccess) => {
   const handleSendSuccessNotifcation = (result, formValues) => {
     postNotificationEvent(
       dispatchEvent,
-      buildToastEvent(`Channel ${formValues.channelName} ${result.created ? 'added' : 'updated'} successfully`),
+      buildToastEvent(`Channel ${formValues.channelName} ${result.isCreated ? 'added' : 'updated'} successfully`),
     );
   }
 

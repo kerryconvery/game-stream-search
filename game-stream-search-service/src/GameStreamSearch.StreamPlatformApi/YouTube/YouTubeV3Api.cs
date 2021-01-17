@@ -102,6 +102,11 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
 
             var response = await client.ExecuteAsync<YouTubeChannelsDto>(request);
 
+            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                return ProviderApiResult<YouTubeChannelsDto>.ProviderNotAvilable();
+            }
+
             return ProviderApiResult<YouTubeChannelsDto>.Success(response.Data);
         }
     }

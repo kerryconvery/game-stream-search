@@ -13,12 +13,12 @@ using NUnit.Framework;
 
 namespace GameSearchService.StreamProviders.Tests
 {
-    
+
     public class YouTubeStreamProviderTests
     {
         private YouTubeSearchDto liveStreams = new YouTubeSearchDto()
         {
-             items = new List<YouTubeSearchItemDto>
+            items = new List<YouTubeSearchItemDto>
              {
                  new YouTubeSearchItemDto
                  {
@@ -41,7 +41,7 @@ namespace GameSearchService.StreamProviders.Tests
                      }
                  }
              },
-             nextPageToken = "next page token"
+            nextPageToken = "next page token"
         };
 
         private YouTubeVideosDto videos = new YouTubeVideosDto
@@ -233,11 +233,28 @@ namespace GameSearchService.StreamProviders.Tests
                 })
             );
 
-            var youTubeStreamProvider = new YouTubeStreamProvider( watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
             Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
+        }
+
+        [Test]
+        public async Task Should_Return_Provider_Not_Available_If_The_Streaming_Platform_Service_Is_Unavailable()
+        {
+
+            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
+
+            youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
+                ProviderApiResult<YouTubeChannelsDto>.ProviderNotAvilable()
+            );
+
+            var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
+
+            var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ProviderNotAvailable);
         }
     }
 }
