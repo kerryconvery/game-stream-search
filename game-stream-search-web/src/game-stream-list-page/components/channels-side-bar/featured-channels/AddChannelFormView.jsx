@@ -104,7 +104,6 @@ export const mapApiErrorsToFields = (apiErrors) => {
     } 
   })
 
-  console.log('fieldErrors', fieldErrors);
   return fieldErrors;
 }
 
