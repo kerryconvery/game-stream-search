@@ -28,7 +28,6 @@ namespace GameStreamSearch.Types
 
     public struct Result<V, E>
     {
-
         public static Result<V, E> Success(V value)
         {
             return new Result<V, E>
@@ -51,5 +50,49 @@ namespace GameStreamSearch.Types
         public bool IsFailure => !IsSuccess;
         public E? Error { get; init; }
         public V? Value { get; init; }
+    }
+
+    public class MaybeResult<V, E>
+    {
+        public static MaybeResult<V, E> Success(V value)
+        {
+            return new MaybeResult<V, E>
+            {
+                IsSuccess = true,
+                Value = Maybe<V>.ToMaybe(value)
+            };
+        }
+
+        public static MaybeResult<V, E> Success(Maybe<V> value)
+        {
+            return new MaybeResult<V, E>
+            {
+                IsSuccess = true,
+                Value = value,
+            };
+        }
+
+        public static MaybeResult<V, E> Nothing()
+        {
+            return new MaybeResult<V, E>
+            {
+                IsSuccess = true,
+                Value = Maybe<V>.Nothing(),
+            };
+        }
+
+        public static MaybeResult<V, E> Fail(E error)
+        {
+            return new MaybeResult<V, E>
+            {
+                IsSuccess = false,
+                Error = error,
+            };
+        }
+
+        public bool IsSuccess { get; init; }
+        public bool IsFailure => !IsSuccess;
+        public E? Error { get; init; }
+        public Maybe<V> Value { get; init; }
     }
 }

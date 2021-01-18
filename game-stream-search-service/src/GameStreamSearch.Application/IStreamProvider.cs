@@ -19,7 +19,7 @@ namespace GameStreamSearch.Application
     public interface IStreamProvider
     {
         Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null);
-        Task<Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName);
+        Task<MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName);
 
         StreamPlatformType Platform { get; }
     }

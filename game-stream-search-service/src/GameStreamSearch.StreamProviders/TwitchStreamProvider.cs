@@ -92,27 +92,27 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var result = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
             if (result.Channels.Count() == 0) {
-                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing();
             }
 
             if (!result.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing();
             }
 
-            return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Just(
+            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(
                 new StreamerChannelDto
                 {
                     ChannelName = result.Channels.First().display_name,
                     AvatarUrl = result.Channels.First().logo,
                     ChannelUrl = result.Channels.First().url,
                     Platform = Platform,
-                })
+                }
             );
         }
 
