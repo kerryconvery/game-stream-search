@@ -2,7 +2,7 @@
 
 namespace GameStreamSearch.Types
 {
-    public class Result<E>
+    public struct Result<E>
     {
         public static Result<E> Success()
         {
@@ -26,7 +26,7 @@ namespace GameStreamSearch.Types
         public E? Error { get; init; }
     }
 
-    public class Result<V, E>
+    public struct Result<V, E>
     {
 
         public static Result<V, E> Success(V value)
