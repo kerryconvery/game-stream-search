@@ -84,12 +84,12 @@ namespace GameStreamSearch.StreamProviders
 
             if (result.IsNothing)
             {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing();
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
             if (!result.Map(c => c.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase)).GetOrElse(false))
             {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing();
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
             return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(result.Map(c =>

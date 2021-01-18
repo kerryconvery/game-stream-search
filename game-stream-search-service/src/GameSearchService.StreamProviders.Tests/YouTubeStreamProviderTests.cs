@@ -229,7 +229,7 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                MaybeResult<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Nothing()
+                MaybeResult<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(Maybe<IEnumerable<YouTubeChannelDto>>.Nothing())
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);

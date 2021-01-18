@@ -72,15 +72,6 @@ namespace GameStreamSearch.Types
             };
         }
 
-        public static MaybeResult<V, E> Nothing()
-        {
-            return new MaybeResult<V, E>
-            {
-                IsSuccess = true,
-                Value = Maybe<V>.Nothing(),
-            };
-        }
-
         public static MaybeResult<V, E> Fail(E error)
         {
             return new MaybeResult<V, E>

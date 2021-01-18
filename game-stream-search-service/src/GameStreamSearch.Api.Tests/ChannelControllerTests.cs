@@ -196,7 +196,7 @@ namespace GameStreamSearch.Api.Tests
         {
             twitchtreamProviderStub
                 .Setup(s => s.GetStreamerChannel("Fake Streamer"))
-                .ReturnsAsync(MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing());
+                .ReturnsAsync(MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing()));
 
             var response = await channelController.AddChannel(StreamPlatformType.Twitch, "Fake Streamer");
             var result = response as BadRequestObjectResult;

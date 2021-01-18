@@ -97,12 +97,12 @@ namespace GameStreamSearch.StreamProviders
             var result = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
             if (result.Channels.Count() == 0) {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing();
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
             if (!result.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Nothing();
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
             return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(
