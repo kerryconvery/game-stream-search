@@ -52,7 +52,7 @@ namespace GameStreamSearch.Types
         public V? Value { get; init; }
     }
 
-    public class MaybeResult<V, E>
+    public struct MaybeResult<V, E>
     {
         public static MaybeResult<V, E> Success(V value)
         {
