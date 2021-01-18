@@ -1,76 +1,62 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace GameStreamSearch.Types
 {
     public class Maybe<T>
     {
-        internal bool HasItem { get; }
-        internal T Item { get; }
+        private bool hasValue;
+        private T value;
 
-        public Maybe()
+        internal Maybe()
         {
-            HasItem = false;
+            hasValue = false;
         }
 
-        public Maybe(T item)
+        internal Maybe(T value)
         {
-            if (item == null)
-                throw new ArgumentNullException(nameof(item));
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
 
-            Item = item;
-            HasItem = true;
+            this.value = value;
+            hasValue = true;
         }
 
-        public Maybe<TResult> Map<TResult>(Func<T, TResult> selector)
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper)
         {
-            if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
+            if (mapper == null)
+                throw new ArgumentNullException(nameof(mapper));
 
-            if (HasItem)
-                return Maybe<TResult>.Just(selector(Item));
+            if (hasValue)
+                return Maybe<TResult>.Just(mapper(value));
             else
                 return Maybe<TResult>.Nothing();
         }
 
-        public T GetOrElse(T fallbackValue)
+        public T GetOrElse(T elseValue)
         {
-            if (fallbackValue == null)
-                throw new ArgumentNullException(nameof(fallbackValue));
+            if (elseValue == null)
+                throw new ArgumentNullException(nameof(elseValue));
 
-            if (HasItem)
-                return Item;
+            if (hasValue)
+                return value;
             else
-                return fallbackValue;
+                return elseValue;
         }
 
         public T Unwrap()
         {
-            if (!HasItem)
+            if (IsNothing)
             {
                 throw new InvalidOperationException();
             }
 
-            return Item;
+            return value;
         }
 
-        public override bool Equals(object obj)
-        {
-            var other = obj as Maybe<T>;
-
-            if (other == null)
-                return false;
-
-            return Equals(Item, other.Item);
-        }
-
-        public override int GetHashCode()
-        {
-            return HasItem ? Item.GetHashCode() : 0;
-        }
-
-        public bool IsNothing => !HasItem;
-        public bool IsJust => HasItem;
+        public bool IsNothing => !hasValue;
+        public bool IsJust => hasValue;
 
         public static Maybe<T> ToMaybe(T? value)
         {

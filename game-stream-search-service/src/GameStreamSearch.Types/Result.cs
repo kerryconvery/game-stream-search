@@ -76,6 +76,7 @@ namespace GameStreamSearch.Types
         {
             return new MaybeResult<V, E>
             {
+                Value = Maybe<V>.Nothing(),
                 IsSuccess = false,
                 Error = error,
             };
