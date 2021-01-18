@@ -112,12 +112,9 @@ namespace GameStreamSearch.Api.Controllers
         {
             var result = await channelRepository.Get(platform, channelName);
 
-            if (result == null)
-            {
-                return new NotFoundResult();
-            }
-
-            return new OkObjectResult(ChannelDto.FromEntity(result));
+            return result
+                .Map<IActionResult>(v => new OkObjectResult(ChannelDto.FromEntity(v)))
+                .GetOrElse(new NotFoundResult());
         }
     }
 }

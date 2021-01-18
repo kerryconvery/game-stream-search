@@ -91,32 +91,34 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<Result<StreamerChannelDto?, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
+        public async Task<Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var result = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
-            if (result.IsFailure && result.Error == YoutubeErrorType.ProviderNotAvailable)
+            if (result.IsFailure)
             {
-                return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
+                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
             }
 
-            if (result.Value == null)
+            if (result.Value.IsNothing)
             {
-                return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Success(null);
+                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
-            if (!result.Value.First().snippet.title.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.Value.Map(v => v.First().snippet.title.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase)).GetOrElse(false))
             {
-                return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Success(null);
+                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
-            return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Success(new StreamerChannelDto
-            {
-                ChannelName = result.Value.First().snippet.title,
-                AvatarUrl = result.Value.First().snippet.thumbnails.@default.url,
-                ChannelUrl = channelUrlBuilder.Build(result.Value.First().snippet.title),
-                Platform = Platform,
-            });
+            return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(result.Value.Map(channel =>
+                new StreamerChannelDto
+                {
+                    ChannelName = channel.First().snippet.title,
+                    AvatarUrl = channel.First().snippet.thumbnails.@default.url,
+                    ChannelUrl = channelUrlBuilder.Build(channel.First().snippet.title),
+                    Platform = Platform,
+                })
+            );
         }
 
         public StreamPlatformType Platform => StreamPlatformType.YouTube;

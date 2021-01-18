@@ -78,27 +78,29 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<Result<StreamerChannelDto?, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
+        public async Task<Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var result = await dliveApi.GetUserByDisplayName(channelName);
 
-            if (result == null)
+            if (result.IsNothing)
             {
-                return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(null);
+                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
-            if (!result.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.Map(c => c.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase)).GetOrElse(false))
             {
-                return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(null);
+                return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
             }
 
-            return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(new StreamerChannelDto
-            {
-                ChannelName = result.displayName,
-                AvatarUrl = result.avatar,
-                ChannelUrl = urlBuilder.Build(result.displayName),
-                Platform = Platform,
-            });
+            return Result<Maybe<StreamerChannelDto>, GetStreamerChannelErrorType>.Success(result.Map(c =>
+                new StreamerChannelDto
+                {
+                    ChannelName = c.displayName,
+                    AvatarUrl = c.avatar,
+                    ChannelUrl = urlBuilder.Build(c.displayName),
+                    Platform = Platform,
+                })
+            );
         }
 
         public StreamPlatformType Platform => StreamPlatformType.DLive;

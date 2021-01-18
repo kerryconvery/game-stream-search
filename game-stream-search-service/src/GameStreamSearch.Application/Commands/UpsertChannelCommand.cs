@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Entities;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Commands
 {
@@ -17,30 +18,32 @@ namespace GameStreamSearch.Application.Commands
 
         public async Task<UpsertChannelResult> Invoke(UpsertChannelRequest request)
         {
-            var getStreamChannelResult = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
+            var streamChannelResult = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
 
-            if (getStreamChannelResult.IsFailure && getStreamChannelResult.Error == GetStreamerChannelErrorType.ProviderNotAvailable)
+            if (streamChannelResult.IsFailure)
             {
                 return UpsertChannelResult.PlatformServiceIsNotAvailable;
             }
 
-            if (getStreamChannelResult.Value == null)
+            if (streamChannelResult.Value.IsNothing)
             {
                 return UpsertChannelResult.ChannelNotFoundOnPlatform;
             }
+
+            var streamChannel = streamChannelResult.Value.Unwrap();
 
             var channel = new Channel
             {
                 ChannelName = request.ChannelName,
                 StreamPlatform = request.StreamPlatform,
                 DateRegistered = request.RegistrationDate,
-                AvatarUrl = getStreamChannelResult.Value.AvatarUrl,
-                ChannelUrl = getStreamChannelResult.Value.ChannelUrl,
+                AvatarUrl = streamChannel.AvatarUrl,
+                ChannelUrl = streamChannel.ChannelUrl,
             };
 
             var existingChannel = await channelRepository.Get(request.StreamPlatform, request.ChannelName);
 
-            if (existingChannel != null)
+            if (existingChannel.IsJust)
             {
                 await channelRepository.Update(channel);
 

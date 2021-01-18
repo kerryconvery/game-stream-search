@@ -215,7 +215,7 @@ namespace GameSearchService.StreamProviders.Tests
         }
 
         [Test]
-        public async Task Should_Return_Null_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        public async Task Should_Return_Nothing_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
         {
             var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
 
@@ -230,11 +230,11 @@ namespace GameSearchService.StreamProviders.Tests
 
             var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel.Value);
+            Assert.IsTrue(streamerChannel.Value.IsNothing);
         }
 
         [Test]
-        public async Task Should_Return_Null_If_A_Channel_Was_Not_Found()
+        public async Task Should_Return_Nothing_If_A_Channel_Was_Not_Found()
         {
             var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
 
@@ -249,7 +249,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel.Value);
+            Assert.IsTrue(streamerChannel.Value.IsNothing);
         }
     }
 }

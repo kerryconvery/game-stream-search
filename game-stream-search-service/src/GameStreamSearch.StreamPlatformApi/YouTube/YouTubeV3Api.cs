@@ -88,7 +88,7 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
             return response.Data;
         }
 
-        public async Task<Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>> SearchChannelsByUsername(string username, int pageSize)
+        public async Task<Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>> SearchChannelsByUsername(string username, int pageSize)
         {
             var client = new RestClient(this.googleApiUrl);
 
@@ -106,10 +106,10 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
 
             if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                return Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable);
+                return Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable);
             }
 
-            return Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(response.Data.items);
+            return Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>.Success(Maybe<IEnumerable<YouTubeChannelDto>>.ToMaybe(response.Data.items));
         }
     }
 }

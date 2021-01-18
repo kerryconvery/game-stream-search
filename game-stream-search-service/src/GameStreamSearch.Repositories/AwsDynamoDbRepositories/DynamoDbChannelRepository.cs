@@ -6,6 +6,7 @@ using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 {
@@ -20,18 +21,16 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public Task Add(Channel channel)
         {
-            //DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
+            DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
 
-            //return awsDynamoDbTable.PutItem(channelDto);
-
-            return Task.FromResult<object>(null);
+            return awsDynamoDbTable.PutItem(channelDto);
         }
 
-        public async Task<Channel?> Get(StreamPlatformType streamPlatform, string channelName)
+        public async Task<Maybe<Channel>> Get(StreamPlatformType streamPlatform, string channelName)
         {
             var channelDto = await awsDynamoDbTable.GetItem(streamPlatform, channelName);
 
-            return channelDto?.ToEntity();
+            return Maybe<Channel>.ToMaybe(channelDto?.ToEntity());
         }
 
         public Task Remove(StreamPlatformType streamPlatform, string channelName)

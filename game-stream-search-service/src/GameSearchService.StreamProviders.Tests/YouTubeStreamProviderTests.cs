@@ -161,24 +161,26 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(new List<YouTubeChannelDto>
-                {
+                Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>.Success(
+                    Maybe<IEnumerable<YouTubeChannelDto>>.Just(new List<YouTubeChannelDto>
                     {
-                        new YouTubeChannelDto {
-                            snippet = new YouTubeChannelSnippetDto
-                            {
-                                title = "Test Streamer",
-                                thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                        {
+                            new YouTubeChannelDto {
+                                snippet = new YouTubeChannelSnippetDto
                                 {
-                                    @default = new YouTubeChannelSnippetThumbnailDto
+                                    title = "Test Streamer",
+                                    thumbnails = new YouTubeChannelSnippetThumbnailsDto
                                     {
-                                        url = "test.url"
+                                        @default = new YouTubeChannelSnippetThumbnailDto
+                                        {
+                                            url = "test.url"
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                })
+                    })
+                )
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
@@ -189,52 +191,54 @@ namespace GameSearchService.StreamProviders.Tests
         }
 
         [Test]
-        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        public async Task Should_Return_Nothing_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
         {
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                 Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(new List<YouTubeChannelDto>
-                 {
-                    {
-                        new YouTubeChannelDto {
-                            snippet = new YouTubeChannelSnippetDto
-                            {
-                                title = "Test Streamer Two",
-                                thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                 Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>.Success(
+                     Maybe<IEnumerable<YouTubeChannelDto>>.Just(new List<YouTubeChannelDto>
+                     {
+                        {
+                            new YouTubeChannelDto {
+                                snippet = new YouTubeChannelSnippetDto
                                 {
-                                    @default = new YouTubeChannelSnippetThumbnailDto
+                                    title = "Test Streamer Two",
+                                    thumbnails = new YouTubeChannelSnippetThumbnailsDto
                                     {
-                                        url = "test.url"
+                                        @default = new YouTubeChannelSnippetThumbnailDto
+                                        {
+                                            url = "test.url"
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                })
+                    })
+                )
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel.Value);
+            Assert.IsTrue(streamerChannel.Value.IsNothing);
         }
 
         [Test]
-        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Not_Found()
+        public async Task Should_Return_Nothing_If_A_Channel_Was_Not_Found()
         {
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(null)
+                Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>.Success(Maybe< IEnumerable<YouTubeChannelDto>>.Nothing())
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel.Value);
+            Assert.IsTrue(streamerChannel.Value.IsNothing);
         }
 
         [Test]
@@ -244,7 +248,7 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable)
+                Result<Maybe<IEnumerable<YouTubeChannelDto>>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable)
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);

@@ -181,11 +181,11 @@ namespace GameStreamSearch.StreamProviders.Tests
             var dliveApiStub = new Mock<IDLiveApi>();
 
             dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
-                new DLiveUserDto
+                Maybe<DLiveUserDto>.Just(new DLiveUserDto
                 {
                     displayName = "Test Streamer"
                 }
-            );
+            ));
 
             var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
 
@@ -197,16 +197,16 @@ namespace GameStreamSearch.StreamProviders.Tests
         }
 
         [Test]
-        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        public async Task Should_Return_Nothing_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
         {
             var dliveApiStub = new Mock<IDLiveApi>();
 
             dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
-                new DLiveUserDto
+                Maybe<DLiveUserDto>.Just(new DLiveUserDto
                 {
 
                     displayName = "Test Streamer Two"
-                }
+                })
             );
 
             var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
@@ -215,15 +215,15 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel.Value);
+            Assert.IsTrue(streamerChannel.Value.IsNothing);
         }
 
         [Test]
-        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Not_Found()
+        public async Task Should_Return_Nothing_If_A_Channel_Was_Not_Found()
         {
             var dliveApiStub = new Mock<IDLiveApi>();
 
-            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).Returns(Task.FromResult<DLiveUserDto>(null));
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).Returns(Task.FromResult(Maybe<DLiveUserDto>.Nothing()));
 
             var dliveWatchUrlBuilderStub = new Mock<IDLiveWatchUrlBuilder>();
 
@@ -231,7 +231,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.IsNull(streamerChannel.Value);
+            Assert.IsTrue(streamerChannel.Value.IsNothing);
         }
     }
 }

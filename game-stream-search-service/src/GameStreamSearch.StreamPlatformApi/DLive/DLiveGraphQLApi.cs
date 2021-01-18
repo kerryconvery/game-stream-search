@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.StreamPlatformApi.DLive.Dto;
+using GameStreamSearch.Types;
 using RestSharp;
 
 namespace GameStreamSearch.StreamPlatformApi.DLive
@@ -36,7 +37,7 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
             return response.Data;
         }
 
-        public async Task<DLiveUserDto> GetUserByDisplayName(string displayName)
+        public async Task<Maybe<DLiveUserDto>> GetUserByDisplayName(string displayName)
         {
             var graphQuery = new
             {
@@ -54,7 +55,7 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
 
             var response = await client.ExecuteAsync<DLiveUserByDisplayNameDto>(request);
 
-            return response.Data.data.userByDisplayName;
+            return Maybe<DLiveUserDto>.ToMaybe(response.Data.data.userByDisplayName);
         }
     }
 }

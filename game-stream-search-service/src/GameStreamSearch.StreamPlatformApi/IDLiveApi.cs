@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.StreamPlatformApi.DLive.Dto;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamPlatformApi
 {
@@ -21,6 +22,6 @@ namespace GameStreamSearch.StreamPlatformApi
     public interface IDLiveApi
     {
         Task<DLiveStreamDto> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder);
-        Task<DLiveUserDto> GetUserByDisplayName(string displayName);
+        Task<Maybe<DLiveUserDto>> GetUserByDisplayName(string displayName);
     }
 }
