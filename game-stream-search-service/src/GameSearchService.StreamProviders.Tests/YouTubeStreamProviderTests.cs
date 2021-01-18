@@ -8,6 +8,7 @@ using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Builders;
+using GameStreamSearch.Types;
 using Moq;
 using NUnit.Framework;
 
@@ -160,9 +161,9 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                ProviderApiResult<YouTubeChannelsDto>.Success(new YouTubeChannelsDto
+                Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(new List<YouTubeChannelDto>
                 {
-                    items = new List<YouTubeChannelDto> {
+                    {
                         new YouTubeChannelDto {
                             snippet = new YouTubeChannelSnippetDto
                             {
@@ -184,8 +185,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelFound);
-            Assert.IsNotNull(streamerChannel.Channel);
+            Assert.IsNotNull(streamerChannel.Value);
         }
 
         [Test]
@@ -194,9 +194,9 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                ProviderApiResult<YouTubeChannelsDto>.Success(new YouTubeChannelsDto
-                {
-                    items = new List<YouTubeChannelDto> {
+                 Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(new List<YouTubeChannelDto>
+                 {
+                    {
                         new YouTubeChannelDto {
                             snippet = new YouTubeChannelSnippetDto
                             {
@@ -218,7 +218,7 @@ namespace GameSearchService.StreamProviders.Tests
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
+            Assert.IsNull(streamerChannel.Value);
         }
 
         [Test]
@@ -227,17 +227,14 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                ProviderApiResult<YouTubeChannelsDto>.Success(new YouTubeChannelsDto
-                {
-                    items = null
-                })
+                Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Success(null)
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
+            Assert.IsNull(streamerChannel.Value);
         }
 
         [Test]
@@ -247,14 +244,14 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
-                ProviderApiResult<YouTubeChannelsDto>.ProviderNotAvilable()
+                Result<IEnumerable<YouTubeChannelDto>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable)
             );
 
             var youTubeStreamProvider = new YouTubeStreamProvider(watchUrlBuilderStub.Object, channelUrlBuilderStub.Object, youTubeV3ApiStub.Object);
 
             var streamerChannel = await youTubeStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ProviderNotAvailable);
+            Assert.AreEqual(streamerChannel.Error, GetStreamerChannelErrorType.ProviderNotAvailable);
         }
     }
 }

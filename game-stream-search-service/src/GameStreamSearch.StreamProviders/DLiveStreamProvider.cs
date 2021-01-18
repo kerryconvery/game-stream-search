@@ -7,6 +7,7 @@ using GameStreamSearch.StreamProviders.Builders;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.Application;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -77,25 +78,25 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<GetStreamerChannelResult> GetStreamerChannel(string channelName)
+        public async Task<Result<StreamerChannelDto?, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
-            var response = await dliveApi.GetUserByDisplayName(channelName);
+            var result = await dliveApi.GetUserByDisplayName(channelName);
 
-            if (response.Value.data.userByDisplayName == null)
+            if (result == null)
             {
-                return GetStreamerChannelResult.ChannelNotFound();
+                return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(null);
             }
 
-            if (!response.Value.data.userByDisplayName.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return GetStreamerChannelResult.ChannelNotFound();
+                return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(null);
             }
 
-            return GetStreamerChannelResult.ChannelFound(new StreamerChannelDto
+            return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(new StreamerChannelDto
             {
-                ChannelName = response.Value.data.userByDisplayName.displayName,
-                AvatarUrl = response.Value.data.userByDisplayName.avatar,
-                ChannelUrl = urlBuilder.Build(response.Value.data.userByDisplayName.displayName),
+                ChannelName = result.displayName,
+                AvatarUrl = result.avatar,
+                ChannelUrl = urlBuilder.Build(result.displayName),
                 Platform = Platform,
             });
         }

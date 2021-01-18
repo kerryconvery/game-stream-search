@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Result", "GameStreamSearch.Result\GameStreamSearch.Result.csproj", "{811FF9AB-1D6E-4AA5-A5DF-3F70A874FCC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Types", "GameStreamSearch.Types\GameStreamSearch.Types.csproj", "{5EB1B384-B302-4543-9BD8-80D0F8959855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,9 +68,9 @@ Global
 		{05FF0DB9-D5F1-4076-BC4A-BD44603E0FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05FF0DB9-D5F1-4076-BC4A-BD44603E0FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05FF0DB9-D5F1-4076-BC4A-BD44603E0FDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{811FF9AB-1D6E-4AA5-A5DF-3F70A874FCC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{811FF9AB-1D6E-4AA5-A5DF-3F70A874FCC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{811FF9AB-1D6E-4AA5-A5DF-3F70A874FCC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{811FF9AB-1D6E-4AA5-A5DF-3F70A874FCC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB1B384-B302-4543-9BD8-80D0F8959855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB1B384-B302-4543-9BD8-80D0F8959855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB1B384-B302-4543-9BD8-80D0F8959855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB1B384-B302-4543-9BD8-80D0F8959855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

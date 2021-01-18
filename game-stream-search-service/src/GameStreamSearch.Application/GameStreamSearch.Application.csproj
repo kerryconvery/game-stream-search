@@ -17,6 +17,6 @@
     <PackageReference Include="Base64Url" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.Result\GameStreamSearch.Result.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
   </ItemGroup>
 </Project>

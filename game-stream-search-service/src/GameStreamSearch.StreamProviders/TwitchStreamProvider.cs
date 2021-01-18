@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -91,24 +92,24 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<GetStreamerChannelResult?> GetStreamerChannel(string channelName)
+        public async Task<Result<StreamerChannelDto?, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var result = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
-            if (result.Value.Channels.Count() == 0) {
-                return GetStreamerChannelResult.ChannelNotFound();
+            if (result.Channels.Count() == 0) {
+                return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(null);
             }
 
-            if (!result.Value.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return GetStreamerChannelResult.ChannelNotFound();
+                return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(null);
             }
 
-            return GetStreamerChannelResult.ChannelFound(new StreamerChannelDto
+            return Result<StreamerChannelDto?, GetStreamerChannelErrorType>.Success(new StreamerChannelDto
             {
-                ChannelName = result.Value.Channels.First().display_name,
-                AvatarUrl = result.Value.Channels.First().logo,
-                ChannelUrl = result.Value.Channels.First().url,
+                ChannelName = result.Channels.First().display_name,
+                AvatarUrl = result.Channels.First().logo,
+                ChannelUrl = result.Channels.First().url,
                 Platform = Platform,
             });
         }

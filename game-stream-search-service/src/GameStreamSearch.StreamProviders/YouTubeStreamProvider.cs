@@ -7,6 +7,7 @@ using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
 using GameStreamSearch.Application;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -90,30 +91,30 @@ namespace GameStreamSearch.StreamProviders
             };
         }
 
-        public async Task<GetStreamerChannelResult?> GetStreamerChannel(string channelName)
+        public async Task<Result<StreamerChannelDto?, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var result = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
-            if (result.Outcome == ProviderApiOutcome.ProviderNotAvailable)
+            if (result.IsFailure && result.Error == YoutubeErrorType.ProviderNotAvailable)
             {
-                return GetStreamerChannelResult.ProviderNotAvailable();
+                return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
             }
 
-            if (result.Value.items == null)
+            if (result.Value == null)
             {
-                return GetStreamerChannelResult.ChannelNotFound();
+                return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Success(null);
             }
 
-            if (!result.Value.items.First().snippet.title.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (!result.Value.First().snippet.title.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                return GetStreamerChannelResult.ChannelNotFound();
+                return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Success(null);
             }
 
-            return GetStreamerChannelResult.ChannelFound(new StreamerChannelDto
+            return Result<StreamerChannelDto, GetStreamerChannelErrorType>.Success(new StreamerChannelDto
             {
-                ChannelName = result.Value.items.First().snippet.title,
-                AvatarUrl = result.Value.items.First().snippet.thumbnails.@default.url,
-                ChannelUrl = channelUrlBuilder.Build(result.Value.items.First().snippet.title),
+                ChannelName = result.Value.First().snippet.title,
+                AvatarUrl = result.Value.First().snippet.thumbnails.@default.url,
+                ChannelUrl = channelUrlBuilder.Build(result.Value.First().snippet.title),
                 Platform = Platform,
             });
         }

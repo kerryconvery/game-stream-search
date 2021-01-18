@@ -44,12 +44,14 @@ const addChannelRequest = (baseUrl) => (data) => (
       channel: res.data
     }
   ))
-  .catch(error => (
+  .catch(error => {
+    console.log('error', error);
+    return (
     {
       status: httpStatusToStatusType(error.response.status),
       errors: error.response.data.errors,
     }
-  ))
+  )})
 )
 
 const getChannelsRequest = (baseUrl) => () => (

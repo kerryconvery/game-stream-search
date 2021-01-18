@@ -32,7 +32,7 @@ namespace GameStreamSearch.StreamPlatformApi.Twitch
             return response.Data;
         }
 
-        public async Task<ProviderApiResult<TwitchChannelsDto>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
+        public async Task<TwitchChannelsDto> SearchChannels(string searchTerm, int pageSize, int pageOffset)
         {
             var client = new RestClient(this.twitchApiUrl);
 
@@ -47,7 +47,7 @@ namespace GameStreamSearch.StreamPlatformApi.Twitch
 
             var response = await client.ExecuteAsync<TwitchChannelsDto>(request);
 
-            return ProviderApiResult<TwitchChannelsDto>.Success(response.Data);
+            return response.Data;
         }
 
         public async Task<TwitchLiveStreamDto> SearchStreams(string searchTerm, int pageSize, int pageOffset)

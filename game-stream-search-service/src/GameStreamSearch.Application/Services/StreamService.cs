@@ -6,6 +6,7 @@ using GameStreamSearch.Application.Enums;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using Base64Url;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Services
 {
@@ -95,7 +96,7 @@ namespace GameStreamSearch.Application.Services
             return this;
         }
 
-        public Task<GetStreamerChannelResult> GetStreamerChannel(string streamerName, StreamPlatformType streamingPlatform)
+        public Task<Result<StreamerChannelDto?, GetStreamerChannelErrorType>> GetStreamerChannel(string streamerName, StreamPlatformType streamingPlatform)
         {
             var streamProvider = streamProviders[streamingPlatform];
 

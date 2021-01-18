@@ -20,9 +20,11 @@ namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
 
         public Task Add(Channel channel)
         {
-            DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
+            //DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
 
-            return awsDynamoDbTable.PutItem(channelDto);
+            //return awsDynamoDbTable.PutItem(channelDto);
+
+            return Task.FromResult<object>(null);
         }
 
         public async Task<Channel?> Get(StreamPlatformType streamPlatform, string channelName)

@@ -201,12 +201,12 @@ namespace GameSearchService.StreamProviders.Tests
             var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
 
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
-                ProviderApiResult<TwitchChannelsDto>.Success(new TwitchChannelsDto
+                new TwitchChannelsDto
                 {
                     Channels = new List<TwitchChannelDto> { new TwitchChannelDto { display_name = "Test Streamer" } }
-                })
+                }
             );
-            
+
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
             var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
@@ -215,41 +215,41 @@ namespace GameSearchService.StreamProviders.Tests
         }
 
         [Test]
-        public async Task Should_Return_ChannelNotFound_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
+        public async Task Should_Return_Null_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
         {
             var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
 
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
-                ProviderApiResult<TwitchChannelsDto>.Success(new TwitchChannelsDto
+                new TwitchChannelsDto
                 {
                     Channels = new List<TwitchChannelDto> { new TwitchChannelDto { display_name = "Test Streamer Two" } }
-                })
+                }
             );
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
             var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
+            Assert.IsNull(streamerChannel.Value);
         }
 
         [Test]
-        public async Task Should_Return_Channel_Not_Found_If_A_Channel_Was_Not_Found()
+        public async Task Should_Return_Null_If_A_Channel_Was_Not_Found()
         {
             var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
 
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
-                ProviderApiResult<TwitchChannelsDto>.Success(new TwitchChannelsDto
+                new TwitchChannelsDto
                 {
                     Channels = new List<TwitchChannelDto>()
-                })
+                }
             );
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
             var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
 
-            Assert.AreEqual(streamerChannel.Outcome, GetStreamerChannelOutcomeType.ChannelNotFound);
+            Assert.IsNull(streamerChannel.Value);
         }
     }
 }

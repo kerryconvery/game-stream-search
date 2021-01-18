@@ -12,7 +12,7 @@ namespace GameStreamSearch.Api.Controllers
 {
     public class GetChannelParams
     {
-        public string Channel { get; init; }
+        public string ChannelName { get; init; }
         public StreamPlatformType Platform { get; init; }
     }
 
@@ -38,7 +38,7 @@ namespace GameStreamSearch.Api.Controllers
         {
             var urlParams = new GetChannelParams
             {
-                Channel = channelName,
+                ChannelName = channelName,
                 Platform = platform,
             };
 
@@ -107,17 +107,17 @@ namespace GameStreamSearch.Api.Controllers
         }
 
         [HttpGet]
-        [Route("channels/{platform}/{channel}", Name = "GetChannel")]
+        [Route("channels/{platform}/{channelName}", Name = "GetChannel")]
         public async Task<IActionResult> GetChannel([FromRoute] StreamPlatformType platform, string channelName)
         {
-            var channel = await channelRepository.Get(platform, channelName);
+            var result = await channelRepository.Get(platform, channelName);
 
-            if (channel == null)
+            if (result == null)
             {
                 return new NotFoundResult();
             }
 
-            return new OkObjectResult(ChannelDto.FromEntity(channel));
+            return new OkObjectResult(ChannelDto.FromEntity(result));
         }
     }
 }

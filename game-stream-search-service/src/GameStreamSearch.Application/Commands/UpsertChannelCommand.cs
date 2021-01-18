@@ -19,12 +19,12 @@ namespace GameStreamSearch.Application.Commands
         {
             var getStreamChannelResult = await streamService.GetStreamerChannel(request.ChannelName, request.StreamPlatform);
 
-            if (getStreamChannelResult.Outcome == GetStreamerChannelOutcomeType.ProviderNotAvailable)
+            if (getStreamChannelResult.IsFailure && getStreamChannelResult.Error == GetStreamerChannelErrorType.ProviderNotAvailable)
             {
                 return UpsertChannelResult.PlatformServiceIsNotAvailable;
             }
 
-            if (getStreamChannelResult.Outcome == GetStreamerChannelOutcomeType.ChannelNotFound)
+            if (getStreamChannelResult.Value == null)
             {
                 return UpsertChannelResult.ChannelNotFoundOnPlatform;
             }
@@ -34,8 +34,8 @@ namespace GameStreamSearch.Application.Commands
                 ChannelName = request.ChannelName,
                 StreamPlatform = request.StreamPlatform,
                 DateRegistered = request.RegistrationDate,
-                AvatarUrl = getStreamChannelResult.Channel.AvatarUrl,
-                ChannelUrl = getStreamChannelResult.Channel.ChannelUrl,
+                AvatarUrl = getStreamChannelResult.Value.AvatarUrl,
+                ChannelUrl = getStreamChannelResult.Value.ChannelUrl,
             };
 
             var existingChannel = await channelRepository.Get(request.StreamPlatform, request.ChannelName);
