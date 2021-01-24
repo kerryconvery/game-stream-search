@@ -47,9 +47,9 @@ namespace GameStreamSearch.StreamProviders
             return base64Encryptor.ToString();
         }
 
-        public IEnumerable<GameStreamDto> MapToGameStream(TwitchLiveStreamDto liveStreams)
+        private IEnumerable<GameStreamDto> MapToGameStream(IEnumerable<TwitchStreamDto> liveStreams)
         {
-            return liveStreams.streams.Select(s => new GameStreamDto
+            return liveStreams.Select(s => new GameStreamDto
             {
                 StreamTitle = s.channel.status,
                 StreamerName = s.channel.display_name,
@@ -62,58 +62,65 @@ namespace GameStreamSearch.StreamProviders
             });
         }
 
+
+        private async Task<MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>> GetLiveStreams(
+            StreamFilterOptions filterOptions, int pageSize, int pageOffset)
+        {
+            if (string.IsNullOrEmpty(filterOptions.GameName))
+            {
+                return await twitchStreamApi.GetLiveStreams(pageSize, pageOffset);
+            }
+            else
+            {
+                return await twitchStreamApi.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
+            }
+        }
+
         public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null)
         {
             var pageOffset = GetPageOffset(pageToken);
 
-            TwitchLiveStreamDto liveStreams;
+            var liveStreamsResult = await GetLiveStreams(filterOptions, pageSize, pageOffset);
 
-            if (string.IsNullOrEmpty(filterOptions.GameName))
+            if (liveStreamsResult.IsFailure)
             {
-                liveStreams = await twitchStreamApi.GetLiveStreams(pageSize, pageOffset);
-            }
-            else
-            {
-                liveStreams = await twitchStreamApi.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
+                return GameStreamsDto.Empty;
             }
 
-            if (liveStreams.streams == null)
+            return liveStreamsResult.Value.Map(liveStreams =>
             {
-                return GameStreamsDto.Empty();
-            }
+                var nextPageToken = GetNextPageToken(liveStreams.Any(), pageSize, pageOffset);
 
-            var nextPageToken = GetNextPageToken(liveStreams.streams.Any(), pageSize, pageOffset);
-
-
-            return new GameStreamsDto
-            {
-                Items = MapToGameStream(liveStreams),
-                NextPageToken = nextPageToken
-            };
+                return new GameStreamsDto
+                {
+                    Items = MapToGameStream(liveStreams),
+                    NextPageToken = nextPageToken
+                };
+            }).GetOrElse(GameStreamsDto.Empty);
         }
 
         public async Task<MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var channelsResult = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
-            if (channelsResult.Channels.Count() == 0) {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
-            }
-
-            if (!channelsResult.Channels.First().display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+            if (channelsResult.IsFailure)
             {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
             }
 
-            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(
-                new StreamerChannelDto
+            var channel = channelsResult.Value.Map(result => result.Channels
+                .Where(channel => channel.display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
+                .Select(channel => new StreamerChannelDto
                 {
-                    ChannelName = channelsResult.Channels.First().display_name,
-                    AvatarUrl = channelsResult.Channels.First().logo,
-                    ChannelUrl = channelsResult.Channels.First().url,
+                    ChannelName = result.Channels.First().display_name,
+                    AvatarUrl = result.Channels.First().logo,
+                    ChannelUrl = result.Channels.First().url,
                     Platform = Platform,
-                }
+                })
+                .FirstOrDefault(null)
             );
+
+            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(channel);
         }
 
         public StreamPlatformType Platform => StreamPlatformType.Twitch;

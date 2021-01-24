@@ -21,14 +21,11 @@ namespace GameStreamSearch.Application.Dto
         public IEnumerable<GameStreamDto> Items { get; set; }
         public string NextPageToken { get; set; }
 
-        public static GameStreamsDto Empty()
+        public static GameStreamsDto Empty => new GameStreamsDto
         {
-            return new GameStreamsDto
-            {
-                Items = new List<GameStreamDto>(),
-                NextPageToken = null,
-            };
-        }
+            Items = new List<GameStreamDto>(),
+            NextPageToken = null,
+        };
 
     }
 }

@@ -25,4 +25,30 @@ namespace GameStreamSearch.Types
         public bool IsFailure => !IsSuccess;
         public E Error { get; init; }
     }
+
+    public struct Result<V, E> where E : Enum
+    {
+        public static Result<V, E> Success(V value)
+        {
+            return new Result<V, E>
+            {
+                IsSuccess = true,
+                Value = value,
+            };
+        }
+
+        public static Result<V, E> Fail(E error)
+        {
+            return new Result<V, E>
+            {
+                IsSuccess = false,
+                Error = error,
+            };
+        }
+
+        public bool IsSuccess { get; init; }
+        public bool IsFailure => !IsSuccess;
+        public E Error { get; init; }
+        public V? Value { get; init; }
+    }
 }

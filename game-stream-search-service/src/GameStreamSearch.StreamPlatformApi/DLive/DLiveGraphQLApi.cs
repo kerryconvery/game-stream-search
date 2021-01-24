@@ -14,7 +14,7 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
             this.dliveGraphQLApiUrl = dliveGraphQLApiUrl;
         }
 
-        public async Task<DLiveStreamDto> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder)
+        public async Task<MaybeResult<DLiveStreamDto, DLiveErrorType>> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder)
         {
             var graphQuery = new
             {
@@ -34,10 +34,15 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
 
             var response = await client.ExecuteAsync<DLiveStreamDto>(request);
 
-            return response.Data;
+            if (response.ResponseStatus == ResponseStatus.Error)
+            {
+                return MaybeResult<DLiveStreamDto, DLiveErrorType>.Fail(DLiveErrorType.ProviderNotAvailable);
+            }
+
+            return MaybeResult<DLiveStreamDto, DLiveErrorType>.Success(response.Data);
         }
 
-        public async Task<Maybe<DLiveUserDto>> GetUserByDisplayName(string displayName)
+        public async Task<MaybeResult<DLiveUserDto, DLiveErrorType>> GetUserByDisplayName(string displayName)
         {
             var graphQuery = new
             {
@@ -55,7 +60,12 @@ namespace GameStreamSearch.StreamPlatformApi.DLive
 
             var response = await client.ExecuteAsync<DLiveUserByDisplayNameDto>(request);
 
-            return Maybe<DLiveUserDto>.ToMaybe(response.Data.data.userByDisplayName);
+            if (response.ResponseStatus == ResponseStatus.Error)
+            {
+                return MaybeResult<DLiveUserDto, DLiveErrorType>.Fail(DLiveErrorType.ProviderNotAvailable);
+            }
+
+            return MaybeResult<DLiveUserDto, DLiveErrorType>.Success(response.Data.data.userByDisplayName);
         }
     }
 }

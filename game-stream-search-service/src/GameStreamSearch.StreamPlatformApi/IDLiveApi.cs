@@ -10,6 +10,12 @@ namespace GameStreamSearch.StreamPlatformApi
         Trending
     };
 
+    public enum DLiveErrorType
+    {
+        None,
+        ProviderNotAvailable,
+    }
+
     public static class DLiveTypeExtension
     {
         public static string GetAsString(this StreamSortOrder streamSortType)
@@ -20,7 +26,7 @@ namespace GameStreamSearch.StreamPlatformApi
 
     public interface IDLiveApi
     {
-        Task<DLiveStreamDto> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder);
-        Task<Maybe<DLiveUserDto>> GetUserByDisplayName(string displayName);
+        Task<MaybeResult<DLiveStreamDto, DLiveErrorType>> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder);
+        Task<MaybeResult<DLiveUserDto, DLiveErrorType>> GetUserByDisplayName(string displayName);
     }
 }

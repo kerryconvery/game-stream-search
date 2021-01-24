@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
+using GameStreamSearch.Types;
 using RestSharp;
 
 namespace GameStreamSearch.StreamPlatformApi.Twitch
@@ -15,7 +17,7 @@ namespace GameStreamSearch.StreamPlatformApi.Twitch
             this.twitchClientId = twitchClientId;
         }
 
-        public async Task<TwitchLiveStreamDto> GetLiveStreams(int pageSize, int pageOffset)
+        public async Task<MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>> GetLiveStreams(int pageSize, int pageOffset)
         {
             var client = new RestClient(this.twitchApiUrl);
 
@@ -29,10 +31,15 @@ namespace GameStreamSearch.StreamPlatformApi.Twitch
 
             var response = await client.ExecuteAsync<TwitchLiveStreamDto>(request);
 
-            return response.Data;
+            if (response.ResponseStatus == ResponseStatus.Error)
+            {
+                return MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable);
+            }
+
+            return MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(response.Data.streams);
         }
 
-        public async Task<TwitchChannelsDto> SearchChannels(string searchTerm, int pageSize, int pageOffset)
+        public async Task<MaybeResult<TwitchChannelsDto, TwitchErrorType>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
         {
             var client = new RestClient(this.twitchApiUrl);
 
@@ -47,10 +54,15 @@ namespace GameStreamSearch.StreamPlatformApi.Twitch
 
             var response = await client.ExecuteAsync<TwitchChannelsDto>(request);
 
-            return response.Data;
+            if (response.ResponseStatus == ResponseStatus.Error)
+            {
+                return MaybeResult<TwitchChannelsDto, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable);
+            }
+
+            return MaybeResult<TwitchChannelsDto, TwitchErrorType>.Success(response.Data);
         }
 
-        public async Task<TwitchLiveStreamDto> SearchStreams(string searchTerm, int pageSize, int pageOffset)
+        public async Task<MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>> SearchStreams(string searchTerm, int pageSize, int pageOffset)
         {
             var client = new RestClient(this.twitchApiUrl);
 
@@ -65,7 +77,12 @@ namespace GameStreamSearch.StreamPlatformApi.Twitch
 
             var response = await client.ExecuteAsync<TwitchLiveStreamDto>(request);
 
-            return response.Data;
+            if (response.ResponseStatus == ResponseStatus.Error)
+            {
+                return MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable);
+            }
+
+            return MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(response.Data.streams);
         }
     }
 }

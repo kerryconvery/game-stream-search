@@ -52,46 +52,48 @@ namespace GameStreamSearch.StreamProviders
             //DLive does not support filtering streams
             if (!string.IsNullOrEmpty(filterOptions.GameName))
             {
-                return GameStreamsDto.Empty();
+                return GameStreamsDto.Empty;
             }
 
             var pageOffset = GetPageOffset(pageToken);
 
             var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
 
-            return new GameStreamsDto
+            if (liveStreamsResult.IsFailure)
             {
-                Items = liveStreamsResult.data.livestreams.list.Select(s => new GameStreamDto
+                return GameStreamsDto.Empty;
+            }
+
+            return liveStreamsResult.Value.Map(result =>
+                new GameStreamsDto
                 {
-                    StreamTitle = s.title,
-                    StreamerName = s.creator.displayName,
-                    StreamThumbnailUrl = s.thumbnailUrl,
-                    StreamerAvatarUrl = s.creator.avatar,
-                    StreamUrl = $"{baseUrl}/{s.creator.displayName}",
-                    StreamPlatformName = Platform.GetFriendlyName(),
-                    IsLive = true,
-                    Views = s.watchingCount,
-                }),
-                NextPageToken = GetNextPageToken(liveStreamsResult.data.livestreams.list.Any(), pageSize, pageOffset),
-            };
+                    Items = result.data.livestreams.list.Select(s => new GameStreamDto
+                    {
+                        StreamTitle = s.title,
+                        StreamerName = s.creator.displayName,
+                        StreamThumbnailUrl = s.thumbnailUrl,
+                        StreamerAvatarUrl = s.creator.avatar,
+                        StreamUrl = $"{baseUrl}/{s.creator.displayName}",
+                        StreamPlatformName = Platform.GetFriendlyName(),
+                        IsLive = true,
+                        Views = s.watchingCount,
+                    }),
+                    NextPageToken = GetNextPageToken(result.data.livestreams.list.Any(), pageSize, pageOffset),
+                }
+            ).GetOrElse(GameStreamsDto.Empty);
         }
 
         public async Task<MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName)
         {
             var userResult = await dliveApi.GetUserByDisplayName(channelName);
 
-            if (userResult.IsNothing)
+            if (userResult.IsFailure)
             {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
+                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
             }
 
-            if (!userResult.Map(c => c.displayName.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase)).GetOrElse(false))
-            {
-                return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing());
-            }
-
-            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(userResult.Map(c =>
-                new StreamerChannelDto
+            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(
+                userResult.Value.Map(c => new StreamerChannelDto
                 {
                     ChannelName = c.displayName,
                     AvatarUrl = c.avatar,
