@@ -49,7 +49,7 @@ namespace GameStreamSearch.Application.Tests
             var streamFilterOptions = new StreamFilterOptions();
 
             twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
-                .ReturnsAsync(GameStreamsDto.Empty());
+                .ReturnsAsync(GameStreamsDto.Empty);
 
             var streamService = new ProviderAggregationService()
                 .RegisterStreamProvider(twitchStreamProviderStub.Object);

@@ -10,7 +10,7 @@ namespace GameStreamSearch.Types.Tests
         {
             var nonNullValue = Maybe<string>.ToMaybe("A");
 
-            Assert.IsTrue(nonNullValue.IsJust);
+            Assert.IsTrue(nonNullValue.IsSome);
             Assert.IsFalse(nonNullValue.IsNothing);
         }
 
@@ -20,15 +20,15 @@ namespace GameStreamSearch.Types.Tests
             var nullValue = Maybe<string>.ToMaybe(null);
 
             Assert.IsTrue(nullValue.IsNothing);
-            Assert.IsFalse(nullValue.IsJust);
+            Assert.IsFalse(nullValue.IsSome);
         }
 
         [Test]
         public void Should_Return_A_Just_Value()
         {
-            var justValue = Maybe<string>.Just("A");
+            var justValue = Maybe<string>.Some("A");
 
-            Assert.IsTrue(justValue.IsJust);
+            Assert.IsTrue(justValue.IsSome);
             Assert.IsFalse(justValue.IsNothing);
         }
 
@@ -38,13 +38,13 @@ namespace GameStreamSearch.Types.Tests
             var nothingValue = Maybe<string>.Nothing();
 
             Assert.IsTrue(nothingValue.IsNothing);
-            Assert.IsFalse(nothingValue.IsJust);
+            Assert.IsFalse(nothingValue.IsSome);
         }
 
         [Test]
         public void Should_Return_Wrapped_Value_When_Value_Is_Just()
         {
-            var value = Maybe<string>.Just("A").GetOrElse("B");
+            var value = Maybe<string>.Some("A").GetOrElse("B");
 
             Assert.AreEqual(value, "A");
         }
@@ -60,7 +60,7 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Return_Mapped_Value_When_Value_Is_Just()
         {
-            var mappedValue = Maybe<string>.Just("A").Map<string>(v => "C");
+            var mappedValue = Maybe<string>.Some("A").Map<string>(v => "C");
 
             Assert.AreEqual(mappedValue.GetOrElse("B"), "C");
         }
@@ -76,7 +76,7 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Allow_Unwrapping_A_Just_Value()
         {
-            var value = Maybe<string>.Just("A").Unwrap();
+            var value = Maybe<string>.Some("A").Unwrap();
 
             Assert.AreEqual(value, "A");
         }
@@ -84,19 +84,19 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Throw_Exception_If_Just_Value_Is_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => Maybe<string>.Just(null));
+            Assert.Throws<ArgumentNullException>(() => Maybe<string>.Some(null));
         }
 
         [Test]
         public void Should_Throw_Exception_If_Map_Function_Is_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => Maybe<string>.Just("A").Map<string>(null));
+            Assert.Throws<ArgumentNullException>(() => Maybe<string>.Some("A").Map<string>(null));
         }
 
         [Test]
         public void Should_Throw_Exception_If_Else_Value_Is_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => Maybe<string>.Just("A").GetOrElse(null));
+            Assert.Throws<ArgumentNullException>(() => Maybe<string>.Some("A").GetOrElse(null));
         }
 
         [Test]

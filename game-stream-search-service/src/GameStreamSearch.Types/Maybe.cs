@@ -29,7 +29,7 @@ namespace GameStreamSearch.Types
                 throw new ArgumentNullException(nameof(mapper));
 
             if (hasValue)
-                return Maybe<TResult>.Some(mapper(value));
+                return Maybe<TResult>.ToMaybe(mapper(value));
             else
                 return Maybe<TResult>.Nothing();
         }

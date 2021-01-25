@@ -133,7 +133,7 @@ namespace GameStreamSearch.StreamProviders
                     ChannelUrl = $"{youTubeBaseUrl}/user/{channel.snippet.title}",
                     Platform = Platform,
                 })
-                .FirstOrDefault(null)
+                .FirstOrDefault()
             );
 
             return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(channel);

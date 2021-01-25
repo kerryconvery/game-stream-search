@@ -43,7 +43,9 @@ namespace GameStreamSearch.StreamProviders.Tests
             };
 
             var dliveApiStub = new Mock<IDLiveApi>();
-            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending)).ReturnsAsync(dliveStreams);
+
+            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending))
+                .ReturnsAsync(MaybeResult<DLiveStreamDto, DLiveErrorType>.Success(dliveStreams));
 
             var dliveStreamProvider = new DLiveStreamProvider(streamWatchUrl, dliveApiStub.Object);
 
@@ -127,8 +129,10 @@ namespace GameStreamSearch.StreamProviders.Tests
             };
 
             var dliveApiStub = new Mock<IDLiveApi>();
-            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending)).ReturnsAsync(dliveStreamsPage1);
-            dliveApiStub.Setup(m => m.GetLiveStreams(1, 1, StreamSortOrder.Trending)).ReturnsAsync(dliveStreamsPage2);
+            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending))
+                .ReturnsAsync(MaybeResult<DLiveStreamDto, DLiveErrorType>.Success(dliveStreamsPage1));
+            dliveApiStub.Setup(m => m.GetLiveStreams(1, 1, StreamSortOrder.Trending))
+                .ReturnsAsync(MaybeResult<DLiveStreamDto, DLiveErrorType>.Success(dliveStreamsPage2));
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 
@@ -156,7 +160,8 @@ namespace GameStreamSearch.StreamProviders.Tests
             };
 
             var dliveApiStub = new Mock<IDLiveApi>();
-            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending)).ReturnsAsync(dliveStreamsPage);
+            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending))
+                .ReturnsAsync(MaybeResult<DLiveStreamDto, DLiveErrorType>.Success(dliveStreamsPage));
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 
@@ -172,7 +177,7 @@ namespace GameStreamSearch.StreamProviders.Tests
             var dliveApiStub = new Mock<IDLiveApi>();
 
             dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
-                Maybe<DLiveUserDto>.Just(new DLiveUserDto
+                MaybeResult<DLiveUserDto, DLiveErrorType>.Success(new DLiveUserDto
                 {
                     displayName = "Test Streamer"
                 }
@@ -186,31 +191,12 @@ namespace GameStreamSearch.StreamProviders.Tests
         }
 
         [Test]
-        public async Task Should_Return_Nothing_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
-        {
-            var dliveApiStub = new Mock<IDLiveApi>();
-
-            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).ReturnsAsync(
-                Maybe<DLiveUserDto>.Just(new DLiveUserDto
-                {
-
-                    displayName = "Test Streamer Two"
-                })
-            );
-
-            var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
-
-            var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
-
-            Assert.IsTrue(streamerChannel.Value.IsNothing);
-        }
-
-        [Test]
         public async Task Should_Return_Nothing_If_A_Channel_Was_Not_Found()
         {
             var dliveApiStub = new Mock<IDLiveApi>();
 
-            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer")).Returns(Task.FromResult(Maybe<DLiveUserDto>.Nothing()));
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer"))
+                .Returns(Task.FromResult(MaybeResult<DLiveUserDto, DLiveErrorType>.Success(Maybe<DLiveUserDto>.Nothing())));
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 

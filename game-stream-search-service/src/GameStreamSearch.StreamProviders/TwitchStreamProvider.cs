@@ -117,7 +117,7 @@ namespace GameStreamSearch.StreamProviders
                     ChannelUrl = result.Channels.First().url,
                     Platform = Platform,
                 })
-                .FirstOrDefault(null)
+                .FirstOrDefault()
             );
 
             return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(channel);

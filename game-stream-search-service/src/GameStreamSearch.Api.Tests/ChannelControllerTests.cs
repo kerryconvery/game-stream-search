@@ -98,7 +98,7 @@ namespace GameStreamSearch.Api.Tests
             channelRepositoryStub.Setup(s => s.Add(It.IsAny<Channel>())).Callback<Channel>(channel => dataStore.Add(channel));
             channelRepositoryStub
                 .Setup(s => s.Get(StreamPlatformType.YouTube, "Youtube channel"))
-                .ReturnsAsync(() => dataStore.Count == 0 ? Maybe<Channel>.Nothing() : Maybe<Channel>.Just(dataStore[0]));
+                .ReturnsAsync(() => dataStore.Count == 0 ? Maybe<Channel>.Nothing() : Maybe<Channel>.Some(dataStore[0]));
 
             var createResponse = await channelController.AddChannel(StreamPlatformType.YouTube, "Youtube channel");
             var createResult = createResponse as CreatedResult;
@@ -124,11 +124,11 @@ namespace GameStreamSearch.Api.Tests
 
             channelRepositoryStub
                 .Setup(s => s.Get(StreamPlatformType.Twitch, "Twitch channel"))
-                .ReturnsAsync(() => dataStore.Count <= 0 ? Maybe<Channel>.Nothing() : Maybe<Channel>.Just(dataStore[0]));
+                .ReturnsAsync(() => dataStore.Count <= 0 ? Maybe<Channel>.Nothing() : Maybe<Channel>.Some(dataStore[0]));
 
             channelRepositoryStub
                 .Setup(s => s.Get(StreamPlatformType.YouTube, "Youtube channel"))
-                .ReturnsAsync(() => dataStore.Count <= 1 ? Maybe<Channel>.Nothing() : Maybe<Channel>.Just(dataStore[1]));
+                .ReturnsAsync(() => dataStore.Count <= 1 ? Maybe<Channel>.Nothing() : Maybe<Channel>.Some(dataStore[1]));
 
             await channelController.AddChannel(StreamPlatformType.Twitch, "Twitch channel");
             await channelController.AddChannel(StreamPlatformType.YouTube, "Youtube channel");
@@ -160,7 +160,7 @@ namespace GameStreamSearch.Api.Tests
                 ChannelUrl = "old channel url",
             });
 
-            channelRepositoryStub.Setup(s => s.Get(StreamPlatformType.YouTube, "Youtube channel")).ReturnsAsync(() => Maybe<Channel>.Just(dataStore[0]));
+            channelRepositoryStub.Setup(s => s.Get(StreamPlatformType.YouTube, "Youtube channel")).ReturnsAsync(() => Maybe<Channel>.Some(dataStore[0]));
             channelRepositoryStub.Setup(s => s.Update(It.IsAny<Channel>())).Callback<Channel>(channel => dataStore[0] = channel);
 
             StreamerChannelDto updatedChannelDto = new StreamerChannelDto
