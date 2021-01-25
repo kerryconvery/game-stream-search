@@ -35,7 +35,7 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Return_A_Nothing_Value()
         {
-            var nothingValue = Maybe<string>.Nothing();
+            var nothingValue = Maybe<string>.Nothing;
 
             Assert.IsTrue(nothingValue.IsNothing);
             Assert.IsFalse(nothingValue.IsSome);
@@ -52,7 +52,7 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Return_Else_Value_When_Value_Is_Nothing()
         {
-            var value = Maybe<string>.Nothing().GetOrElse("B");
+            var value = Maybe<string>.Nothing.GetOrElse("B");
 
             Assert.AreEqual(value, "B");
         }
@@ -68,7 +68,7 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Return_Nothing_Value_When_Value_Is_Nothing()
         {
-            var mappedValue = Maybe<string>.Nothing().Map<string>(v => "C");
+            var mappedValue = Maybe<string>.Nothing.Map<string>(v => "C");
 
             Assert.IsTrue(mappedValue.IsNothing);
         }
@@ -102,7 +102,7 @@ namespace GameStreamSearch.Types.Tests
         [Test]
         public void Should_Throw_Exception_If_Unwrapping_A_Nothing_Value()
         {
-            Assert.Throws<InvalidOperationException>(() => Maybe<string>.Nothing().Unwrap());
+            Assert.Throws<InvalidOperationException>(() => Maybe<string>.Nothing.Unwrap());
         }
     }
 }

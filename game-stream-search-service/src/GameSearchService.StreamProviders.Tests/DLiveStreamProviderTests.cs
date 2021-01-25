@@ -211,7 +211,7 @@ namespace GameStreamSearch.StreamProviders.Tests
             var dliveApiStub = new Mock<IDLiveApi>();
 
             dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer"))
-                .Returns(Task.FromResult(MaybeResult<DLiveUserDto, DLiveErrorType>.Success(Maybe<DLiveUserDto>.Nothing())));
+                .Returns(Task.FromResult(MaybeResult<DLiveUserDto, DLiveErrorType>.Success(Maybe<DLiveUserDto>.Nothing)));
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 

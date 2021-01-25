@@ -57,9 +57,14 @@ namespace GameStreamSearch.Api.Tests
             youTubeStreamProviderStub = new Mock<IStreamProvider>();
             youTubeStreamProviderStub.SetupGet(s => s.Platform).Returns(StreamPlatformType.YouTube);
 
-            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, null)).ReturnsAsync(unfiltereGameStreeams);
-            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == "stream 2"), 1, null)).ReturnsAsync(filtereGameStreeams);
-            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, "page two")).ReturnsAsync(nextPageGameStreeams);
+            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, null))
+                .ReturnsAsync(unfiltereGameStreeams);
+
+            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == "stream 2"), 1, null))
+                .ReturnsAsync(filtereGameStreeams);
+
+            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, "page two"))
+                .ReturnsAsync(nextPageGameStreeams);
 
             ProviderAggregationService streamService = new ProviderAggregationService()
                 .RegisterStreamProvider(youTubeStreamProviderStub.Object);
