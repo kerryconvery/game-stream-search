@@ -82,9 +82,8 @@ namespace GameStreamSearch.Api.Tests
             var createResult = createResponse as CreatedResult;
 
             var getResponse = await channelController.GetChannel(StreamPlatformType.YouTube, "Youtube channel");
-            var getValue = (getResponse as OkObjectResult).Value;
-            var channel = getValue as ChannelDto;
 
+            var channel = GetResponseValue(getResponse);
 
             Assert.IsInstanceOf<CreatedResult>(createResponse);
             Assert.AreEqual(createResult.Location, channel.ChannelName);
@@ -131,13 +130,18 @@ namespace GameStreamSearch.Api.Tests
             var result = updateResponse as OkObjectResult;
 
             var getResponse = await channelController.GetChannel(StreamPlatformType.YouTube, "Youtube channel");
-            var getValue = (getResponse as OkObjectResult).Value;
-            var channel = getValue as ChannelDto;
+            var channel = GetResponseValue(getResponse);
 
             Assert.AreEqual(dataStore.Count(), 1);
             Assert.IsInstanceOf<NoContentResult>(updateResponse);
             Assert.AreEqual(channel.AvatarUrl, updatedChannelDto.AvatarUrl);
             Assert.AreEqual(channel.ChannelUrl, updatedChannelDto.ChannelUrl);
+        }
+
+        private ChannelDto GetResponseValue(IActionResult response)
+        {
+            var getValue = (response as OkObjectResult).Value;
+            return getValue as ChannelDto;
         }
     }
 }

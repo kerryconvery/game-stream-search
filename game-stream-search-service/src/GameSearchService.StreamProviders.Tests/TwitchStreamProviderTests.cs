@@ -12,8 +12,18 @@ using GameStreamSearch.Types;
 
 namespace GameSearchService.StreamProviders.Tests
 {
+    [TestFixture]
     public class TwitchStreamProviderTests
     {
+
+        private Mock<ITwitchKrakenApi> twitchKrakenApiStub;
+
+        [SetUp]
+        public void Setup()
+        {
+            twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
+        }
+
         private List<TwitchStreamDto> liveStreamsPage1 = new List<TwitchStreamDto>
         {
             new TwitchStreamDto
@@ -55,8 +65,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Live_Streams_When_Not_Filtering()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(liveStreamsPage1));
 
@@ -78,8 +86,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Filtered_Live_Streams()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchStreams("fake game", 1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(liveStreamsPage1));
 
@@ -101,8 +107,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_Of_Streams_When_Getting_Streams_Fails()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable));
 
@@ -116,8 +120,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_The_Second_Page_Of_Unfiltered_Streams()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(liveStreamsPage1));
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 1))
@@ -135,8 +137,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_The_Second_Page_Of_Filtered_Streams()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchStreams("fake game", 1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(liveStreamsPage1));
             twitchKrakenApiStub.Setup(m => m.SearchStreams("fake game", 1, 1))
@@ -154,8 +154,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_A_Null_Next_Page_Token_When_There_Are_No_More_Unfiltered_Streams()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(liveStreamsPage1));
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 1))
@@ -172,8 +170,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_A_Null_Next_Page_Token_When_There_Are_No_More_Filtered_Streams()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchStreams("fake game", 1, 0))
                 .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(liveStreamsPage1));
             twitchKrakenApiStub.Setup(m => m.SearchStreams("fake game", 1, 1))
@@ -190,8 +186,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Streamer_Channel_If_A_Channel_Was_Found_And_The_Name_Matched()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
                 MaybeResult<TwitchChannelsDto, TwitchErrorType>.Success(new TwitchChannelsDto
                     {
@@ -209,8 +203,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Nothing_If_A_Channel_Was_Found_But_The_Name_Does_Not_Match()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
                 MaybeResult<TwitchChannelsDto, TwitchErrorType>.Success(new TwitchChannelsDto
                     {
@@ -228,8 +220,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Nothing_If_A_Channel_Was_Not_Found()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
                 MaybeResult<TwitchChannelsDto, TwitchErrorType>.Success(new TwitchChannelsDto
                 {
@@ -247,8 +237,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Failure_If_The_Service_Is_Not_Available_When_Getting_Channels()
         {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
             twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
                 MaybeResult<TwitchChannelsDto, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable)
             );

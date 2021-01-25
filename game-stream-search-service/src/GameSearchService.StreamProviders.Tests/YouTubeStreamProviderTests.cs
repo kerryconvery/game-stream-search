@@ -13,9 +13,17 @@ using NUnit.Framework;
 
 namespace GameSearchService.StreamProviders.Tests
 {
-
+    [TestFixture]
     public class YouTubeStreamProviderTests
     {
+        private Mock<IYouTubeV3Api> youTubeV3ApiStub;
+
+        [SetUp]
+        public void Setup()
+        {
+            youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
+        }
+
         private YouTubeSearchDto liveStreams = new YouTubeSearchDto()
         {
             items = new List<YouTubeSearchItemDto>
@@ -79,8 +87,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_A_List_Of_Streams()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.SearchGamingVideos("fake game", VideoEventType.Live, VideoSortType.ViewCount, 1, "page token"))
                 .ReturnsAsync(MaybeResult<YouTubeSearchDto, YouTubeErrorType>.Success(liveStreams));
 
@@ -109,8 +115,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_Of_Streams_No_Streams_Were_Found()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.SearchGamingVideos(null, VideoEventType.Live, VideoSortType.ViewCount, 1, null))
                 .ReturnsAsync(MaybeResult<YouTubeSearchDto, YouTubeErrorType>.Success(new YouTubeSearchDto
                     {
@@ -128,8 +132,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_Of_Streams_When_There_Is_An_Error_Getting_Streams()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.SearchGamingVideos(null, VideoEventType.Live, VideoSortType.ViewCount, 1, null))
                 .ReturnsAsync(MaybeResult<YouTubeSearchDto, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
 
@@ -144,8 +146,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_Of_Streams_When_There_Is_An_Error_Getting_Stream_Channels()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.GetChannels(It.IsAny<string[]>()))
                 .ReturnsAsync(MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
 
@@ -160,8 +160,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_An_Empty_List_Of_Streams_When_There_Is_An_Error_Getting_Stream_Details()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.GetVideos(It.IsAny<string[]>()))
                 .ReturnsAsync(MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
 
@@ -176,8 +174,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Streamer_Channel_If_A_Channel_Was_Found_And_The_Name_Matched()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
                 MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Success(
                     new List<YouTubeChannelDto>
@@ -210,8 +206,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Nothing_If_A_Channel_Was_Not_Found()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
                 MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Success(Maybe<IEnumerable<YouTubeChannelDto>>.Nothing)
             );
@@ -226,8 +220,6 @@ namespace GameSearchService.StreamProviders.Tests
         [Test]
         public async Task Should_Return_Provider_Not_Available_If_The_Streaming_Platform_Service_Is_Unavailable()
         {
-            var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
-
             youTubeV3ApiStub.Setup(m => m.SearchChannelsByUsername("Test streamer", 1)).ReturnsAsync(
                 MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable)
             );

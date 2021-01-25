@@ -11,15 +11,6 @@ namespace GameStreamSearch.Application.Tests
 {
     public class StreaServiceTests
     {
-        private Mock<IStreamProvider> CreateStreamProviderStub(StreamPlatformType streamingPlatform)
-        {
-            var streamProviderStub = new Mock<IStreamProvider>();
-
-            streamProviderStub.SetupGet(m => m.Platform).Returns(streamingPlatform);
-
-            return streamProviderStub;
-        }
-
         [Test]
         public async Task Should_Return_An_Aggregated_List_Of_Streams_From_All_Registered_Providers()
         {
@@ -60,7 +51,7 @@ namespace GameStreamSearch.Application.Tests
         }
 
         [Test]
-        public async Task Should_Pass_Page_Tokens_Where_A_Page_Token_For_The_Provider_Exists()
+        public async Task Should_Pass_Page_Tokens_When_A_Page_Token_For_The_Provider_Exists()
         {
             var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
             var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.YouTube);
@@ -139,6 +130,15 @@ namespace GameStreamSearch.Application.Tests
 
             Assert.AreEqual(streams.Items.First().Views, 2);
             Assert.AreEqual(streams.Items.Last().Views, 1);
+        }
+
+        private Mock<IStreamProvider> CreateStreamProviderStub(StreamPlatformType streamingPlatform)
+        {
+            var streamProviderStub = new Mock<IStreamProvider>();
+
+            streamProviderStub.SetupGet(m => m.Platform).Returns(streamingPlatform);
+
+            return streamProviderStub;
         }
     }
 }
