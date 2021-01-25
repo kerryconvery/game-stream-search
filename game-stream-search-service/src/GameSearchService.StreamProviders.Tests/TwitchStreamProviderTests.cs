@@ -5,8 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
-using GameStreamSearch.StreamPlatformApi;
+using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 

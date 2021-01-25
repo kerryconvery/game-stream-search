@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.StreamPlatformApi;
-using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
+using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 
@@ -12,12 +11,12 @@ namespace GameStreamSearch.StreamProviders
 {
     public class YouTubeStreamProvider : IStreamProvider
     {
-        private readonly string youTubeBaseUrl;
+        private readonly string youTubeWebUrl;
         private readonly IYouTubeV3Api youTubeV3Api;
 
-        public YouTubeStreamProvider(string youTubeBaseUrl, IYouTubeV3Api youTubeV3Api)
+        public YouTubeStreamProvider(string youTubeWebUrl, IYouTubeV3Api youTubeV3Api)
         {
-            this.youTubeBaseUrl = youTubeBaseUrl;
+            this.youTubeWebUrl = youTubeWebUrl;
             this.youTubeV3Api = youTubeV3Api;
         }
 
@@ -36,7 +35,7 @@ namespace GameStreamSearch.StreamProviders
                     StreamTitle = v.snippet.title,
                     StreamThumbnailUrl = v.snippet.thumbnails.medium.url,
                     StreamerAvatarUrl = channelSnippet?.thumbnails.@default.url,
-                    StreamUrl = $"{youTubeBaseUrl}/watch?v={v.id.videoId}",
+                    StreamUrl = $"{youTubeWebUrl}/watch?v={v.id.videoId}",
                     StreamPlatformName = Platform.GetFriendlyName(),
                     IsLive = true,
                     Views = streamDetails != null ? streamDetails.concurrentViewers : 0,
@@ -124,13 +123,7 @@ namespace GameStreamSearch.StreamProviders
             }
 
             var channel = channelsResult.Value.Map(channels => channels
-                .Select(channel => new StreamerChannelDto
-                {
-                    ChannelName = channel.snippet.title,
-                    AvatarUrl = channel.snippet.thumbnails.@default.url,
-                    ChannelUrl = $"{youTubeBaseUrl}/user/{channel.snippet.title}",
-                    Platform = Platform,
-                })
+                .Select(channel => channel.ToStreamerChannelDto(youTubeWebUrl))
                 .FirstOrDefault()
             );
 

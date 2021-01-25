@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.StreamPlatformApi.DLive.Dto
+namespace GameStreamSearch.StreamProviders.Dto.DLive
 {
     public class DLiveStreamItemDto
     {

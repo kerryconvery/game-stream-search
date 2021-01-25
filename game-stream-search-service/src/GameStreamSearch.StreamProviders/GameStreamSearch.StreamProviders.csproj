@@ -10,7 +10,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
-    <ProjectReference Include="..\GameStreamSearch.StreamPlatformApi\GameStreamSearch.StreamPlatformApi.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Providers\" />
+    <Folder Include="Dto\" />
+    <Folder Include="Dto\DLive\" />
+    <Folder Include="Dto\Twitch\" />
+    <Folder Include="Dto\YouTube\" />
+    <Folder Include="Dto\Twitch\Kraken\" />
+    <Folder Include="Dto\YouTube\YouTubeV3\" />
   </ItemGroup>
 </Project>

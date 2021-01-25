@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3
+namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
 {
     public class YouTubeChannelSnippetThumbnailDto
     {
@@ -23,10 +24,16 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3
     {
         public string id { get; set; }
         public YouTubeChannelSnippetDto snippet { get; set; }
-    }
 
-    public class YouTubeChannelsDto
-    {
-        public IEnumerable<YouTubeChannelDto> items { get; set; }
+        public StreamerChannelDto ToStreamerChannelDto(string youTubeWebUrl)
+        {
+            return new StreamerChannelDto
+            {
+                ChannelName = snippet.title,
+                AvatarUrl = snippet.thumbnails.@default.url,
+                ChannelUrl = $"{youTubeWebUrl}/user/{snippet.title}",
+                Platform = StreamPlatformType.YouTube,
+            };
+        }
     }
 }

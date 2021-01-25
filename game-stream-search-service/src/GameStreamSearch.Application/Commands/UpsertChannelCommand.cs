@@ -46,16 +46,9 @@ namespace GameStreamSearch.Application.Commands
                 return UpsertChannelResult.ChannelNotFoundOnPlatform;
             }
 
-            var channel = streamChannelResult.Value.Map(streamChannel =>
-                new Channel
-                {
-                    ChannelName = request.ChannelName,
-                    StreamPlatform = request.StreamPlatform,
-                    DateRegistered = request.RegistrationDate,
-                    AvatarUrl = streamChannel.AvatarUrl,
-                    ChannelUrl = streamChannel.ChannelUrl,
-                }
-            ).Unwrap();
+            var channel = streamChannelResult.Value
+                .Map(streamChannel => streamChannel.ToChannel(request.RegistrationDate))
+                .Unwrap();
 
             var existingChannel = await channelRepository.Get(request.StreamPlatform, request.ChannelName);
 

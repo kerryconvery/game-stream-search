@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Types;
-using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
+using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using RestSharp;
 
-namespace GameStreamSearch.StreamPlatformApi.YouTube
+namespace GameStreamSearch.StreamProviders.Dto
 {
     public class YouTubeV3Api : IYouTubeV3Api
     {

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.StreamPlatformApi.DLive.Dto;
+using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.StreamPlatformApi
+namespace GameStreamSearch.StreamProviders
 {
     public enum StreamSortOrder
     {

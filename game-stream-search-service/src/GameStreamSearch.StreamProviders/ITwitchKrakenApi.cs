@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
+using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.StreamPlatformApi
+namespace GameStreamSearch.StreamProviders
 {
     public enum TwitchErrorType
     {

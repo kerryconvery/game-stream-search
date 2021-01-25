@@ -4,20 +4,20 @@ using System.Threading.Tasks;
 using Base64Url;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.StreamPlatformApi;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
+using GameStreamSearch.StreamProviders.Dto.DLive;
 
 namespace GameStreamSearch.StreamProviders
 {
     public class DLiveStreamProvider : IStreamProvider
     {
-        private readonly string baseUrl;
+        private readonly string dliveWebUrl;
         private readonly IDLiveApi dliveApi;
 
-        public DLiveStreamProvider(string baseUrl, IDLiveApi dliveApi)
+        public DLiveStreamProvider(string dliveWebUrl, IDLiveApi dliveApi)
         {
-            this.baseUrl = baseUrl;
+            this.dliveWebUrl = dliveWebUrl;
             this.dliveApi = dliveApi;
         }
 
@@ -73,7 +73,7 @@ namespace GameStreamSearch.StreamProviders
                         StreamerName = s.creator.displayName,
                         StreamThumbnailUrl = s.thumbnailUrl,
                         StreamerAvatarUrl = s.creator.avatar,
-                        StreamUrl = $"{baseUrl}/{s.creator.displayName}",
+                        StreamUrl = $"{dliveWebUrl}/{s.creator.displayName}",
                         StreamPlatformName = Platform.GetFriendlyName(),
                         IsLive = true,
                         Views = s.watchingCount,
@@ -92,15 +92,9 @@ namespace GameStreamSearch.StreamProviders
                 return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
             }
 
-            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(
-                userResult.Value.Map(c => new StreamerChannelDto
-                {
-                    ChannelName = c.displayName,
-                    AvatarUrl = c.avatar,
-                    ChannelUrl = $"{baseUrl}/{c.displayName}",
-                    Platform = Platform,
-                })
-            );
+            var streamerChannel = userResult.Value.Map(channel => channel.ToStreamerChannelDto(dliveWebUrl));
+
+            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(streamerChannel);
         }
 
         public StreamPlatformType Platform => StreamPlatformType.DLive;

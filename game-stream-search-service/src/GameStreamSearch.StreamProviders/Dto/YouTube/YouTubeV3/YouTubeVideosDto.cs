@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3
+namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
 {
     public class YouTubeVideoLiveStreamingDetailsDto
     {

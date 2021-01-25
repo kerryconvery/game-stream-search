@@ -5,15 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DLive\" />
-    <Folder Include="Twitch\" />
-    <Folder Include="YouTube\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="GraphQL.Client" Version="3.2.0" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj" />
   </ItemGroup>
 </Project>

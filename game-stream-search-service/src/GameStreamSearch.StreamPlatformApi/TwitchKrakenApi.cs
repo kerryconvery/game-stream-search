@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
+using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 using RestSharp;
 
-namespace GameStreamSearch.StreamPlatformApi.Twitch
+namespace GameStreamSearch.StreamProviders.Dto
 {
     public class TwitchKrakenApi : ITwitchKrakenApi
     {

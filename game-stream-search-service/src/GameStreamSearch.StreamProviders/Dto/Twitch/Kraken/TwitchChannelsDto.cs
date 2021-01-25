@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken
+namespace GameStreamSearch.StreamProviders.Dto.Twitch.Kraken
 {
     public class TwitchChannelsDto
     {

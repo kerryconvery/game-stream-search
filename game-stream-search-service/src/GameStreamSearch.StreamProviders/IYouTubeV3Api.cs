@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Types;
-using GameStreamSearch.StreamPlatformApi.YouTube.Dto.YouTubeV3;
+using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 
-namespace GameStreamSearch.StreamPlatformApi
+namespace GameStreamSearch.StreamProviders
 {
     public enum VideoEventType
     {

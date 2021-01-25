@@ -6,8 +6,7 @@ using GameStreamSearch.Application.Dto;
 using Base64Url;
 using System.Security.Cryptography;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.StreamPlatformApi;
-using GameStreamSearch.StreamPlatformApi.Twitch.Dto.Kraken;
+using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders
@@ -108,19 +107,13 @@ namespace GameStreamSearch.StreamProviders
                 return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable);
             }
 
-            var channel = channelsResult.Value.Map(result => result.Channels
+            var streamerChannel = channelsResult.Value.Map(result => result.Channels
                 .Where(channel => channel.display_name.Equals(channelName, System.StringComparison.CurrentCultureIgnoreCase))
-                .Select(channel => new StreamerChannelDto
-                {
-                    ChannelName = result.Channels.First().display_name,
-                    AvatarUrl = result.Channels.First().logo,
-                    ChannelUrl = result.Channels.First().url,
-                    Platform = Platform,
-                })
+                .Select(channel => channel.ToStreamerChannelDto())
                 .FirstOrDefault()
             );
 
-            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(channel);
+            return MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(streamerChannel);
         }
 
         public StreamPlatformType Platform => StreamPlatformType.Twitch;
