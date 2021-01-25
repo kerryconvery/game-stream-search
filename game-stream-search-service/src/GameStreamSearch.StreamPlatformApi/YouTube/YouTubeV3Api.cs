@@ -46,7 +46,7 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
             return MaybeResult<YouTubeSearchDto, YouTubeErrorType>.Success(response.Data);
         }
 
-        public async Task<MaybeResult<YouTubeChannelsDto, YouTubeErrorType>> GetChannels(string[] channelIds)
+        public async Task<MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>> GetChannels(string[] channelIds)
         {
             var client = new RestClient(this.googleApiUrl);
 
@@ -69,13 +69,13 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
 
             if (response.ResponseStatus == ResponseStatus.Error || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                return MaybeResult<YouTubeChannelsDto, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable);
+                return MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable);
             }
 
-            return MaybeResult<YouTubeChannelsDto, YouTubeErrorType>.Success(response.Data);
+            return MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Success(response.Data.items);
         }
 
-        public async Task<MaybeResult<YouTubeVideosDto, YouTubeErrorType>> GetVideos(string[] videoIds)
+        public async Task<MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>> GetVideos(string[] videoIds)
         {
             var client = new RestClient(this.googleApiUrl);
 
@@ -98,10 +98,10 @@ namespace GameStreamSearch.StreamPlatformApi.YouTube
 
             if (response.ResponseStatus == ResponseStatus.Error || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                return MaybeResult<YouTubeVideosDto, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable);
+                return MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable);
             }
 
-            return MaybeResult<YouTubeVideosDto, YouTubeErrorType>.Success(response.Data);
+            return MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>.Success(response.Data.items);
         }
 
         public async Task<MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>> SearchChannelsByUsername(string username, int pageSize)

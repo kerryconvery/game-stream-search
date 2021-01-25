@@ -50,8 +50,8 @@ namespace GameStreamSearch.StreamPlatformApi
     public interface IYouTubeV3Api
     {
         Task<MaybeResult<YouTubeSearchDto, YouTubeErrorType>> SearchGamingVideos(string query, VideoEventType eventType, VideoSortType order, int pageSize, string pageToken);
-        Task<MaybeResult<YouTubeChannelsDto, YouTubeErrorType>> GetChannels(string[] channelIds);
-        Task<MaybeResult<YouTubeVideosDto, YouTubeErrorType>> GetVideos(string[] videoIds);
+        Task<MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>> GetChannels(string[] channelIds);
+        Task<MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>> GetVideos(string[] videoIds);
         Task<MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>> SearchChannelsByUsername(string username, int pageSize);
     }
 }

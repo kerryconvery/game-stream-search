@@ -27,17 +27,17 @@ namespace GameStreamSearch.Application.Tests
             var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.YouTube);
             var streamFilterOptions = new StreamFilterOptions();
 
-            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, string.Empty))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } } );
 
-            youtubeStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
+            youtubeStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, string.Empty))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() { new GameStreamDto() } } );
 
             var streamService = new ProviderAggregationService()
                 .RegisterStreamProvider(twitchStreamProviderStub.Object)
                 .RegisterStreamProvider(youtubeStreamProviderStub.Object);
 
-            var streams = await streamService.GetStreams(streamFilterOptions, 2, null);
+            var streams = await streamService.GetStreams(streamFilterOptions, 2, string.Empty);
 
             Assert.AreEqual(streams.Items.Count(), 2);
         }
@@ -48,13 +48,13 @@ namespace GameStreamSearch.Application.Tests
             var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
             var streamFilterOptions = new StreamFilterOptions();
 
-            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 1, string.Empty))
                 .ReturnsAsync(GameStreamsDto.Empty);
 
             var streamService = new ProviderAggregationService()
                 .RegisterStreamProvider(twitchStreamProviderStub.Object);
 
-            var streams = await streamService.GetStreams(streamFilterOptions, 1, null);
+            var streams = await streamService.GetStreams(streamFilterOptions, 1, string.Empty);
 
             Assert.AreEqual(streams.Items.Count(), 0);
         }
@@ -66,7 +66,7 @@ namespace GameStreamSearch.Application.Tests
             var youtubeStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.YouTube);
             var streamFilterOptions = new StreamFilterOptions();
 
-            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), string.Empty))
                 .ReturnsAsync(new GameStreamsDto()
                 {
                     Items = new List<GameStreamDto>
@@ -94,7 +94,7 @@ namespace GameStreamSearch.Application.Tests
                     },
                 });
 
-            youtubeStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), null))
+            youtubeStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, It.IsAny<int>(), string.Empty))
                 .ReturnsAsync(new GameStreamsDto()
                 {
                     Items = new List<GameStreamDto>
@@ -110,7 +110,7 @@ namespace GameStreamSearch.Application.Tests
                 .RegisterStreamProvider(twitchStreamProviderStub.Object)
                 .RegisterStreamProvider(youtubeStreamProviderStub.Object);
 
-            var firstPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, null);
+            var firstPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, string.Empty);
 
             var nextPageOfStreams = await streamService.GetStreams(streamFilterOptions, 1, firstPageOfStreams.NextPageToken);
 
@@ -126,7 +126,7 @@ namespace GameStreamSearch.Application.Tests
             var twitchStreamProviderStub = CreateStreamProviderStub(StreamPlatformType.Twitch);
             var streamFilterOptions = new StreamFilterOptions();
 
-            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, null))
+            twitchStreamProviderStub.Setup(m => m.GetLiveStreams(streamFilterOptions, 2, string.Empty))
                 .ReturnsAsync(new GameStreamsDto() { Items = new List<GameStreamDto>() {
                     new GameStreamDto() { Views = 1 },
                     new GameStreamDto() { Views = 2 }
@@ -135,7 +135,7 @@ namespace GameStreamSearch.Application.Tests
             var streamService = new ProviderAggregationService()
                 .RegisterStreamProvider(twitchStreamProviderStub.Object);
 
-            var streams = await streamService.GetStreams(streamFilterOptions, 2, null);
+            var streams = await streamService.GetStreams(streamFilterOptions, 2, string.Empty);
 
             Assert.AreEqual(streams.Items.First().Views, 2);
             Assert.AreEqual(streams.Items.Last().Views, 1);

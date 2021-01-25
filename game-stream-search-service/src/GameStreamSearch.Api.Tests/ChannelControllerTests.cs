@@ -22,7 +22,6 @@ namespace GameStreamSearch.Api.Tests
         private ChannelsController channelController;
         private Mock<ITimeProvider> timeProviderStub = new Mock<ITimeProvider>();
         private Mock<IStreamProvider> youTubeStreamProviderStub = new Mock<IStreamProvider>();
-        private Mock<IStreamProvider> twitchtreamProviderStub;
         private Mock<IChannelRepository> channelRepositoryMock = new Mock<IChannelRepository>();
 
         private readonly DateTime registrationDate = DateTime.Now;

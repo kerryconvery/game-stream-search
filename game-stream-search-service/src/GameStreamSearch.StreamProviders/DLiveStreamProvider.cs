@@ -47,7 +47,7 @@ namespace GameStreamSearch.StreamProviders
             return base64Encryptor.ToString();
         }
 
-        public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null)
+        public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             //DLive does not support filtering streams
             if (!string.IsNullOrEmpty(filterOptions.GameName))

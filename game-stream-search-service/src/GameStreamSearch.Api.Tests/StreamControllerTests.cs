@@ -57,10 +57,10 @@ namespace GameStreamSearch.Api.Tests
             youTubeStreamProviderStub = new Mock<IStreamProvider>();
             youTubeStreamProviderStub.SetupGet(s => s.Platform).Returns(StreamPlatformType.YouTube);
 
-            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, null))
+            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, string.Empty))
                 .ReturnsAsync(unfiltereGameStreeams);
 
-            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == "stream 2"), 1, null))
+            youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == "stream 2"), 1, string.Empty))
                 .ReturnsAsync(filtereGameStreeams);
 
             youTubeStreamProviderStub.Setup(s => s.GetLiveStreams(It.Is<StreamFilterOptions>(o => o.GameName == null), 1, "page two"))

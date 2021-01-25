@@ -69,7 +69,7 @@ namespace GameStreamSearch.Application.Services
             var paginationTokens = UnpackPageTokens(pageToken);
 
             var tasks = streamProviders.Values.Select(p => {
-                var pageToken = paginationTokens.ContainsKey(p.Platform) ? paginationTokens[p.Platform] : null;
+                var pageToken = paginationTokens.ContainsKey(p.Platform) ? paginationTokens[p.Platform] : string.Empty;
 
                 return p.GetLiveStreams(filterOptions, pageSize, pageToken);
             });

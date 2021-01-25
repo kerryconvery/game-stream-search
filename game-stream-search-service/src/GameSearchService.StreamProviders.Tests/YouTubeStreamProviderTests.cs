@@ -44,36 +44,30 @@ namespace GameSearchService.StreamProviders.Tests
             nextPageToken = "next page token"
         };
 
-        private YouTubeVideosDto videos = new YouTubeVideosDto
+        private IEnumerable<YouTubeVideoDto> videos = new List<YouTubeVideoDto>
         {
-            items = new List<YouTubeVideoDto>
+            new YouTubeVideoDto
             {
-                new YouTubeVideoDto
+                id = "stream1",
+                liveStreamingDetails = new YouTubeVideoLiveStreamingDetailsDto
                 {
-                    id = "stream1",
-                    liveStreamingDetails = new YouTubeVideoLiveStreamingDetailsDto
-                    {
-                        concurrentViewers = 5,
-                    }
+                    concurrentViewers = 5,
                 }
             }
         };
 
-        private YouTubeChannelsDto channels = new YouTubeChannelsDto
+        private IEnumerable<YouTubeChannelDto> channels = new List<YouTubeChannelDto>
         {
-            items = new List<YouTubeChannelDto>
+            new YouTubeChannelDto
             {
-                new YouTubeChannelDto
+                id = "channel1",
+                snippet = new YouTubeChannelSnippetDto
                 {
-                    id = "channel1",
-                    snippet = new YouTubeChannelSnippetDto
+                    thumbnails = new YouTubeChannelSnippetThumbnailsDto
                     {
-                        thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                        @default = new YouTubeChannelSnippetThumbnailDto
                         {
-                            @default = new YouTubeChannelSnippetThumbnailDto
-                            {
-                                url = "http://channel.thumpbnail.url",
-                            }
+                            url = "http://channel.thumpbnail.url",
                         }
                     }
                 }
@@ -91,10 +85,10 @@ namespace GameSearchService.StreamProviders.Tests
                 .ReturnsAsync(MaybeResult<YouTubeSearchDto, YouTubeErrorType>.Success(liveStreams));
 
             youTubeV3ApiStub.Setup(m => m.GetVideos(It.Is<string[]>(i => i.First() == "stream1")))
-                .ReturnsAsync(MaybeResult<YouTubeVideosDto, YouTubeErrorType>.Success(videos));
+                .ReturnsAsync(MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>.Success(videos));
 
             youTubeV3ApiStub.Setup(m => m.GetChannels(It.Is<string[]>(i => i.First() == "channel1")))
-                .ReturnsAsync(MaybeResult<YouTubeChannelsDto, YouTubeErrorType>.Success(channels));
+                .ReturnsAsync(MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Success(channels));
 
             var youTubeStreamProvider = new YouTubeStreamProvider(youTubeBaseUrl, youTubeV3ApiStub.Object);
 
@@ -104,7 +98,7 @@ namespace GameSearchService.StreamProviders.Tests
             Assert.AreEqual(streams.Items.First().StreamTitle, liveStreams.items.First().snippet.title);
             Assert.AreEqual(streams.Items.First().StreamerName, liveStreams.items.First().snippet.channelTitle);
             Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, liveStreams.items.First().snippet.thumbnails.medium.url);
-            Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, channels.items.First().snippet.thumbnails.@default.url);
+            Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, channels.First().snippet.thumbnails.@default.url);
             Assert.AreEqual(streams.Items.First().StreamUrl, $"{youTubeBaseUrl}/watch?v=stream1");
             Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.YouTube.GetFriendlyName());
             Assert.AreEqual(streams.Items.First().Views, 5);
@@ -153,7 +147,7 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.GetChannels(It.IsAny<string[]>()))
-                .ReturnsAsync(MaybeResult<YouTubeChannelsDto, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
+                .ReturnsAsync(MaybeResult<IEnumerable<YouTubeChannelDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
 
             var youTubeStreamProvider = new YouTubeStreamProvider(youTubeBaseUrl, youTubeV3ApiStub.Object);
 
@@ -169,7 +163,7 @@ namespace GameSearchService.StreamProviders.Tests
             var youTubeV3ApiStub = new Mock<IYouTubeV3Api>();
 
             youTubeV3ApiStub.Setup(m => m.GetVideos(It.IsAny<string[]>()))
-                .ReturnsAsync(MaybeResult<YouTubeVideosDto, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
+                .ReturnsAsync(MaybeResult<IEnumerable<YouTubeVideoDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable));
 
             var youTubeStreamProvider = new YouTubeStreamProvider(youTubeBaseUrl, youTubeV3ApiStub.Object);
 

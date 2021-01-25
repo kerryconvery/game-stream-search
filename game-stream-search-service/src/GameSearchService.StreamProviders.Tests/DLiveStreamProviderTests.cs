@@ -49,7 +49,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider(streamWatchUrl, dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, string.Empty);
 
             Assert.AreEqual(streams.Items.Count(), 1);
             Assert.NotNull(streams.NextPageToken);
@@ -71,7 +71,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "some game" }, 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "some game" }, 1, string.Empty);
 
             Assert.False(streams.Items.Any());
             Assert.IsNull(streams.NextPageToken);
@@ -136,7 +136,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 
-            var streamsPage1 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streamsPage1 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, string.Empty);
             var streamsPage2 = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, streamsPage1.NextPageToken);
 
 
@@ -165,7 +165,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, string.Empty);
 
             Assert.IsFalse(streams.Items.Any());
             Assert.Null(streams.NextPageToken);
@@ -181,7 +181,7 @@ namespace GameStreamSearch.StreamProviders.Tests
 
             var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
 
-            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1, string.Empty);
 
             Assert.AreEqual(streams.Items.Count(), 0);
         }

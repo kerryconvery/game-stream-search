@@ -76,7 +76,7 @@ namespace GameStreamSearch.StreamProviders
             }
         }
 
-        public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null)
+        public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             var pageOffset = GetPageOffset(pageToken);
 
