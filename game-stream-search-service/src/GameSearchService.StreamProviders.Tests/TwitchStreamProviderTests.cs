@@ -99,31 +99,16 @@ namespace GameSearchService.StreamProviders.Tests
         }
 
         [Test]
-        public async Task Should_Return_An_Empty_List_Of_Unfiltered_Streams_When_The_Api_Call_Fails()
+        public async Task Should_Return_An_Empty_List_Of_Streams_When_Getting_Streams_Fails()
         {
             var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
 
             twitchKrakenApiStub.Setup(m => m.GetLiveStreams(1, 0))
-                .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(new List<TwitchStreamDto>()));
+                .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable));
 
             var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
 
             var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
-
-            Assert.IsEmpty(streams.Items);
-        }
-
-        [Test]
-        public async Task Should_Return_An_Empty_List_Of_Filtered_Streams_When_The_Api_Call_Fails()
-        {
-            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
-
-            twitchKrakenApiStub.Setup(m => m.SearchStreams("fake game", 1, 0))
-                .ReturnsAsync(MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>.Success(new List<TwitchStreamDto>()));
-
-            var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
-
-            var streams = await twitchStreamProvider.GetLiveStreams(new StreamFilterOptions { GameName = "fake game" }, 1);
 
             Assert.IsEmpty(streams.Items);
         }
@@ -257,6 +242,22 @@ namespace GameSearchService.StreamProviders.Tests
             var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
 
             Assert.IsTrue(streamerChannel.Value.IsNothing);
+        }
+
+        [Test]
+        public async Task Should_Return_Failure_If_The_Service_Is_Not_Available_When_Getting_Channels()
+        {
+            var twitchKrakenApiStub = new Mock<ITwitchKrakenApi>();
+
+            twitchKrakenApiStub.Setup(m => m.SearchChannels("Test streamer", 1, 0)).ReturnsAsync(
+                MaybeResult<TwitchChannelsDto, TwitchErrorType>.Fail(TwitchErrorType.ProviderNotAvailable)
+            );
+
+            var twitchStreamProvider = new TwitchStreamProvider(twitchKrakenApiStub.Object);
+
+            var streamerChannel = await twitchStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsTrue(streamerChannel.IsFailure);
         }
     }
 }

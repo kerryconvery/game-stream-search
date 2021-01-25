@@ -46,7 +46,7 @@ namespace GameStreamSearch.StreamProviders
             return gameStreams;
         }
 
-        private async Task<Result<Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>, YoutubeErrorType>> GetLiveStreamDetails(
+        private async Task<Result<Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>, YouTubeErrorType>> GetLiveStreamDetails(
             IEnumerable<YouTubeSearchItemDto> streams)
         {
             var videoIds = streams.Select(v => v.id.videoId).ToArray();
@@ -55,16 +55,17 @@ namespace GameStreamSearch.StreamProviders
 
             if (videosResult.IsFailure)
             {
-                return Result<Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable);
+                return Result<Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable);
             }
 
-            return Result<Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>, YoutubeErrorType>.Success(
-                videosResult.Value
+            var streamDetails = videosResult.Value
                     .Map(videos => videos.items.ToDictionary(v => v.id, v => v.liveStreamingDetails))
-                    .GetOrElse(new Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>()));
+                    .GetOrElse(new Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>());
+
+            return Result<Dictionary<string, YouTubeVideoLiveStreamingDetailsDto>, YouTubeErrorType>.Success(streamDetails);
         }
 
-        private async Task<Result<Dictionary<string, YouTubeChannelSnippetDto>, YoutubeErrorType>> GetChannelSnippets(
+        private async Task<Result<Dictionary<string, YouTubeChannelSnippetDto>, YouTubeErrorType>> GetChannelSnippets(
             IEnumerable<YouTubeSearchItemDto> streams)
         {
             var channelIds = streams.Select(v => v.snippet.channelId).ToArray();
@@ -73,18 +74,20 @@ namespace GameStreamSearch.StreamProviders
 
             if (channelsResults.IsFailure)
             {
-                return Result<Dictionary<string, YouTubeChannelSnippetDto>, YoutubeErrorType>.Fail(YoutubeErrorType.ProviderNotAvailable);
+                return Result<Dictionary<string, YouTubeChannelSnippetDto>, YouTubeErrorType>.Fail(YouTubeErrorType.ProviderNotAvailable);
             }
 
-            return Result<Dictionary<string, YouTubeChannelSnippetDto>, YoutubeErrorType>.Success(
-                channelsResults.Value
+            var channelSnippets = channelsResults.Value
                     .Map(channels => channels.items.ToDictionary(c => c.id, c => c.snippet))
-                    .GetOrElse(new Dictionary<string, YouTubeChannelSnippetDto>()));
+                    .GetOrElse(new Dictionary<string, YouTubeChannelSnippetDto>());
+
+            return Result<Dictionary<string, YouTubeChannelSnippetDto>, YouTubeErrorType>.Success(channelSnippets);
         }
 
         public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null)
         {
-            var liveVideosResult = await youTubeV3Api.SearchGamingVideos(filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
+            var liveVideosResult = await youTubeV3Api.SearchGamingVideos(
+                filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
 
             if (liveVideosResult.IsFailure || liveVideosResult.Value.IsNothing)
             {
@@ -92,11 +95,6 @@ namespace GameStreamSearch.StreamProviders
             }
 
             var liveVideos = liveVideosResult.Value.Unwrap();
-
-            if (liveVideos.items.Count() == 0)
-            {
-                return GameStreamsDto.Empty;
-            }
 
             var getChannelSnippetsTask = GetChannelSnippets(liveVideos.items);
             var getLiveStreamDetailsTask = GetLiveStreamDetails(liveVideos.items);

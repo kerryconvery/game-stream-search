@@ -172,6 +172,21 @@ namespace GameStreamSearch.StreamProviders.Tests
         }
 
         [Test]
+        public async Task Should_Return_An_Empty_List_Of_Streams_When_There_Is_An_Api_Error()
+        {
+            var dliveApiStub = new Mock<IDLiveApi>();
+
+            dliveApiStub.Setup(m => m.GetLiveStreams(1, 0, StreamSortOrder.Trending))
+                .ReturnsAsync(MaybeResult<DLiveStreamDto, DLiveErrorType>.Fail(DLiveErrorType.ProviderNotAvailable));
+
+            var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
+
+            var streams = await dliveStreamProvider.GetLiveStreams(new StreamFilterOptions(), 1);
+
+            Assert.AreEqual(streams.Items.Count(), 0);
+        }
+
+        [Test]
         public async Task Should_Return_Streamer_Channel_If_A_Channel_Was_Found_And_The_Name_Matched()
         {
             var dliveApiStub = new Mock<IDLiveApi>();
@@ -203,6 +218,21 @@ namespace GameStreamSearch.StreamProviders.Tests
             var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
 
             Assert.IsTrue(streamerChannel.Value.IsNothing);
+        }
+
+        [Test]
+        public async Task Should_Return_Failure_If_The_Service_Is_Not_Available_When_Getting_Channels()
+        {
+            var dliveApiStub = new Mock<IDLiveApi>();
+
+            dliveApiStub.Setup(m => m.GetUserByDisplayName("Test streamer"))
+                .Returns(Task.FromResult(MaybeResult<DLiveUserDto, DLiveErrorType>.Fail(DLiveErrorType.ProviderNotAvailable)));
+
+            var dliveStreamProvider = new DLiveStreamProvider("", dliveApiStub.Object);
+
+            var streamerChannel = await dliveStreamProvider.GetStreamerChannel("Test streamer");
+
+            Assert.IsTrue(streamerChannel.IsFailure);
         }
     }
 }
