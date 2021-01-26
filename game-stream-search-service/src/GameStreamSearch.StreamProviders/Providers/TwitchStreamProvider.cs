@@ -46,19 +46,19 @@ namespace GameStreamSearch.StreamProviders
             return base64Encryptor.ToString();
         }
 
-        private IEnumerable<GameStreamDto> MapToGameStream(IEnumerable<TwitchStreamDto> liveStreams)
+        private GameStreamDto MapToGameStream(TwitchStreamDto liveStream)
         {
-            return liveStreams.Select(s => new GameStreamDto
+            return new GameStreamDto
             {
-                StreamTitle = s.channel.status,
-                StreamerName = s.channel.display_name,
-                StreamerAvatarUrl = s.channel.logo,
-                StreamThumbnailUrl = s.preview.medium,
-                StreamUrl = s.channel.url,
+                StreamTitle = liveStream.channel.status,
+                StreamerName = liveStream.channel.display_name,
+                StreamerAvatarUrl = liveStream.channel.logo,
+                StreamThumbnailUrl = liveStream.preview.medium,
+                StreamUrl = liveStream.channel.url,
                 StreamPlatformName = Platform.GetFriendlyName(),
                 IsLive = true,
-                Views = s.viewers,
-            });
+                Views = liveStream.viewers,
+            };
         }
 
 
@@ -92,7 +92,7 @@ namespace GameStreamSearch.StreamProviders
 
                 return new GameStreamsDto
                 {
-                    Items = MapToGameStream(liveStreams),
+                    Items = liveStreams.Select(MapToGameStream),
                     NextPageToken = nextPageToken
                 };
             }).GetOrElse(GameStreamsDto.Empty);

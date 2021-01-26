@@ -20,7 +20,7 @@ namespace GameStreamSearch.StreamProviders
             this.youTubeV3Api = youTubeV3Api;
         }
 
-        private IEnumerable<GameStreamDto> mapAsLiveStream(
+        private IEnumerable<GameStreamDto> MapAsLiveStream(
             IEnumerable<YouTubeSearchItemDto> streams,
             Dictionary<string, YouTubeChannelSnippetDto> channelSnippets,
             Dictionary<string, YouTubeVideoLiveStreamingDetailsDto> liveStreamDetails)
@@ -108,7 +108,7 @@ namespace GameStreamSearch.StreamProviders
 
             return new GameStreamsDto
             {
-                Items = mapAsLiveStream(liveVideos.items, channelSnippets.Value, liveStreamDetails.Value),
+                Items = MapAsLiveStream(liveVideos.items, channelSnippets.Value, liveStreamDetails.Value),
                 NextPageToken = liveVideos.nextPageToken,
             };
         }

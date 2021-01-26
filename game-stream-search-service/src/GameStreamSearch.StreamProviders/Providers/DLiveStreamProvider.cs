@@ -7,6 +7,7 @@ using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using GameStreamSearch.StreamProviders.Dto.DLive;
+using System.Collections.Generic;
 
 namespace GameStreamSearch.StreamProviders
 {
@@ -47,6 +48,21 @@ namespace GameStreamSearch.StreamProviders
             return base64Encryptor.ToString();
         }
 
+        private GameStreamDto MapToGameStream(DLiveStreamItemDto streamItem)
+        {
+            return new GameStreamDto
+            {
+                StreamTitle = streamItem.title,
+                StreamerName = streamItem.creator.displayName,
+                StreamThumbnailUrl = streamItem.thumbnailUrl,
+                StreamerAvatarUrl = streamItem.creator.avatar,
+                StreamUrl = $"{dliveWebUrl}/{streamItem.creator.displayName}",
+                StreamPlatformName = Platform.GetFriendlyName(),
+                IsLive = true,
+                Views = streamItem.watchingCount,
+            };
+        }
+
         public async Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             //DLive does not support filtering streams
@@ -67,17 +83,7 @@ namespace GameStreamSearch.StreamProviders
             return liveStreamsResult.Value.Map(result =>
                 new GameStreamsDto
                 {
-                    Items = result.data.livestreams.list.Select(s => new GameStreamDto
-                    {
-                        StreamTitle = s.title,
-                        StreamerName = s.creator.displayName,
-                        StreamThumbnailUrl = s.thumbnailUrl,
-                        StreamerAvatarUrl = s.creator.avatar,
-                        StreamUrl = $"{dliveWebUrl}/{s.creator.displayName}",
-                        StreamPlatformName = Platform.GetFriendlyName(),
-                        IsLive = true,
-                        Views = s.watchingCount,
-                    }),
+                    Items = result.data.livestreams.list.Select(MapToGameStream),
                     NextPageToken = GetNextPageToken(result.data.livestreams.list.Any(), pageSize, pageOffset),
                 }
             ).GetOrElse(GameStreamsDto.Empty);
