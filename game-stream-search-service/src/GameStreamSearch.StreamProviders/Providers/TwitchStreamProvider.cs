@@ -3,47 +3,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
-using Base64Url;
-using System.Security.Cryptography;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
+using GameStreamSearch.StreamProviders.Providers;
 
 namespace GameStreamSearch.StreamProviders
 {
-    public class TwitchStreamProvider : IStreamProvider
+    public class TwitchStreamProvider : StreamProvider, IStreamProvider
     {
         private readonly ITwitchKrakenApi twitchStreamApi;
 
         public TwitchStreamProvider(ITwitchKrakenApi twitchStreamApi)
         {
             this.twitchStreamApi = twitchStreamApi;
-        }
-
-        private int GetPageOffset(string nextPageToken)
-        {
-            if (string.IsNullOrEmpty(nextPageToken))
-            {
-                return 0;
-            }
-
-            var base64Decrypter = new Base64Decryptor(nextPageToken, new FromBase64Transform());
-
-            return base64Decrypter.ReadInt32();
-        }
-
-        private string GetNextPageToken(bool hasStreams, int pageSize, int pageOffset)
-        {
-            if (!hasStreams)
-            {
-                return null;
-            }
-
-            var base64Encryptor = new Base64Encryptor(new ToBase64Transform());
-
-            base64Encryptor.Write(pageOffset + pageSize);
-
-            return base64Encryptor.ToString();
         }
 
         private GameStreamDto MapToGameStream(TwitchStreamDto liveStream)
@@ -60,7 +33,6 @@ namespace GameStreamSearch.StreamProviders
                 Views = liveStream.viewers,
             };
         }
-
 
         private async Task<MaybeResult<IEnumerable<TwitchStreamDto>, TwitchErrorType>> GetLiveStreams(
             StreamFilterOptions filterOptions, int pageSize, int pageOffset)

@@ -1,17 +1,15 @@
 ﻿using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Base64Url;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using GameStreamSearch.StreamProviders.Dto.DLive;
-using System.Collections.Generic;
+using GameStreamSearch.StreamProviders.Providers;
 
 namespace GameStreamSearch.StreamProviders
 {
-    public class DLiveStreamProvider : IStreamProvider
+    public class DLiveStreamProvider : StreamProvider, IStreamProvider
     {
         private readonly string dliveWebUrl;
         private readonly IDLiveApi dliveApi;
@@ -20,32 +18,6 @@ namespace GameStreamSearch.StreamProviders
         {
             this.dliveWebUrl = dliveWebUrl;
             this.dliveApi = dliveApi;
-        }
-
-        private int GetPageOffset(string nextPageToken)
-        {
-            if (string.IsNullOrEmpty(nextPageToken))
-            {
-                return 0;
-            }
-
-            var base64Decrypter = new Base64Decryptor(nextPageToken, new FromBase64Transform());
-
-            return base64Decrypter.ReadInt32();
-        }
-
-        private string GetNextPageToken(bool hasStreams, int pageSize, int pageOffset)
-        {
-            if (!hasStreams)
-            {
-                return null;
-            }
-
-            var base64Encryptor = new Base64Encryptor(new ToBase64Transform());
-
-            base64Encryptor.Write(pageOffset + pageSize);
-
-            return base64Encryptor.ToString();
         }
 
         private GameStreamDto MapToGameStream(DLiveStreamItemDto streamItem)

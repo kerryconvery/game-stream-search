@@ -26,19 +26,19 @@ namespace GameStreamSearch.StreamProviders
             Dictionary<string, YouTubeVideoLiveStreamingDetailsDto> liveStreamDetails)
         {
             var gameStreams = streams.Select(v => {
-                var streamDetails = liveStreamDetails.ContainsKey(v.id.videoId) ? liveStreamDetails[v.id.videoId] : null;
-                var channelSnippet = channelSnippets.ContainsKey(v.snippet.channelId) ? channelSnippets[v.snippet.channelId] : null;
+                var viewers = liveStreamDetails.ContainsKey(v.id.videoId) ? liveStreamDetails[v.id.videoId].concurrentViewers : 0;
+                var avatarUrl = channelSnippets.ContainsKey(v.snippet.channelId) ? channelSnippets[v.snippet.channelId].thumbnails.@default.url : null;
 
                 return new GameStreamDto
                 {
                     StreamerName = v.snippet.channelTitle,
                     StreamTitle = v.snippet.title,
                     StreamThumbnailUrl = v.snippet.thumbnails.medium.url,
-                    StreamerAvatarUrl = channelSnippet?.thumbnails.@default.url,
+                    StreamerAvatarUrl = avatarUrl,
                     StreamUrl = $"{youTubeWebUrl}/watch?v={v.id.videoId}",
                     StreamPlatformName = Platform.GetFriendlyName(),
                     IsLive = true,
-                    Views = streamDetails != null ? streamDetails.concurrentViewers : 0,
+                    Views = viewers,
                 };
             });
 
