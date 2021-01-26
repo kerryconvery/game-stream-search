@@ -65,7 +65,7 @@ http://app-stream-machine.s3-website-ap-southeast-2.amazonaws.com/
 2. Deploy the application by running ```deploy-application-components.sh <env name> <build no>``` e.g ./deploy-application-components.sh prodA 123
 
 ### Backend Architecture
-Onion + CQS
+Hexagonal Architecture + CQS
 
 ![alt text](https://github.com/kerryconvery/game-stream-search/blob/master/documentation/Game-Stream-Search-Architecture.png?raw=true)
 
