@@ -38,7 +38,7 @@ namespace GameStreamSearch.Application.Entities
                 throw new ArgumentException("Channel url cannot be empty or null");
             }
 
-            ChannelUrl = ChannelName;
+            ChannelUrl = channelUrl;
         }
 
         public string ChannelName { get; }

@@ -2,7 +2,7 @@
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.Application.Dto
+namespace GameStreamSearch.Application.ValueObjects
 {
     public class ChannelDto
     {

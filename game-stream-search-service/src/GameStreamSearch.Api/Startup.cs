@@ -9,13 +9,12 @@ using GameStreamSearch.Application.Services;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
-using GameStreamSearch.StreamProviders.Dto;
 using GameStreamSearch.Application;
 using GameStreamSearch.Repositories;
-using GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto;
-using GameStreamSearch.AwsDynamoDb;
-using GameStreamSearch.Repositories.AwsDynamoDbRepositories;
 using GameStreamSearch.Application.Commands;
+using GameStreamSearch.StreamProviders.Gateways;
+using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.Repositories.Dto;
 
 namespace GameStreamSearch.Api
 {
@@ -65,15 +64,17 @@ namespace GameStreamSearch.Api
             {
                 return new ProviderAggregationService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
-                            new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"])
+                            new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
+                            new TwitchMapper()
                     ))
                     .RegisterStreamProvider(new YouTubeStreamProvider(
-                            Configuration["YouTube:WebUrl"],
-                            new YouTubeV3Gateway(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"])
+                            new YouTubeV3Gateway(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"]),
+                            new YouTubeMapper(Configuration["YouTube:WebUrl"])
                     ))
                     .RegisterStreamProvider(new DLiveStreamProvider(
-                            Configuration["DLive:WebUrl"],
-                            new DLiveGraphQLGateway(Configuration["DLive:Apiurl"])));
+                            new DLiveGraphQLGateway(Configuration["DLive:Apiurl"]),
+                            new DLiveMapper(Configuration["DLive:WebUrl"])
+                    ));
             });
 
             services.AddScoped<IStreamService>(x => x.GetRequiredService<ProviderAggregationService>());
@@ -83,7 +84,7 @@ namespace GameStreamSearch.Api
             
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 
-            services.AddSingleton<IAwsDynamoDbGateway<DynamoDbChannelDto>, AwsDynamoDbGateway<DynamoDbChannelDto>>();
+            services.AddSingleton<AwsDynamoDbGateway<DynamoDbChannelDto>, AwsDynamoDbGateway<DynamoDbChannelDto>>();
             services.AddSingleton<IChannelRepository, ChannelRepository>();
         }
 

@@ -2,14 +2,14 @@
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.Application.Dto
+namespace GameStreamSearch.Application.ValueObjects
 {
-    public class StreamerChannelDto
+    public class PlatformChannel
     {
-        public string ChannelName { get; set; }
-        public StreamPlatformType Platform { get; set; }
-        public string AvatarUrl { get; set; }
-        public string ChannelUrl { get; set; }
+        public string ChannelName { get; init; }
+        public StreamPlatformType Platform { get; init; }
+        public string AvatarUrl { get; init; }
+        public string ChannelUrl { get; init; }
 
         public Channel ToChannel(DateTime dateRegistered)
         {

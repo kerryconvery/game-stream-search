@@ -1,5 +1,5 @@
 ﻿using System;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
@@ -24,16 +24,5 @@ namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
     {
         public string id { get; set; }
         public YouTubeChannelSnippetDto snippet { get; set; }
-
-        public StreamerChannelDto ToStreamerChannelDto(string youTubeWebUrl)
-        {
-            return new StreamerChannelDto
-            {
-                ChannelName = snippet.title,
-                AvatarUrl = snippet.thumbnails.@default.url,
-                ChannelUrl = $"{youTubeWebUrl}/user/{snippet.title}",
-                Platform = StreamPlatformType.YouTube,
-            };
-        }
     }
 }

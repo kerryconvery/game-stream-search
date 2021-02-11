@@ -7,18 +7,22 @@
   <ItemGroup>
     <PackageReference Include="Base64Url" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Flurl" Version="3.0.1" />
+    <PackageReference Include="Flurl.Http" Version="3.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Providers\" />
     <Folder Include="Dto\" />
     <Folder Include="Dto\DLive\" />
     <Folder Include="Dto\Twitch\" />
     <Folder Include="Dto\YouTube\" />
     <Folder Include="Dto\Twitch\Kraken\" />
     <Folder Include="Dto\YouTube\YouTubeV3\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Gateways\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

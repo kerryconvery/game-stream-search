@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Types;
 
@@ -11,7 +11,7 @@ namespace GameStreamSearch.Application
         public string GameName { get; set; }
     }
 
-    public enum GetStreamerChannelErrorType
+    public enum StreamProviderError
     {
         None,
         ProviderNotAvailable,
@@ -19,8 +19,9 @@ namespace GameStreamSearch.Application
 
     public interface IStreamProvider
     {
-        Task<GameStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null);
-        Task<MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>> GetStreamerChannel(string channelName);
+        Task<Streams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null);
+        Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName);
+        bool AreFilterOptionsSupports(StreamFilterOptions filterOptions) => true;
 
         StreamPlatformType Platform { get; }
     }

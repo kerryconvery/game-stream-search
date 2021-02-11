@@ -2,19 +2,19 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto;
 using GameStreamSearch.Types;
+using GameStreamSearch.Repositories.Dto;
 
-namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories
+namespace GameStreamSearch.Repositories
 {
     public class ChannelRepository : IChannelRepository
     {
-        private readonly IAwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable;
+        private readonly AwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable;
 
-        public ChannelRepository(IAwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable)
+        public ChannelRepository(AwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable)
         {
             this.awsDynamoDbTable = awsDynamoDbTable;
         }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Providers;
 using Microsoft.AspNetCore.Http;

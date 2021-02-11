@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.DataModel;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.Repositories.AwsDynamoDbRepositories.Dto
+namespace GameStreamSearch.Repositories.Dto
 {
     [DynamoDBTable("Channels")]
     public class DynamoDbChannelDto

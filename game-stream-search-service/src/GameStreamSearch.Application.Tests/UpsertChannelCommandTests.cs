@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Entities;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Services;
@@ -89,12 +89,12 @@ namespace GameStreamSearch.Application.Tests
         private void SetChannelServiceToReturnNothing()
         {
             channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<StreamPlatformType>()))
-                .ReturnsAsync(MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Nothing));
+                .ReturnsAsync(MaybeResult<PlatformChannel, StreamProviderError>.Success(Maybe<PlatformChannel>.Nothing));
         }
 
         private void SetChannelServiceToReturnChannel(string channelName)
         {
-            var channel = new StreamerChannelDto
+            var channel = new PlatformChannel
             {
                 ChannelName = channelName,
                 Platform = StreamPlatformType.YouTube,
@@ -103,13 +103,13 @@ namespace GameStreamSearch.Application.Tests
             };
 
             channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<StreamPlatformType>()))
-                .ReturnsAsync(MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Success(Maybe<StreamerChannelDto>.Some(channel)));
+                .ReturnsAsync(MaybeResult<PlatformChannel, StreamProviderError>.Success(Maybe<PlatformChannel>.Some(channel)));
         }
 
         private void SetChannelServiceToReturnAnError()
         {
             channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<StreamPlatformType>()))
-                .ReturnsAsync(MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>.Fail(GetStreamerChannelErrorType.ProviderNotAvailable));
+                .ReturnsAsync(MaybeResult<PlatformChannel, StreamProviderError>.Fail(StreamProviderError.ProviderNotAvailable));
         }
 
         private void SetChannelRepositoryToReturnNothing()

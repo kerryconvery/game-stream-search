@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
-using GameStreamSearch.Repositories;
 
-namespace GameStreamSearch.AwsDynamoDb
+namespace GameStreamSearch.Repositories
 {
-    public class AwsDynamoDbGateway<T> : IAwsDynamoDbGateway<T>, IDisposable
+    public class AwsDynamoDbGateway<T> : IDisposable
     {
         private DynamoDBContext dynamoDbContext;
         private AmazonDynamoDBClient dynamoDbClient;

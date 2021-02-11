@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace GameStreamSearch.Types
 {
     public class Maybe<T>
     {
         private bool hasValue;
-        private T value;
+        internal T value;
 
         internal Maybe()
         {
@@ -23,15 +24,68 @@ namespace GameStreamSearch.Types
             hasValue = true;
         }
 
-        public Maybe<TResult> Select<TResult>(Func<T, TResult> mapper)
+        public Maybe<TResult> Select<TResult>(Func<T, TResult> selector)
         {
-            if (mapper == null)
-                throw new ArgumentNullException(nameof(mapper));
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
 
-            if (hasValue)
-                return Maybe<TResult>.ToMaybe(mapper(value));
-            else
+            if (!hasValue)
+            {
                 return Maybe<TResult>.Nothing;
+            }
+
+            return Maybe<TResult>.ToMaybe(selector(value)); 
+        }
+
+        public Maybe<TResult> Chain<TResult>(Func<T, Maybe<TResult>> selector)
+        {
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            if (!hasValue)
+            {
+                return Maybe<TResult>.Nothing;
+            }
+
+            return Maybe<TResult>.ToMaybe(selector(value).value);
+        }
+
+        public async Task<Maybe<TResult>> SelectAsync<TResult>(Func<T, Task<TResult>> selector)
+        {
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            if (!hasValue)
+            {
+                return Maybe<TResult>.Nothing;
+            }
+
+            var result = await selector(value);
+
+            return Maybe<TResult>.ToMaybe(result);
+        }
+
+        public async Task<Maybe<TResult>> ChainAsync<TResult>(Func<T, Task<Maybe<TResult>>> selector)
+        {
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            if (!hasValue)
+            {
+                return Maybe<TResult>.Nothing;
+            }
+
+            var result = await selector(value);
+
+            return Maybe<TResult>.ToMaybe(result.value);
         }
 
         public T GetOrElse(T elseValue)

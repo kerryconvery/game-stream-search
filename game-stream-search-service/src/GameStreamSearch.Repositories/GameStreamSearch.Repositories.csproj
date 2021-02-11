@@ -8,8 +8,7 @@
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AwsDynamoDbRepositories\" />
-    <Folder Include="AwsDynamoDbRepositories\Dto\" />
+    <Folder Include="Dto\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.5.4.3" />

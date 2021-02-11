@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
@@ -49,7 +49,7 @@ namespace GameStreamSearch.Application.Services
             return base64Encryptor.ToString();
         }
 
-        private string AggregateNextPageTokens(GameStreamsDto[] gameStreams)
+        private string AggregateNextPageTokens(Streams[] gameStreams)
         {
             var pageTokens = new Dictionary<StreamPlatformType, string>();
 
@@ -64,11 +64,16 @@ namespace GameStreamSearch.Application.Services
             return PackPageTokens(pageTokens);
         }
 
-        public async Task<GameStreamsDto> GetStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<Streams> GetStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             var paginationTokens = UnpackPageTokens(pageToken);
 
             var tasks = streamProviders.Values.Select(p => {
+                if (!p.AreFilterOptionsSupports(filterOptions))
+                {
+                    return Task.FromResult(Streams.Empty);
+                }
+
                 var pageToken = paginationTokens.ContainsKey(p.Platform) ? paginationTokens[p.Platform] : string.Empty;
 
                 return p.GetLiveStreams(filterOptions, pageSize, pageToken);
@@ -82,11 +87,7 @@ namespace GameStreamSearch.Application.Services
                 .SelectMany(s => s.Items)
                 .OrderByDescending(s => s.Views);
 
-            return new GameStreamsDto()
-            {
-                Items = sortedItems,
-                NextPageToken = nextPageToken
-            };
+            return new Streams(sortedItems, nextPageToken);
         }
 
         public ProviderAggregationService RegisterStreamProvider(IStreamProvider streamProvider)
@@ -96,7 +97,7 @@ namespace GameStreamSearch.Application.Services
             return this;
         }
 
-        public Task<MaybeResult<StreamerChannelDto, GetStreamerChannelErrorType>> GetStreamerChannel(string streamerName, StreamPlatformType streamingPlatform)
+        public Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string streamerName, StreamPlatformType streamingPlatform)
         {
             var streamProvider = streamProviders[streamingPlatform];
 
