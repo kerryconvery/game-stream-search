@@ -1,24 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
-using GameStreamSearch.Types;
-using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.StreamProviders.Gateways;
+using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.StreamProviders.Selectors;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders
 {
     public class TwitchStreamProvider : IStreamProvider
     {
         private readonly TwitchKrakenGateway twitchStreamApi;
-        private readonly TwitchMapper twitchMapper;
+        private readonly TwitchStreamMapper streamMapper;
+        private readonly TwitchChannelMapper channelMapper;
 
-        public TwitchStreamProvider(TwitchKrakenGateway twitchStreamApi, TwitchMapper twitchMapper)
+        public TwitchStreamProvider(TwitchKrakenGateway twitchStreamApi, TwitchStreamMapper streamMapper, TwitchChannelMapper channelMapper)
         {
             this.twitchStreamApi = twitchStreamApi;
-            this.twitchMapper = twitchMapper;
+            this.streamMapper = streamMapper;
+            this.channelMapper = channelMapper;
         }
 
         public async Task<Streams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
@@ -27,9 +30,7 @@ namespace GameStreamSearch.StreamProviders
 
             var liveStreamsResult = await GetLiveStreams(filterOptions, pageSize, pageOffset);
 
-            return liveStreamsResult
-                .Select(streams => twitchMapper.ToGameStreamsDto(streams, pageOffset.GetNextOffset()))
-                .GetOrElse(Streams.Empty);
+            return streamMapper.Map(liveStreamsResult, pageOffset);
         }
 
         private async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> GetLiveStreams(
@@ -47,8 +48,7 @@ namespace GameStreamSearch.StreamProviders
         {
             var channelsResult = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
-           return channelsResult
-                .Select(channels => twitchMapper.ToStreamerChannelDto(channels, channelName));
+            return channelMapper.Map(TwitchChannelSelector.Select(channelName, channelsResult));
         }
 
         public StreamPlatformType Platform => StreamPlatformType.Twitch;

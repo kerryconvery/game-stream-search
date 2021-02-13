@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application;
@@ -13,12 +12,14 @@ namespace GameStreamSearch.StreamProviders
     public class DLiveStreamProvider : IStreamProvider
     {
         private readonly DLiveGraphQLGateway dliveApi;
-        private readonly DLiveMapper mapper;
+        private readonly DLiveStreamMapper streamMapper;
+        private readonly DLiveChannelMapper channelMapper;
 
-        public DLiveStreamProvider(DLiveGraphQLGateway dliveApi, DLiveMapper mapper)
+        public DLiveStreamProvider(DLiveGraphQLGateway dliveApi, DLiveStreamMapper streamMapper, DLiveChannelMapper channelMapper)
         {
             this.dliveApi = dliveApi;
-            this.mapper = mapper;
+            this.streamMapper = streamMapper;
+            this.channelMapper = channelMapper;
         }
 
         public async Task<Streams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
@@ -32,17 +33,14 @@ namespace GameStreamSearch.StreamProviders
 
             var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
 
-            return liveStreamsResult
-                .Select(streams => mapper.ToGameStreamsDto(streams, pageOffset.GetNextOffset()))
-                .GetOrElse(Streams.Empty);
+            return streamMapper.Map(liveStreamsResult, pageOffset);
         }
 
         public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var userResult = await dliveApi.GetUserByDisplayName(channelName);
 
-            return userResult
-                .Select(mapper.ToStreamerChannelDto);
+            return channelMapper.Map(userResult);
         }
 
         public bool AreFilterOptionsSupports(StreamFilterOptions filterOptions)

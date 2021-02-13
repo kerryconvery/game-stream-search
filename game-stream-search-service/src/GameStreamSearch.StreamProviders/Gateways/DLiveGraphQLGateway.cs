@@ -17,7 +17,8 @@ namespace GameStreamSearch.StreamProviders.Gateways
             this.dliveGraphQLApiUrl = dliveGraphQLApiUrl;
         }
 
-        public async Task<MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>> GetLiveStreams(int pageSize, int pageOffset, StreamSortOrder sortOrder)
+        public async Task<MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>> GetLiveStreams(
+            int pageSize, int pageOffset, StreamSortOrder sortOrder)
         {
             var graphQuery = new
             {

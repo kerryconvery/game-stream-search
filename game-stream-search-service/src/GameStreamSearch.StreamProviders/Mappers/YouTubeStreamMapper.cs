@@ -1,22 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameStreamSearch.Application;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.Mappers
 {
-    public class YouTubeMapper
+    public class YouTubeStreamMapper
     {
         private readonly string youTubeWebUrl;
 
-        public YouTubeMapper(string youTubeWebUrl)
+        public YouTubeStreamMapper(string youTubeWebUrl)
         {
             this.youTubeWebUrl = youTubeWebUrl;
         }
 
-        public Streams ToPlatformStreams(
+        public MaybeResult<Streams, StreamProviderError> Map(
+            YouTubeSearchDto videoSearchResults,
+            MaybeResult<IEnumerable<YouTubeVideoDto>, StreamProviderError> videoDetailResults,
+            MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> videoChannelResults)
+        {
+            return videoDetailResults.Chain(videosResult =>
+            {
+                return videoChannelResults.Select(channelResults =>
+                {
+                    var videoDetails = videosResult.ToDictionary(v => v.id, v => v.liveStreamingDetails);
+                    var videoChannels = channelResults.ToDictionary(c => c.id, c => c.snippet);
+
+                    return ToStreams(videoSearchResults, videoChannels, videoDetails);
+                });
+            });
+        }
+
+        private Streams ToStreams(
             YouTubeSearchDto streams,
             Dictionary<string, YouTubeChannelSnippetDto> channelSnippets,
             Dictionary<string, YouTubeVideoLiveStreamingDetailsDto> liveStreamDetails)
@@ -41,17 +60,6 @@ namespace GameStreamSearch.StreamProviders.Mappers
                 }),
                 streams.nextPageToken ?? string.Empty
             );
-        }
-
-        public PlatformChannel ToPlatformChannel(YouTubeChannelSnippetDto channelSnippet)
-        {
-            return new PlatformChannel
-            {
-                ChannelName = channelSnippet.title,
-                AvatarUrl = channelSnippet.thumbnails.@default.url,
-                ChannelUrl = $"{youTubeWebUrl}/user/{channelSnippet.title}",
-                Platform = StreamPlatformType.YouTube,
-            };
         }
     }
 }

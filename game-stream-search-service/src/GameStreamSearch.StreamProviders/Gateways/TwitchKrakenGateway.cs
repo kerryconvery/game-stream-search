@@ -29,12 +29,14 @@ namespace GameStreamSearch.StreamProviders.Gateways
             return streams.Select(s => s.streams);
         }
 
-        public async Task<MaybeResult<TwitchChannelsDto, StreamProviderError>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
+        public async Task<MaybeResult<IEnumerable<TwitchChannelDto>, StreamProviderError>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
         {
-            return await BuildPagedRequest("/kraken/search/channels", pageSize, pageOffset)
+            var response = await BuildPagedRequest("/kraken/search/channels", pageSize, pageOffset)
                 .WithSearchTerm(searchTerm)
                 .GetAsync()
                 .GetOrError<TwitchChannelsDto>();
+
+            return response.Select(c => c.Channels);
         }
 
         public async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> SearchStreams(string searchTerm, int pageSize, int pageOffset)

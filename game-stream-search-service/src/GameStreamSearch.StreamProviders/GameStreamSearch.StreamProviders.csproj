@@ -24,5 +24,6 @@
     <Folder Include="Mappers\" />
     <Folder Include="Gateways\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Selectors\" />
   </ItemGroup>
 </Project>

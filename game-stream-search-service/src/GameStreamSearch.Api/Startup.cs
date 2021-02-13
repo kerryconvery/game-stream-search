@@ -65,15 +65,18 @@ namespace GameStreamSearch.Api
                 return new ProviderAggregationService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
                             new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
-                            new TwitchMapper()
+                            new TwitchStreamMapper(),
+                            new TwitchChannelMapper()
                     ))
                     .RegisterStreamProvider(new YouTubeStreamProvider(
                             new YouTubeV3Gateway(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"]),
-                            new YouTubeMapper(Configuration["YouTube:WebUrl"])
+                            new YouTubeStreamMapper(Configuration["YouTube:WebUrl"]),
+                            new YouTubeChannelMapper(Configuration["YouTube:WebUrl"])
                     ))
                     .RegisterStreamProvider(new DLiveStreamProvider(
                             new DLiveGraphQLGateway(Configuration["DLive:Apiurl"]),
-                            new DLiveMapper(Configuration["DLive:WebUrl"])
+                            new DLiveStreamMapper(Configuration["DLive:WebUrl"]),
+                            new DLiveChannelMapper(Configuration["DLive:WebUrl"])
                     ));
             });
 

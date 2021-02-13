@@ -7,23 +7,24 @@ namespace GameStreamSearch.Application.ValueObjects
         internal readonly int pageOffset;
         private readonly int pageSize;
 
+        internal NumericPageOffset(int pageOffset)
+        {
+            this.pageOffset = pageOffset;
+        }
+
         public NumericPageOffset(int pageSize, string pageOffset)
         {
             this.pageOffset = !string.IsNullOrEmpty(pageOffset) ? int.Parse(pageOffset) : 0;
             this.pageSize = pageSize;
         }
 
-        public NumericPageOffset(int pageOffset)
+        public NumericPageOffset GetNextOffset(int numberOfItemsInPage)
         {
-            this.pageOffset = pageOffset;
+            return numberOfItemsInPage >= pageSize ? new NumericPageOffset(pageSize + pageOffset) : new NumericPageOffset(0);
         }
 
-        public NumericPageOffset GetNextOffset()
-        {
-            return new NumericPageOffset(pageSize + pageOffset);
-        }
-
-        public static implicit operator string(NumericPageOffset numericOffset) => numericOffset.pageOffset.ToString();
+        public static implicit operator string(NumericPageOffset numericOffset) =>
+            numericOffset.pageOffset > 0 ? numericOffset.pageOffset.ToString() : string.Empty;
         public static implicit operator int(NumericPageOffset numericOffset) => numericOffset.pageOffset;
     }
 }

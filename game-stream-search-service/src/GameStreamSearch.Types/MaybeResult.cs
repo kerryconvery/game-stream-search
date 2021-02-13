@@ -82,6 +82,8 @@ namespace GameStreamSearch.Types
             return MaybeResult<TResult, E>.Success(result.Value);
         }
 
+        public bool IsNothing => Value.IsNothing;
+        public bool IsSome => Value.IsSome;
 
         public V GetOrElse(V orElse)
         {
