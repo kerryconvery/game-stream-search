@@ -13,12 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Types\" />
-    <Folder Include="StreamProviders\" />
-    <Folder Include="StreamProviders\Selectors\" />
-    <Folder Include="StreamProviders\Mappers\" />
+    <Folder Include="TypeTests\" />
+    <Folder Include="StreamProviderTests\" />
+    <Folder Include="StreamProviderTests\Selectors\" />
+    <Folder Include="StreamProviderTests\Mappers\" />
     <Folder Include="Extensions\" />
-    <Folder Include="ValueObjects\" />
+    <Folder Include="ValueObjectTests\" />
+    <Folder Include="Builders\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />

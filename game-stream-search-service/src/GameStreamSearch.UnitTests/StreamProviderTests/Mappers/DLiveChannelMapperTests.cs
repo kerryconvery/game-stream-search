@@ -11,19 +11,25 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {
     public class DLiveChannelMapperTests
     {
-        private string dliveUrl = "dlive.url";
+        private string dliveUrl = "http://dlive.com";
 
         [Test]
         public void Should_Map_A_DLive_Channel_To_A_PlatformChannel()
         {
             var mapper = new DLiveChannelMapper(dliveUrl);
-            var dliveUser = new DLiveUserDto { displayName = "testuser" };
+            var dliveUser = new DLiveUserDto
+            {
+                displayName = "testuser",
+                avatar = "http://avatar.url"
+            };
             var userSearchResults = MaybeResult<DLiveUserDto, StreamProviderError>.Success(dliveUser);
 
             var platformChannl = mapper.Map(userSearchResults).GetOrElse(new PlatformChannel());
 
-            Assert.AreEqual(platformChannl.ChannelUrl, "dlive.url/testuser");
+            Assert.AreEqual(platformChannl.ChannelName, "testuser");
+            Assert.AreEqual(platformChannl.AvatarUrl, "http://avatar.url");
             Assert.AreEqual(platformChannl.Platform, StreamPlatformType.DLive);
+            Assert.AreEqual(platformChannl.ChannelUrl, "http://dlive.com/testuser");
         }
     }
 }

@@ -11,7 +11,6 @@ namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
     public class YouTubeSearchSnippetThumbnailsDto
     {
         public YouTubeSearchSnippetThumbnailDto medium { get; set; }
-        public YouTubeSearchSnippetThumbnailDto high { get; set; }
     }
 
     public class YouTubeSearchSnippetDto

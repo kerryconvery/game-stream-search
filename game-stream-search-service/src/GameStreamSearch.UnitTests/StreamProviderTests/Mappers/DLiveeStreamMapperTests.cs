@@ -1,20 +1,20 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.UnitTests.Extensions;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {
     public class DLiveeStreamMapperTests
     {
         private string dliveUrl = "dlive.url";
-        private NumericPageOffset pageOffset = new NumericPageOffset(2, "0");
+        private NumericPageOffset pageOffset = new NumericPageOffset(1, "0");
         private MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError> streamSearchResults;
         private DLiveStreamMapper mapper;
 
@@ -23,8 +23,13 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
         {
             var dliveStreams = new List<DLiveStreamItemDto>
             {
-                new DLiveStreamItemDto { creator = new DLiveUserDto { displayName = "TestUserA" } },
-                new DLiveStreamItemDto { creator = new DLiveUserDto { displayName = "TestUserB" } },
+                new DLiveStreamItemDto
+                {
+                    title = "test stream",
+                    thumbnailUrl = "http://thunmbnail.url",
+                    watchingCount = 1,
+                    creator = new DLiveUserDto { displayName = "TestUserA", avatar = "http://avatar.url" }
+                },
             };
 
             streamSearchResults = MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>.Success(dliveStreams);
@@ -32,28 +37,19 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
         }
 
         [Test]
-        public void Should_Map_A_DLive_Channel_To_A_PlatformChannel()
+        public void Should_Map_DLive_Streams_To_Streams()
         {
             var streams = mapper.Map(streamSearchResults, pageOffset);
 
-            Assert.AreEqual(streams.Items.Select(s => s.StreamUrl).First(), "dlive.url/TestUserA");
-            Assert.AreEqual(streams.Items.Select(s => s.StreamPlatformName).First(), StreamPlatformType.DLive.GetFriendlyName());
-        }
-
-        [Test]
-        public void Should_Have_A_Next_Page_Token_When_The_Number_Of_Streams_Found_Is_Equal_To_The_Page_Size()
-        {
-            var streams = mapper.Map(streamSearchResults, pageOffset);
-
-            Assert.AreEqual(streams.NextPageToken, "2");
-        }
-
-        [Test]
-        public void Should_Not_Have_A_Next_Page_Token_When_The_Number_Of_Streams_Returned_Is_Less_Than_The_Page_Size()
-        {
-            var streams = mapper.Map(streamSearchResults, new NumericPageOffset(3, "0"));
-
-            Assert.IsEmpty(streams.NextPageToken);
+            Assert.AreEqual(streams.Items.First().StreamTitle, "test stream");
+            Assert.AreEqual(streams.Items.First().StreamerName, "TestUserA");
+            Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, "http://thunmbnail.url");
+            Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, "http://avatar.url");
+            Assert.AreEqual(streams.Items.First().StreamUrl, "dlive.url/TestUserA");
+            Assert.AreEqual(streams.Items.First().Views, 1);
+            Assert.AreEqual(streams.Items.First().IsLive, true);
+            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.DLive.GetFriendlyName());
+            Assert.AreEqual(streams.NextPageToken, "1");
         }
 
         [Test]

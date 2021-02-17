@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.StreamProv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Application.Tests", "GameStreamSearch.Application.Tests\GameStreamSearch.Application.Tests.csproj", "{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.StreamProviders.Tests", "GameSearchService.StreamProviders.Tests\GameStreamSearch.StreamProviders.Tests.csproj", "{74E44024-7E3D-4DF2-A09B-EC1F3633B471}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Repositories", "GameStreamSearch.Repositories\GameStreamSearch.Repositories.csproj", "{13C4F243-346B-4B7E-ABF6-03EA2F27B022}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Application", "GameStreamSearch.Application\GameStreamSearch.Application.csproj", "{C7C9BDBF-DD4F-4CB6-8B56-430CAFCFF206}"
@@ -40,10 +38,6 @@ Global
 		{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441DE026-9B1E-45DE-BCC0-B089CDDE86C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74E44024-7E3D-4DF2-A09B-EC1F3633B471}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13C4F243-346B-4B7E-ABF6-03EA2F27B022}.Release|Any CPU.ActiveCfg = Release|Any CPU

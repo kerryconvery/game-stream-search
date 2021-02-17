@@ -28,7 +28,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Selectors
         {
             var channels = new List<TwitchChannelDto> { anotherChannel };
             var channelResults = MaybeResult<IEnumerable<TwitchChannelDto>, StreamProviderError>.Success(channels);
-
+           
             var channel = TwitchChannelSelector.Select(expectedChannel.display_name, channelResults);
 
             Assert.IsTrue(channel.IsNothing);
