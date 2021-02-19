@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Providers;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +14,7 @@ namespace GameStreamSearch.Api.Controllers
     public class GetChannelParams
     {
         public string ChannelName { get; init; }
-        public StreamPlatformType Platform { get; init; }
+        public string PlatformId { get; init; }
     }
 
     [ApiController]
@@ -35,36 +35,36 @@ namespace GameStreamSearch.Api.Controllers
             this.timeProvider = timeProvider;
         }
 
-        private IActionResult PresentChannelAdded(StreamPlatformType platform, string channelName)
+        private IActionResult PresentChannelAdded(string platformId, string channelName)
         {
             var urlParams = new GetChannelParams
             {
                 ChannelName = channelName,
-                Platform = platform,
+                PlatformId = platformId,
             };
 
             return new CreatedResult(Url.Link(nameof(GetChannel), urlParams), null);
         }
 
-        private IActionResult PresentChannelNotFoundOnPlatform(StreamPlatformType platform, string channelName)
+        private IActionResult PresentChannelNotFoundOnPlatform(string platformId, string channelName)
         {
             var errorResponse = new ErrorResponseContract()
                 .AddError(new ErrorContract
                 {
                     ErrorCode = ErrorCodeType.ChannelNotFoundOnPlatform,
-                    ErrorMessage = $"Channel {channelName} not found on {platform.GetFriendlyName()}"
+                    ErrorMessage = $"Channel {channelName} not found on {platformId}"
                 });
 
             return new BadRequestObjectResult(errorResponse);
         }
 
-        private IActionResult PresentPlatformServiceIsUnavilable(StreamPlatformType platform)
+        private IActionResult PresentPlatformServiceIsUnavilable(string platformId)
         {
             var errorResponse = new ErrorResponseContract()
                 .AddError(new ErrorContract
                 {
                     ErrorCode = ErrorCodeType.PlatformServiceIsNotAvailable,
-                    ErrorMessage = $"The platform {platform.GetFriendlyName()} is not available at this time"
+                    ErrorMessage = $"The platform {platformId} is not available at this time"
                 });
 
             return StatusCode(StatusCodes.Status424FailedDependency, errorResponse);
@@ -72,7 +72,7 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpPut]
         [Route("channels/{platform}/{channelName}")]
-        public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] StreamPlatformType platform, string channelName)
+        public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platform, string channelName)
         {
             var request = new RegisterOrUpdateChannelCommand
             {
@@ -109,7 +109,7 @@ namespace GameStreamSearch.Api.Controllers
 
         [HttpGet]
         [Route("channels/{platform}/{channelName}", Name = "GetChannel")]
-        public async Task<IActionResult> GetChannel([FromRoute] StreamPlatformType platform, string channelName)
+        public async Task<IActionResult> GetChannel([FromRoute] string platform, string channelName)
         {
             var getChannelResult = await channelRepository.Get(platform, channelName);
 

@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Entities;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Types;
 using GameStreamSearch.Repositories.Dto;
 
@@ -26,16 +24,16 @@ namespace GameStreamSearch.Repositories
             return awsDynamoDbTable.PutItem(channelDto);
         }
 
-        public async Task<Maybe<Channel>> Get(StreamPlatformType streamPlatform, string channelName)
+        public async Task<Maybe<Channel>> Get(string streamPlatformId, string channelName)
         {
-            var channelDto = await awsDynamoDbTable.GetItem(streamPlatform, channelName);
+            var channelDto = await awsDynamoDbTable.GetItem(streamPlatformId, channelName);
 
             return Maybe<Channel>.ToMaybe(channelDto?.ToEntity());
         }
 
-        public Task Remove(StreamPlatformType streamPlatform, string channelName)
+        public Task Remove(string streamPlatformId, string channelName)
         {
-            return awsDynamoDbTable.DeleteItem(streamPlatform, channelName);
+            return awsDynamoDbTable.DeleteItem(streamPlatformId, channelName);
         }
 
         public async Task<ChannelListDto> SelectAllChannels()
@@ -48,8 +46,7 @@ namespace GameStreamSearch.Repositories
                 .Select(c => new ChannelDto
                 {
                     ChannelName = c.ChannelName,
-                    StreamPlatform = c.StreamPlatform,
-                    StreamPlatformDisplayName = c.StreamPlatform.GetFriendlyName(),
+                    StreamPlatformId = c.StreamPlatformId,
                     AvatarUrl = c.AvatarUrl,
                     ChannelUrl = c.ChannelUrl,
                 });

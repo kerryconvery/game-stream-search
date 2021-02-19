@@ -1,6 +1,6 @@
 ﻿using System;
 using Amazon.DynamoDBv2.DataModel;
-using GameStreamSearch.Application.Entities;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Repositories.Dto
@@ -9,7 +9,7 @@ namespace GameStreamSearch.Repositories.Dto
     public class DynamoDbChannelDto
     {
         [DynamoDBHashKey]
-        public StreamPlatformType StreamPlatform { get; init; }
+        public string StreamPlatformId { get; init; }
 
         [DynamoDBRangeKey]
         public string ChannelName { get; init; }
@@ -28,7 +28,7 @@ namespace GameStreamSearch.Repositories.Dto
             return new DynamoDbChannelDto
             {
                 ChannelName = channel.ChannelName,
-                StreamPlatform = channel.StreamPlatform,
+                StreamPlatformId = channel.StreamPlatformId,
                 DateRegistered = channel.DateRegistered,
                 AvatarUrl = channel.AvatarUrl,
                 ChannelUrl = channel.ChannelUrl,
@@ -37,7 +37,7 @@ namespace GameStreamSearch.Repositories.Dto
 
         public Channel ToEntity()
         {
-            return new Channel(ChannelName, StreamPlatform, DateRegistered, AvatarUrl, ChannelUrl);
+            return new Channel(ChannelName, StreamPlatformId, DateRegistered, AvatarUrl, ChannelUrl);
         }
     }
 }

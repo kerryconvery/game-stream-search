@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
@@ -11,43 +11,50 @@ namespace GameStreamSearch.StreamProviders
 {
     public class DLiveStreamProvider : IStreamProvider
     {
+        private readonly string streamPlatformId;
         private readonly DLiveGraphQLGateway dliveApi;
         private readonly DLiveStreamMapper streamMapper;
         private readonly DLiveChannelMapper channelMapper;
 
-        public DLiveStreamProvider(DLiveGraphQLGateway dliveApi, DLiveStreamMapper streamMapper, DLiveChannelMapper channelMapper)
+        public DLiveStreamProvider(
+            string streamPlatformId,
+            DLiveGraphQLGateway dliveApi,
+            DLiveStreamMapper streamMapper,
+            DLiveChannelMapper channelMapper
+       )
         {
+            this.streamPlatformId = streamPlatformId;
             this.dliveApi = dliveApi;
             this.streamMapper = streamMapper;
             this.channelMapper = channelMapper;
         }
 
-        public async Task<Streams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
-            if (!AreFilterOptionsSupports(filterOptions))
+            if (!AreFilterOptionsSupported(filterOptions))
             {
                 throw new ArgumentException("The Dlive platform does not support these filter options");
             };
 
-            var pageOffset = new NumericPageOffset(pageSize, pageToken);
+            var pageOffset = int.Parse(pageToken);
 
             var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
 
-            return streamMapper.Map(liveStreamsResult, pageOffset);
+            return streamMapper.Map(StreamPlatformId, liveStreamsResult, pageSize, pageOffset);
         }
 
-        public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var userResult = await dliveApi.GetUserByDisplayName(channelName);
 
-            return channelMapper.Map(userResult);
+            return channelMapper.Map(StreamPlatformId, userResult);
         }
 
-        public bool AreFilterOptionsSupports(StreamFilterOptions filterOptions)
+        public bool AreFilterOptionsSupported(StreamFilterOptions filterOptions)
         {
             return string.IsNullOrEmpty(filterOptions.GameName);
         }
 
-        public StreamPlatformType Platform => StreamPlatformType.DLive;
+        public string StreamPlatformId => streamPlatformId;
     }
 }

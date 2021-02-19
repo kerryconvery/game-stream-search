@@ -1,5 +1,5 @@
 ﻿using System;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using NUnit.Framework;
 
 namespace GameStreamSearch.UnitTests.ValueObjects
@@ -9,7 +9,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_The_Offset_When_The_Offset_String_Is_Non_Zero()
         {
-            var pageOffset = new NumericPageOffset(1, "1");
+            var pageOffset = new NumericPageToken(1, "1");
 
             Assert.AreEqual((string)pageOffset, "1");
         }
@@ -17,7 +17,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_Offset_As_String_When_The_String_OffSet_Is_Non_Zero()
         {
-            var pageOffset = new NumericPageOffset(1, "1");
+            var pageOffset = new NumericPageToken(1, "1");
 
             Assert.AreEqual((string)pageOffset, "1");
         }
@@ -26,7 +26,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_An_Empty_String_String_When_The_String_Empty()
         {
-            var pageOffset = new NumericPageOffset(1, string.Empty);
+            var pageOffset = new NumericPageToken(1, string.Empty);
 
             Assert.AreEqual((string)pageOffset, string.Empty);
         }
@@ -34,7 +34,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_The_Next_Page_Offset_When_The_Page_Count_Is_Equal_To_The_Page_Size()
         {
-            var pageOffset = new NumericPageOffset(1, "1");
+            var pageOffset = new NumericPageToken(1, "1");
 
             var nextPage = pageOffset.GetNextOffset(10);
 
@@ -44,7 +44,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_An_Empty_String_Offset_When_The_Page_Count_Is_Less_Than_The_Page_Size()
         {
-            var pageOffset = new NumericPageOffset(10, "1");
+            var pageOffset = new NumericPageToken(10, "1");
 
             var nextPage = pageOffset.GetNextOffset(9);
 
@@ -54,7 +54,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_A_String_Offset_As_An_Int()
         {
-            var pageOffset = new NumericPageOffset(1, "2");
+            var pageOffset = new NumericPageToken(1, "2");
 
             Assert.AreEqual((int)pageOffset, 2);
         }
@@ -63,7 +63,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_A_Zero_Offset_When_The_String_Offset_Is_Empty()
         {
-            var pageOffset = new NumericPageOffset(10, string.Empty);
+            var pageOffset = new NumericPageToken(10, string.Empty);
 
             Assert.AreEqual((int)pageOffset, 0);
         }
@@ -71,7 +71,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_The_Offset_As_An_Int_When_The_Page_Count_Is_Equal_To_The_Page_Size()
         {
-            var pageOffset = new NumericPageOffset(1, "1");
+            var pageOffset = new NumericPageToken(1, "1");
 
             var nextPage = pageOffset.GetNextOffset(10);
 
@@ -81,7 +81,7 @@ namespace GameStreamSearch.UnitTests.ValueObjects
         [Test]
         public void Should_Return_A_Zero_Offset_When_The_Page_Count_Is_Less_Than_The_Page_Size()
         {
-            var pageOffset = new NumericPageOffset(10, "1");
+            var pageOffset = new NumericPageToken(10, "1");
 
             var nextPage = pageOffset.GetNextOffset(9);
 

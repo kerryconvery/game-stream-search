@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Types;
 
@@ -18,19 +16,20 @@ namespace GameStreamSearch.StreamProviders.Mappers
             this.youTubeWebUrl = youTubeWebUrl;
         }
 
-        public MaybeResult<PlatformChannel, StreamProviderError> Map(
+        public MaybeResult<PlatformChannelDto, StreamProviderError> Map(
+            string streamPlatformId,
             MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> channelSnippetResults)
         {
             return channelSnippetResults.Select(channelSnippets =>
             {
                 return channelSnippets.Select(channelSnippet =>
                 {
-                    return new PlatformChannel
+                    return new PlatformChannelDto
                     {
                         ChannelName = channelSnippet.snippet.title,
                         AvatarUrl = channelSnippet.snippet.thumbnails.@default.url,
                         ChannelUrl = $"{youTubeWebUrl}/user/{channelSnippet.snippet.title}",
-                        Platform = StreamPlatformType.YouTube,
+                        StreamPlatformId = streamPlatformId,
                     };
                 })
                 .FirstOrDefault();

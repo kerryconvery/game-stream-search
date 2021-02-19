@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.UnitTests.Extensions
 {
     public static class StreamsExtensions
     {
-        public static bool IsEmpty(this Streams streams)
+        public static bool IsEmpty(this PlatformStreamsDto streams)
         {
-            return streams.Items.Count() == 0;
+            return streams.Streams.Count() == 0;
         }
     }
 }

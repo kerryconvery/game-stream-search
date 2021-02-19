@@ -1,5 +1,5 @@
 ﻿using System;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.StreamProviders.Dto.DLive

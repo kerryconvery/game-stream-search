@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application.Services
 {
     public interface IStreamService
     {
-        Task<Streams> GetStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken);
+        Task<PlatformStreamsDto> GetStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken);
     };
 }

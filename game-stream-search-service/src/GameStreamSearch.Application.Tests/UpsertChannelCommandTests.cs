@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Entities;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.Types;
 using Moq;
@@ -82,47 +80,47 @@ namespace GameStreamSearch.Application.Tests
             {
                 ChannelName = channelName,
                 RegistrationDate = DateTime.Now,
-                StreamPlatform = StreamPlatformType.YouTube
+                StreamPlatformId = "youtube", 
             };
         }
 
         private void SetChannelServiceToReturnNothing()
         {
-            channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<StreamPlatformType>()))
-                .ReturnsAsync(MaybeResult<PlatformChannel, StreamProviderError>.Success(Maybe<PlatformChannel>.Nothing));
+            channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(MaybeResult<PlatformChannelDto, StreamProviderError>.Success(Maybe<PlatformChannelDto>.Nothing));
         }
 
         private void SetChannelServiceToReturnChannel(string channelName)
         {
-            var channel = new PlatformChannel
+            var channel = new PlatformChannelDto
             {
                 ChannelName = channelName,
-                Platform = StreamPlatformType.YouTube,
+                StreamPlatformId = "youtube",
                 AvatarUrl = "https://avatar.url",
                 ChannelUrl = "https://channel.url",
             };
 
-            channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<StreamPlatformType>()))
-                .ReturnsAsync(MaybeResult<PlatformChannel, StreamProviderError>.Success(Maybe<PlatformChannel>.Some(channel)));
+            channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(MaybeResult<PlatformChannelDto, StreamProviderError>.Success(Maybe<PlatformChannelDto>.Some(channel)));
         }
 
         private void SetChannelServiceToReturnAnError()
         {
-            channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<StreamPlatformType>()))
-                .ReturnsAsync(MaybeResult<PlatformChannel, StreamProviderError>.Fail(StreamProviderError.ProviderNotAvailable));
+            channelServiceStub.Setup(s => s.GetStreamerChannel(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(MaybeResult<PlatformChannelDto, StreamProviderError>.Fail(StreamProviderError.ProviderNotAvailable));
         }
 
         private void SetChannelRepositoryToReturnNothing()
         {
-            channelRepositoryMock.Setup(m => m.Get(It.IsAny<StreamPlatformType>(), It.IsAny<string>()))
+            channelRepositoryMock.Setup(m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(Maybe<Channel>.Nothing);
         }
 
         private void SetChannelRepositoryToReturnAChannel(string channelName)
         {
-            var existingChannel = new Channel(channelName, StreamPlatformType.YouTube, DateTime.Now, "https://avatar.url", "https://channel.url");
+            var existingChannel = new Channel(channelName, "youtube", DateTime.Now, "https://avatar.url", "https://channel.url");
 
-            channelRepositoryMock.Setup(m => m.Get(It.IsAny<StreamPlatformType>(), It.IsAny<string>()))
+            channelRepositoryMock.Setup(m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(Maybe<Channel>.Some(existingChannel));
 
         }

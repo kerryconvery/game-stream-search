@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
@@ -10,6 +10,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {
     public class YouTubeStreamMapperTests
     {
+        private string streamPlatformId = "youtube";
         private string youTubeWebUrl = "http://youtube.com";
 
         [Test]
@@ -29,18 +30,18 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
                 .Build();
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
-                .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(Streams.Empty);
+                .Map(streamPlatformId, youTubeSearchResults, videoDetails, videoChannels)
+                .GetOrElse(PlatformStreamsDto.Empty(streamPlatformId));
 
-            Assert.AreEqual(streams.Items.First().StreamerName, "test channel");
-            Assert.AreEqual(streams.Items.First().StreamTitle, "test stream");
-            Assert.AreEqual(streams.Items.First().StreamerAvatarUrl, "http://channel.thumbnail");
-            Assert.AreEqual(streams.Items.First().StreamUrl, "http://youtube.com/watch?v=video1");
-            Assert.AreEqual(streams.Items.First().StreamThumbnailUrl, "http://stream.thumbnail.url");
-            Assert.AreEqual(streams.Items.First().IsLive, true);
-            Assert.AreEqual(streams.Items.First().Views, 1);
-            Assert.AreEqual(streams.Items.First().StreamPlatformName, StreamPlatformType.YouTube.GetFriendlyName());
+            Assert.AreEqual(streams.Streams.First().StreamerName, "test channel");
+            Assert.AreEqual(streams.Streams.First().StreamTitle, "test stream");
+            Assert.AreEqual(streams.Streams.First().StreamerAvatarUrl, "http://channel.thumbnail");
+            Assert.AreEqual(streams.Streams.First().StreamUrl, "http://youtube.com/watch?v=video1");
+            Assert.AreEqual(streams.Streams.First().StreamThumbnailUrl, "http://stream.thumbnail.url");
+            Assert.AreEqual(streams.Streams.First().IsLive, true);
+            Assert.AreEqual(streams.Streams.First().Views, 1);
             Assert.AreEqual(streams.NextPageToken, "nextPage");
+            Assert.AreEqual(streams.StreamPlatformId, streamPlatformId);
         }
 
         [Test]
@@ -51,8 +52,8 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             var videoChannels = new YouTubeChannelResultsBuilder().Build();
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
-                .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(Streams.Empty);
+                .Map(streamPlatformId, youTubeSearchResults, videoDetails, videoChannels)
+                .GetOrElse(PlatformStreamsDto.Empty(streamPlatformId));
 
             Assert.IsTrue(streams.IsEmpty());
         }

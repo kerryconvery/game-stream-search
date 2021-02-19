@@ -1,7 +1,7 @@
 ﻿using System;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
@@ -22,12 +22,12 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             };
             var twitchChannelResult = MaybeResult<TwitchChannelDto, StreamProviderError>.Success(twitchChannelDto);
 
-            var platformChannel = new TwitchChannelMapper().Map(twitchChannelResult).GetOrElse(new PlatformChannel());
+            var platformChannel = new TwitchChannelMapper().Map("twitch", twitchChannelResult).GetOrElse(new PlatformChannelDto());
 
             Assert.AreEqual(platformChannel.ChannelName, "test channel");
             Assert.AreEqual(platformChannel.AvatarUrl, "http://logo.url");
             Assert.AreEqual(platformChannel.ChannelUrl, "http://channel.url");
-            Assert.AreEqual(platformChannel.Platform, StreamPlatformType.Twitch.GetFriendlyName());
+            Assert.AreEqual(platformChannel.StreamPlatformId, "twitch");
         }
     }
 }

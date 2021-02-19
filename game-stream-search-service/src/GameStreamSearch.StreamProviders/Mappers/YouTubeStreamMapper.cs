@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Types;
 
@@ -18,7 +18,8 @@ namespace GameStreamSearch.StreamProviders.Mappers
             this.youTubeWebUrl = youTubeWebUrl;
         }
 
-        public MaybeResult<Streams, StreamProviderError> Map(
+        public MaybeResult<PlatformStreamsDto, StreamProviderError> Map(
+            string streamPlatformId,
             YouTubeSearchDto videoSearchResults,
             MaybeResult<IEnumerable<YouTubeVideoDto>, StreamProviderError> videoDetailResults,
             MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> videoChannelResults)
@@ -30,36 +31,38 @@ namespace GameStreamSearch.StreamProviders.Mappers
                     var videoDetails = videosResult.ToDictionary(v => v.id, v => v.liveStreamingDetails);
                     var videoChannels = channelResults.ToDictionary(c => c.id, c => c.snippet);
 
-                    return ToStreams(videoSearchResults, videoChannels, videoDetails);
+                    return ToStreams(streamPlatformId, videoSearchResults, videoChannels, videoDetails);
                 });
             });
         }
 
-        private Streams ToStreams(
+        private PlatformStreamsDto ToStreams(
+            string streamPlatformId,
             YouTubeSearchDto streams,
             Dictionary<string, YouTubeChannelSnippetDto> channelSnippets,
             Dictionary<string, YouTubeVideoLiveStreamingDetailsDto> liveStreamDetails)
         {
-            return new Streams(
-                streams.items.Select(v =>
+            return new PlatformStreamsDto
+            {
+                StreamPlatformId = streamPlatformId,
+                Streams = streams.items.Select(v =>
                 {
                     var viewers = liveStreamDetails.ContainsKey(v.id.videoId) ? liveStreamDetails[v.id.videoId].concurrentViewers : 0;
                     var avatarUrl = channelSnippets.ContainsKey(v.snippet.channelId) ? channelSnippets[v.snippet.channelId].thumbnails.@default.url : null;
 
-                    return new Stream
+                    return new PlatformStreamDto
                     {
                         StreamerName = v.snippet.channelTitle,
                         StreamTitle = v.snippet.title,
                         StreamThumbnailUrl = v.snippet.thumbnails.medium.url,
                         StreamerAvatarUrl = avatarUrl,
                         StreamUrl = $"{youTubeWebUrl}/watch?v={v.id.videoId}",
-                        StreamPlatformName = StreamPlatformType.YouTube.GetFriendlyName(),
                         IsLive = true,
                         Views = viewers,
                     };
                 }),
-                streams.nextPageToken ?? string.Empty
-            );
+                NextPageToken = streams.nextPageToken ?? string.Empty,
+            };
         }
     }
 }
