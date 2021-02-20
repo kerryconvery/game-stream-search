@@ -7,12 +7,12 @@ using GameStreamSearch.Types;
 using System.Collections.Generic;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Application;
+using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {
     public class TwitchStreamMapperTests
     {
-        private string streamPlatformId = "twitch";
         private MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError> twitchStreamResults;
 
         [SetUp]
@@ -31,7 +31,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
         [Test]
         public void Should_Map_Twitch_Streams_To_Streams()
         {
-            var platformStreams = new TwitchStreamMapper().Map(streamPlatformId, twitchStreamResults, 1, 0);
+            var platformStreams = new TwitchStreamMapper().Map(twitchStreamResults, 1, 0);
 
             Assert.AreEqual(platformStreams.Streams.First().StreamerName, "test channel");
             Assert.AreEqual(platformStreams.Streams.First().StreamerAvatarUrl, "http://channel.logo.url");
@@ -40,13 +40,13 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             Assert.AreEqual(platformStreams.Streams.First().StreamThumbnailUrl, "http://stream.thumbnail.url");
             Assert.AreEqual(platformStreams.Streams.First().IsLive, true);
             Assert.AreEqual(platformStreams.Streams.First().Views, 1);
-            Assert.AreEqual(platformStreams.StreamPlatformId, streamPlatformId);
+            Assert.AreEqual(platformStreams.StreamPlatform, StreamPlatformType.Twitch);
         }
 
         [Test]
         public void Should_Return_The_Next_Page_Token_When_The_Number_Of_Streams_Is_Equal_To_The_Page_Size()
         {
-            var platformStreams = new TwitchStreamMapper().Map(streamPlatformId, twitchStreamResults, 1, 0);
+            var platformStreams = new TwitchStreamMapper().Map(twitchStreamResults, 1, 0);
 
             Assert.AreEqual(platformStreams.NextPageToken, "1");
         }
@@ -54,7 +54,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
         [Test]
         public void Should_Return_An_Empty_Page_Token_When_The_Number_Of_Streams_Is_Less_Than_The_Page_Size()
         {
-            var platformStreams = new TwitchStreamMapper().Map(streamPlatformId, twitchStreamResults, 2, 0);
+            var platformStreams = new TwitchStreamMapper().Map(twitchStreamResults, 2, 0);
 
             Assert.AreEqual(platformStreams.NextPageToken, string.Empty);
         }
@@ -64,7 +64,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
         {
             var emptySearchResults = new TwitchStreamPreviewResultsBuilder().Build();
 
-            var streams = new TwitchStreamMapper().Map(streamPlatformId, emptySearchResults, 1, 0);
+            var streams = new TwitchStreamMapper().Map(emptySearchResults, 1, 0);
 
             Assert.IsTrue(streams.IsEmpty());
             Assert.IsEmpty(streams.NextPageToken);

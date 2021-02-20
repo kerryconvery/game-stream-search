@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Services;
 

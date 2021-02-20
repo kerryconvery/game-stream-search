@@ -1,7 +1,4 @@
-﻿using System;
-using GameStreamSearch.Application.Enums;
-
-namespace GameStreamSearch.Application.Dto
+﻿namespace GameStreamSearch.Application.ValueObjects
 {
     public class StreamDto
     {
@@ -10,7 +7,7 @@ namespace GameStreamSearch.Application.Dto
         public string StreamUrl { get; init; }
         public string StreamerName { get; init; }
         public string StreamerAvatarUrl { get; init; }
-        public string PlatformId { get; set; }
+        public string PlatformDisplayName { get; set; }
         public bool IsLive { get; init; }
         public int Views { get; init; }
     }

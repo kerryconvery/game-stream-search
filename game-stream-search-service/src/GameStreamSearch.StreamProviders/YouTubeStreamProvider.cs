@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
@@ -11,25 +11,22 @@ namespace GameStreamSearch.StreamProviders
 {
     public class YouTubeStreamProvider : IStreamProvider
     {
-        private readonly string streamPlatformId;
         private readonly YouTubeV3Gateway youTubeV3Api;
         private readonly YouTubeStreamMapper streamMapper;
         private readonly YouTubeChannelMapper channelMapper;
 
         public YouTubeStreamProvider(
-            string streamPlatformId,
             YouTubeV3Gateway youTubeV3Api,
             YouTubeStreamMapper streamMapper,
             YouTubeChannelMapper channelMapper
         )
         {
-            this.streamPlatformId = streamPlatformId;
             this.youTubeV3Api = youTubeV3Api;
             this.streamMapper = streamMapper;
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             var liveVideosResult = await youTubeV3Api.SearchGamingVideos(
                 filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
@@ -45,19 +42,19 @@ namespace GameStreamSearch.StreamProviders
                 var videoDetailResults = await getVideoDetails;
                 var videoChannelResults = await getVideoChannels;
 
-                return streamMapper.Map(StreamPlatformId, videos, videoDetailResults, videoChannelResults);
+                return streamMapper.Map(videos, videoDetailResults, videoChannelResults);
             });
 
-            return streams.GetOrElse(PlatformStreamsDto.Empty(StreamPlatformId));
+            return streams.GetOrElse(PlatformStreams.Empty(StreamPlatform));
         }
 
-        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var channelsResults = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
-            return channelMapper.Map(StreamPlatformId, channelsResults);
+            return channelMapper.Map(channelsResults);
         }
 
-        public string StreamPlatformId => streamPlatformId;
+        public StreamPlatform StreamPlatform => StreamPlatformType.YouTube;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
@@ -11,25 +11,22 @@ namespace GameStreamSearch.StreamProviders
 {
     public class DLiveStreamProvider : IStreamProvider
     {
-        private readonly string streamPlatformId;
         private readonly DLiveGraphQLGateway dliveApi;
         private readonly DLiveStreamMapper streamMapper;
         private readonly DLiveChannelMapper channelMapper;
 
         public DLiveStreamProvider(
-            string streamPlatformId,
             DLiveGraphQLGateway dliveApi,
             DLiveStreamMapper streamMapper,
             DLiveChannelMapper channelMapper
        )
         {
-            this.streamPlatformId = streamPlatformId;
             this.dliveApi = dliveApi;
             this.streamMapper = streamMapper;
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             if (!AreFilterOptionsSupported(filterOptions))
             {
@@ -40,14 +37,14 @@ namespace GameStreamSearch.StreamProviders
 
             var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
 
-            return streamMapper.Map(StreamPlatformId, liveStreamsResult, pageSize, pageOffset);
+            return streamMapper.Map(liveStreamsResult, pageSize, pageOffset);
         }
 
-        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var userResult = await dliveApi.GetUserByDisplayName(channelName);
 
-            return channelMapper.Map(StreamPlatformId, userResult);
+            return channelMapper.Map(userResult);
         }
 
         public bool AreFilterOptionsSupported(StreamFilterOptions filterOptions)
@@ -55,6 +52,6 @@ namespace GameStreamSearch.StreamProviders
             return string.IsNullOrEmpty(filterOptions.GameName);
         }
 
-        public string StreamPlatformId => streamPlatformId;
+        public StreamPlatform StreamPlatform => StreamPlatformType.DLive;
     }
 }

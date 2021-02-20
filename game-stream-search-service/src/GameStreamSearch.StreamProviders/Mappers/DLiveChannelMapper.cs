@@ -1,7 +1,7 @@
 ﻿using System;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.Types;
 
@@ -16,16 +16,17 @@ namespace GameStreamSearch.StreamProviders.Mappers
             this.dliveWebUrl = dliveWebUrl;
         }
 
-        public MaybeResult<PlatformChannelDto, StreamProviderError> Map(string streamPlatformId, MaybeResult<DLiveUserDto, StreamProviderError> userSearchResult)
+        public MaybeResult<PlatformChannel, StreamProviderError> Map(
+            MaybeResult<DLiveUserDto, StreamProviderError> userSearchResult)
         {
             return userSearchResult.Select(user =>
             {
-                return new PlatformChannelDto
+                return new PlatformChannel
                 {
                     ChannelName = user.displayName,
                     AvatarUrl = user.avatar,
                     ChannelUrl = $"{dliveWebUrl}/{user.displayName}",
-                    StreamPlatformId = streamPlatformId,
+                    StreamPlatform = StreamPlatformType.DLive,
                 };
             });
         }

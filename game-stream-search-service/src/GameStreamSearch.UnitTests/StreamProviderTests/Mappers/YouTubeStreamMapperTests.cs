@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
@@ -10,7 +10,6 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {
     public class YouTubeStreamMapperTests
     {
-        private string streamPlatformId = "youtube";
         private string youTubeWebUrl = "http://youtube.com";
 
         [Test]
@@ -30,8 +29,8 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
                 .Build();
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
-                .Map(streamPlatformId, youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreamsDto.Empty(streamPlatformId));
+                .Map(youTubeSearchResults, videoDetails, videoChannels)
+                .GetOrElse(PlatformStreams.Empty(StreamPlatformType.YouTube));
 
             Assert.AreEqual(streams.Streams.First().StreamerName, "test channel");
             Assert.AreEqual(streams.Streams.First().StreamTitle, "test stream");
@@ -41,7 +40,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             Assert.AreEqual(streams.Streams.First().IsLive, true);
             Assert.AreEqual(streams.Streams.First().Views, 1);
             Assert.AreEqual(streams.NextPageToken, "nextPage");
-            Assert.AreEqual(streams.StreamPlatformId, streamPlatformId);
+            Assert.AreEqual(streams.StreamPlatform, StreamPlatformType.YouTube);
         }
 
         [Test]
@@ -52,8 +51,8 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             var videoChannels = new YouTubeChannelResultsBuilder().Build();
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
-                .Map(streamPlatformId, youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreamsDto.Empty(streamPlatformId));
+                .Map(youTubeSearchResults, videoDetails, videoChannels)
+                .GetOrElse(PlatformStreams.Empty(StreamPlatformType.YouTube));
 
             Assert.IsTrue(streams.IsEmpty());
         }

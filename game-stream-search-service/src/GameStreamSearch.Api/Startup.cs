@@ -15,7 +15,6 @@ using GameStreamSearch.Application.Commands;
 using GameStreamSearch.StreamProviders.Gateways;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Repositories.Dto;
-using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.Api
 {
@@ -65,19 +64,16 @@ namespace GameStreamSearch.Api
             {
                 return new StreamProviderService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
-                            StreamPlatformType.Twitch.ToString(),
                             new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
                             new TwitchStreamMapper(),
                             new TwitchChannelMapper()
                     ))
                     .RegisterStreamProvider(new YouTubeStreamProvider(
-                            StreamPlatformType.YouTube.ToString(),
                             new YouTubeV3Gateway(Configuration["YouTube:ApiUrl"], Configuration["YouTube:ApiKey"]),
                             new YouTubeStreamMapper(Configuration["YouTube:WebUrl"]),
                             new YouTubeChannelMapper(Configuration["YouTube:WebUrl"])
                     ))
                     .RegisterStreamProvider(new DLiveStreamProvider(
-                            StreamPlatformType.DLive.ToString(),
                             new DLiveGraphQLGateway(Configuration["DLive:Apiurl"]),
                             new DLiveStreamMapper(Configuration["DLive:WebUrl"]),
                             new DLiveChannelMapper(Configuration["DLive:WebUrl"])

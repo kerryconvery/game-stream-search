@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.ValueObjects;
 using GameStreamSearch.Application.Enums;
 using GameStreamSearch.Application.Providers;
 using Microsoft.AspNetCore.Http;
@@ -74,14 +74,14 @@ namespace GameStreamSearch.Api.Controllers
         [Route("channels/{platform}/{channelName}")]
         public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platform, string channelName)
         {
-            var request = new RegisterOrUpdateChannelCommand
+            var command = new RegisterOrUpdateChannelCommand
             {
                 ChannelName = channelName,
-                StreamPlatform = platform,
+                StreamPlatformId = platform,
                 RegistrationDate = timeProvider.GetNow(),
             };
 
-            var commandResult = await upsertChannelCommand.Handle(request);
+            var commandResult = await upsertChannelCommand.Handle(command);
 
             switch (commandResult)
             {

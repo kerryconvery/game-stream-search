@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Base64Url;
-using GameStreamSearch.Application.Dto;
 using Newtonsoft.Json;
 
 namespace GameStreamSearch.Application.Services
 {
-    public class StreamAggregationService
+    public class PageTokenService
     {
-        private string PackPageTokens(Dictionary<string, string> paginations)
+        public string PackPageTokens(Dictionary<string, string> paginations)
         {
             if (!paginations.Any())
             {
@@ -24,15 +22,6 @@ namespace GameStreamSearch.Application.Services
             base64Encryptor.WriteVar(jsonTokens);
 
             return base64Encryptor.ToString();
-        }
-
-        public PlatformStreamsDto AggregateStreams(IEnumerable<PlatformStreamsDto> platformStreams)
-        {
-            var aggregatedStreams = platformStreams.SelectMany(s => s.Streams);
-            var providerPageTokens = platformStreams.ToDictionary(s => s.StreamPlatformId, s => s.NextPageToken);
-            var packedPageTokens = PackPageTokens(providerPageTokens);
-
-            return new PlatformStreamsDto(aggregatedStreams, packedPageTokens);
         }
 
         public Dictionary<string, string> UnpackPageToken(string packedPageTokens)

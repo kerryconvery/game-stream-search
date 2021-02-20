@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace GameStreamSearch.Application.Dto
+namespace GameStreamSearch.Application.ValueObjects
 {
     public class AggregatedStreamsDto
     {
