@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GameStreamSearch.Application.Types
+namespace GameStreamSearch.Application.Models
 {
     public class PlatformStreamsDto
     {

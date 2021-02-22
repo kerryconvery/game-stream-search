@@ -20,6 +20,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Builders\" />
     <Folder Include="DomainServiceTests\" />
+    <Folder Include="ModelTests\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameStreamSearch.Application.Types
+namespace GameStreamSearch.Application.Models
 {
     public abstract class ValueObject
     {

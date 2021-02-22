@@ -6,7 +6,7 @@ using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.UnitTests.Extensions;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {

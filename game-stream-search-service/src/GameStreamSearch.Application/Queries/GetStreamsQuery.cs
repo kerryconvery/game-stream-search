@@ -1,12 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Services;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 
 namespace GameStreamSearch.Application.Queries
 {
     public class StreamsQuery
     {
+        public IEnumerable<string> StreamPlatformNames { get; init; }
         public StreamFilterOptions FilterOptions { get; init; }
         public string PageToken { get; init; }
         public int PageSize { get; init; }
@@ -15,21 +17,23 @@ namespace GameStreamSearch.Application.Queries
     public class GetStreamsQueryHandler : IQueryHandler<StreamsQuery, AggregatedStreamsDto>
     {
         private readonly StreamProviderService streamProviderService;
-        private readonly PageTokenService pageTokenService;
 
-        public GetStreamsQueryHandler(StreamProviderService streamProviderService, PageTokenService pageTokenService)
+        public GetStreamsQueryHandler(StreamProviderService streamProviderService)
         {
             this.streamProviderService = streamProviderService;
-            this.pageTokenService = pageTokenService;
         }
 
         public async Task<AggregatedStreamsDto> Execute(StreamsQuery query)
         {
-            var pageTokens = pageTokenService.UnpackPageToken(query.PageToken);
+            var unpackedTokens = PageTokens.UnpackTokens(query.PageToken);
 
-            var streamSources = streamProviderService.CreateStreamSources(pageTokens, query.FilterOptions);
+            var supportedPlatforms = streamProviderService.GetSupportingPlatforms(query.FilterOptions);
 
-            var platformStreams = await streamProviderService.GetStreams(streamSources, query.FilterOptions, query.PageSize);
+            var platformStreams = await streamProviderService.GetStreams(supportedPlatforms, query.FilterOptions, query.PageSize, unpackedTokens);
+
+            var packedTokens = PageTokens
+                .FromList(platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))
+                .PackTokens();
 
             return new AggregatedStreamsDto
             {
@@ -44,8 +48,7 @@ namespace GameStreamSearch.Application.Queries
                     StreamThumbnailUrl = s.StreamThumbnailUrl,
                     StreamerAvatarUrl = s.StreamerAvatarUrl,
                 })),
-                NextPageToken = pageTokenService.PackPageTokens(
-                    platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))
+                NextPageToken = packedTokens
             };
         }
     }

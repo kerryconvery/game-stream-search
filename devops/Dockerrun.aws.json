@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "834285024888.dkr.ecr.ap-southeast-2.amazonaws.com/stream-machine:8",
+    "Name": "834285024888.dkr.ecr.ap-southeast-2.amazonaws.com/stream-machine:11",
     "Update": "true"
   },
   "Ports": [

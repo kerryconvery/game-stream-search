@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
@@ -15,6 +15,8 @@ using GameStreamSearch.Application.Commands;
 using GameStreamSearch.StreamProviders.Gateways;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Repositories.Dto;
+using GameStreamSearch.Application.Services;
+using GameStreamSearch.Application.Queries;
 
 namespace GameStreamSearch.Api
 {
@@ -80,7 +82,11 @@ namespace GameStreamSearch.Api
                     ));
             });
 
+            services.AddScoped<IStreamService>(x => x.GetRequiredService<StreamProviderService>());
+            services.AddScoped<IChannelService>(x => x.GetRequiredService<StreamProviderService>());
+
             services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>, RegisterOrUpdateChannelCommandHandler>();
+            services.AddScoped<IQueryHandler<StreamsQuery, AggregatedStreamsDto>, GetStreamsQueryHandler>();
             
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 

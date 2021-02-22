@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Services;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 
@@ -15,39 +15,17 @@ namespace GameStreamSearch.UnitTests.DomainServiceTests
         private StreamPlatform twitchPlatform = new StreamPlatform("twitch");
         private StreamPlatform youTubePlatform = new StreamPlatform("youtube");
 
-
         [Test]
-        public void Should_Return_A_List_Of_Stream_Sources_With_Page_Tokens_That_Support_The__Selected_Filters()
+        public void Should_Return_A_List_Of_Providers_That_Support_The_Selected_Filters()
         {
             var streamProviderService = new StreamProviderService()
                 .RegisterStreamProvider(new FakeProvider(youTubePlatform, true))
                 .RegisterStreamProvider(new FakeProvider(twitchPlatform, false));
 
-            var pageTokens = new Dictionary<string, string>
-            {
-                { "youtube", "youtube token" },
-                { "twitch", "twitch token" },
-            };
-
-            var streamSources = streamProviderService.CreateStreamSources(pageTokens, new StreamFilterOptions());
+            var streamSources = streamProviderService.GetSupportingPlatforms(new StreamFilterOptions());
 
             Assert.AreEqual(streamSources.Count(), 1);
-            Assert.AreEqual(streamSources.First().StreamPlatformName, youTubePlatform.Name);
-            Assert.AreEqual(streamSources.First().PageToken, "youtube token");
-        }
-
-        [Test]
-        public void Should_Default_The_Platform_Page_Token_To_An_Empty_String_When_It_Is_Missing_From_The_List_Of_Page_Tokens()
-        {
-            var streamProviderService = new StreamProviderService()
-                .RegisterStreamProvider(new FakeProvider(twitchPlatform, true));
-
-            var pageTokens = new Dictionary<string, string>();
-
-            var streamSources = streamProviderService.CreateStreamSources(pageTokens, new StreamFilterOptions());
-
-            Assert.AreEqual(streamSources.Count(), 1);
-            Assert.AreEqual(streamSources.First().PageToken, string.Empty);
+            Assert.AreEqual(streamSources.First(), youTubePlatform.Name);
         }
     }
 
@@ -62,7 +40,7 @@ namespace GameStreamSearch.UnitTests.DomainServiceTests
             this.isFilterSupported = isFilterSupported;
         }
 
-        Task<PlatformStreamsDto> IStreamProvider.GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        Task<PlatformStreamsDto> IStreamProvider.GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using System;
@@ -25,18 +25,16 @@ namespace GameStreamSearch.StreamProviders
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
             if (!AreFilterOptionsSupported(filterOptions))
             {
                 throw new ArgumentException("The Dlive platform does not support these filter options");
             };
 
-            var pageOffset = int.Parse(pageToken);
+            var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageToken, StreamSortOrder.Trending);
 
-            var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageOffset, StreamSortOrder.Trending);
-
-            return streamMapper.Map(liveStreamsResult, pageSize, pageOffset);
+            return streamMapper.Map(liveStreamsResult, pageSize, pageToken);
         }
 
         public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)

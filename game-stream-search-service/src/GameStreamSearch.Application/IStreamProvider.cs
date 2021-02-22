@@ -1,15 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application
 {
-    public class StreamFilterOptions
-    {
-        public string GameName { get; set; }
-    }
-
     public enum StreamProviderError
     {
         None,
@@ -18,7 +14,7 @@ namespace GameStreamSearch.Application
 
     public interface IStreamProvider
     {
-        Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null);
+        Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken);
         Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName);
         bool AreFilterOptionsSupported(StreamFilterOptions filterOptions) => true;
 

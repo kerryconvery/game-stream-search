@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameStreamSearch.Application.Types
+namespace GameStreamSearch.Application.Models
 {
     public class PlatformChannelDto
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.StreamProviders.Gateways;
 using GameStreamSearch.StreamProviders.Mappers;
@@ -27,16 +27,14 @@ namespace GameStreamSearch.StreamProviders
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
-            var pageOffset = int.Parse(pageToken);
+            var liveStreamsResult = await FindLiveStreams(filterOptions, pageSize, pageToken);
 
-            var liveStreamsResult = await GetLiveStreams(filterOptions, pageSize, pageOffset);
-
-            return streamMapper.Map(liveStreamsResult, pageSize, pageOffset);
+            return streamMapper.Map(liveStreamsResult, pageSize, pageToken);
         }
 
-        private async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> GetLiveStreams(
+        private async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> FindLiveStreams(
             StreamFilterOptions filterOptions, int pageSize, int pageOffset)
         {
             if (string.IsNullOrEmpty(filterOptions.GameName))

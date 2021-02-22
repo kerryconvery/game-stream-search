@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Types;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 
 namespace GameStreamSearch.Application.Services
 {
-    public struct StreamSource
+    public struct PlatformPageTokenPair
     {
-        public string StreamPlatformName { get; init; }
-        public string PageToken { get; init; }
+        public string streamPlatformName { get; set; }
+        public PageToken pageToken { get; set; }
     }
 
-    public class StreamProviderService
+    public class StreamProviderService : IStreamService, IChannelService
     {
         private Dictionary<string, IStreamProvider> streamProviders;
 
@@ -28,26 +28,21 @@ namespace GameStreamSearch.Application.Services
             return this;
         }
 
-        public IEnumerable<StreamSource> CreateStreamSources(
-            IEnumerable<PageToken> pageTokens, StreamFilterOptions filterOptions
-         )
+        public IEnumerable<string> GetSupportingPlatforms(StreamFilterOptions streamFilterOptions)
         {
             return streamProviders
                 .Values
-                .Where(p => p.AreFilterOptionsSupported(filterOptions))
-                .Select(p => new StreamSource {
-                    StreamPlatformName = p.StreamPlatform,
-                    PageToken = pageTokens.SingleOrDefault(t => t.StreamPlatformName == p.StreamPlatform).Token ?? string.Empty,
-                });
+                .Where(p => p.AreFilterOptionsSupported(streamFilterOptions))
+                .Select(p => p.StreamPlatform.Name);
         }
 
         public async Task<IEnumerable<PlatformStreamsDto>> GetStreams(
-            IEnumerable<StreamSource> sourcePlatforms, StreamFilterOptions filterOptions, int pageSize
+            IEnumerable<string> streamPlatforms, StreamFilterOptions filterOptions, int pageSize, PageTokens pageTokens
         )
         {
-            var tasks = sourcePlatforms.Select(s =>
+            var tasks = streamPlatforms.Select(p =>
             {
-                return streamProviders[s.StreamPlatformName].GetLiveStreams(filterOptions, pageSize, s.PageToken);
+                return streamProviders[p].GetLiveStreams(filterOptions, pageSize, pageTokens.GetTokenOrEmpty(p));
             });
 
             return await Task.WhenAll(tasks);

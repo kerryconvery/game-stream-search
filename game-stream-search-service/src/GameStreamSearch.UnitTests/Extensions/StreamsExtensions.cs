@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 
 namespace GameStreamSearch.UnitTests.Extensions
 {

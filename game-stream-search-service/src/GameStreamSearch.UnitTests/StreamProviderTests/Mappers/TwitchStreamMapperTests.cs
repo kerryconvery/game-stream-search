@@ -7,7 +7,7 @@ using GameStreamSearch.Types;
 using System.Collections.Generic;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;

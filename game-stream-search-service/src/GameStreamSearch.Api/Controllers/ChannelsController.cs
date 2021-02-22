@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +32,34 @@ namespace GameStreamSearch.Api.Controllers
             this.upsertChannelCommand = upsertChannelCommand;
             this.channelRepository = channelRepository;
             this.timeProvider = timeProvider;
+        }
+
+        [HttpPut]
+        [Route("channels/{platform}/{channelName}")]
+        public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platform, string channelName)
+        {
+            var command = new RegisterOrUpdateChannelCommand
+            {
+                ChannelName = channelName,
+                StreamPlatformName = platform,
+                RegistrationDate = timeProvider.GetNow(),
+            };
+
+            var commandResult = await upsertChannelCommand.Handle(command);
+
+            switch (commandResult)
+            {
+                case RegisterOrUpdateChannelCommandResult.ChannelNotFoundOnPlatform:
+                    return PresentChannelNotFoundOnPlatform(platform, channelName);
+                case RegisterOrUpdateChannelCommandResult.ChannelAdded:
+                    return PresentChannelAdded(platform, channelName);
+                case RegisterOrUpdateChannelCommandResult.ChannelUpdated:
+                    return new NoContentResult();
+                case RegisterOrUpdateChannelCommandResult.PlatformServiceIsNotAvailable:
+                    return PresentPlatformServiceIsUnavilable(platform);
+                default:
+                    throw new ArgumentException($"Unsupported channel upsert result {commandResult.ToString()}");
+            }
         }
 
         private IActionResult PresentChannelAdded(string platformId, string channelName)
@@ -67,34 +95,6 @@ namespace GameStreamSearch.Api.Controllers
                 });
 
             return StatusCode(StatusCodes.Status424FailedDependency, errorResponse);
-        }
-
-        [HttpPut]
-        [Route("channels/{platform}/{channelName}")]
-        public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platform, string channelName)
-        {
-            var command = new RegisterOrUpdateChannelCommand
-            {
-                ChannelName = channelName,
-                StreamPlatformName = platform,
-                RegistrationDate = timeProvider.GetNow(),
-            };
-
-            var commandResult = await upsertChannelCommand.Handle(command);
-
-            switch (commandResult)
-            {
-                case RegisterOrUpdateChannelCommandResult.ChannelNotFoundOnPlatform:
-                    return PresentChannelNotFoundOnPlatform(platform, channelName);
-                case RegisterOrUpdateChannelCommandResult.ChannelAdded:
-                    return PresentChannelAdded(platform, channelName);
-                case RegisterOrUpdateChannelCommandResult.ChannelUpdated:
-                    return new NoContentResult();
-                case RegisterOrUpdateChannelCommandResult.PlatformServiceIsNotAvailable:
-                    return PresentPlatformServiceIsUnavilable(platform);
-                default:
-                    throw new ArgumentException($"Unsupported channel upsert result {commandResult.ToString()}");
-            }
         }
 
         [HttpGet]

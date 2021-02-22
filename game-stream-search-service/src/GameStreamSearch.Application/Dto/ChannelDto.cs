@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.Application.Types
+﻿namespace GameStreamSearch.Application.Models
 {
     public class ChannelDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Types;
+using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using GameStreamSearch.StreamProviders.Gateways;
@@ -25,7 +25,7 @@ namespace GameStreamSearch.StreamProviders
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
             var liveVideosResult = await youTubeV3Api.SearchGamingVideos(
                 filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);

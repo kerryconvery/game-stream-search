@@ -16,7 +16,7 @@ Resources:
         WriteCapacityUnits: '5'
       AttributeDefinitions:
         -
-          AttributeName: 'StreamPlatform'
+          AttributeName: 'StreamPlatformId'
           AttributeType: 'N'
         -
           AttributeName: 'ChannelName'
@@ -36,7 +36,7 @@ Resources:
           IndexName: "DateRegisteredIndex"
           KeySchema:
             -
-              AttributeName: 'StreamPlatform'
+              AttributeName: 'StreamPlatformId'
               KeyType: 'HASH'
             -
               AttributeName: 'DateRegistered'
@@ -55,6 +55,7 @@ Resources:
           - Effect: Allow
             Action:
               - dynamodb:GetItem
+              - dynamodb:DescribeTable
               - dynamodb:BatchGetItem
               - dynamodb:Query
               - dynamodb:Scan
