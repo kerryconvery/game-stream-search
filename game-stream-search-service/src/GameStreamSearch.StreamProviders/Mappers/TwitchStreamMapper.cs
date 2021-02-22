@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
 
 namespace GameStreamSearch.StreamProviders.Mappers
 {
     public class TwitchStreamMapper
     {
-        public PlatformStreams Map(
+        public PlatformStreamsDto Map(
             MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError> twitchStreamResults,
             int pageSize,
             int pageOffset
@@ -18,10 +17,10 @@ namespace GameStreamSearch.StreamProviders.Mappers
         {
             return twitchStreamResults.Select(streams =>
             {
-                return new PlatformStreams
+                return new PlatformStreamsDto
                 {
-                    StreamPlatform = StreamPlatformType.Twitch,
-                    Streams = streams.Select(stream => new PlatformStream
+                    StreamPlatformName = StreamPlatform.Twitch,
+                    Streams = streams.Select(stream => new PlatformStreamDto
                     {
                         StreamTitle = stream.channel.status,
                         StreamerName = stream.channel.display_name,
@@ -33,7 +32,7 @@ namespace GameStreamSearch.StreamProviders.Mappers
                     }),
                     NextPageToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty
                 };
-            }).GetOrElse(PlatformStreams.Empty(StreamPlatformType.Twitch));
+            }).GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.Twitch));
         }
     }
 }

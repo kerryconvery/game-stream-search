@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.Application.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +76,7 @@ namespace GameStreamSearch.Api.Controllers
             var command = new RegisterOrUpdateChannelCommand
             {
                 ChannelName = channelName,
-                StreamPlatformId = platform,
+                StreamPlatformName = platform,
                 RegistrationDate = timeProvider.GetNow(),
             };
 

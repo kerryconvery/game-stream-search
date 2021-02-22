@@ -1,7 +1,6 @@
 ﻿using System;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
@@ -24,11 +23,11 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             };
             var userSearchResults = MaybeResult<DLiveUserDto, StreamProviderError>.Success(dliveUser);
 
-            var platformChannl = mapper.Map(userSearchResults).GetOrElse(new PlatformChannel());
+            var platformChannl = mapper.Map(userSearchResults).GetOrElse(new PlatformChannelDto());
 
             Assert.AreEqual(platformChannl.ChannelName, "testuser");
             Assert.AreEqual(platformChannl.AvatarUrl, "http://avatar.url");
-            Assert.AreEqual(platformChannl.StreamPlatform, StreamPlatformType.DLive);
+            Assert.AreEqual(platformChannl.StreamPlatformName, StreamPlatform.DLive.Name);
             Assert.AreEqual(platformChannl.ChannelUrl, "http://dlive.com/testuser");
         }
     }

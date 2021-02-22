@@ -1,7 +1,6 @@
 ﻿using System;
 using Amazon.DynamoDBv2.DataModel;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 
 namespace GameStreamSearch.Repositories.Dto
 {

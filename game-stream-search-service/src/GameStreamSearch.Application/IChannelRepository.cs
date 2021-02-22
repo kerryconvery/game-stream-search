@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.Application.ValueObjects
+namespace GameStreamSearch.Application.Types
 {
-    public class PlatformStream : ValueObject
+    public class PlatformStreamDto : ValueObject
     {
         public string StreamTitle { get; init; }
         public string StreamThumbnailUrl { get; init; }

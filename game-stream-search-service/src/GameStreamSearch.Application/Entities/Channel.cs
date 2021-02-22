@@ -1,7 +1,6 @@
 ﻿using System;
-using GameStreamSearch.Application.Enums;
 
-namespace GameStreamSearch.Application.ValueObjects
+namespace GameStreamSearch.Application.Types
 {
     public class Channel
     {

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.Types;
 using GameStreamSearch.Repositories.Dto;
 

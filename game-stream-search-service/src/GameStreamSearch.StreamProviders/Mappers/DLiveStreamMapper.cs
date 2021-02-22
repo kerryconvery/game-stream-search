@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.Types;
 using GameStreamSearch.Application;
@@ -18,7 +17,7 @@ namespace GameStreamSearch.StreamProviders.Mappers
             this.dliveWebUrl = dliveWebUrl;
         }
 
-        public PlatformStreams Map(
+        public PlatformStreamsDto Map(
             MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError> streamSearchResults,
             int pageSize,
             int pageOffset
@@ -26,12 +25,12 @@ namespace GameStreamSearch.StreamProviders.Mappers
         {
             return streamSearchResults.Select(streams =>
             {
-                return new PlatformStreams
+                return new PlatformStreamsDto
                 {
-                    StreamPlatform = StreamPlatformType.DLive,
+                    StreamPlatformName = StreamPlatform.DLive,
                     Streams = streams.Select(stream =>
                     {
-                        return new PlatformStream
+                        return new PlatformStreamDto
                         {
                             StreamTitle = stream.title,
                             StreamerName = stream.creator.displayName,
@@ -44,7 +43,7 @@ namespace GameStreamSearch.StreamProviders.Mappers
                     }),
                     NextPageToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty
                 };
-            }).GetOrElse(PlatformStreams.Empty(StreamPlatformType.DLive));
+            }).GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.DLive));
         }
     }
 }

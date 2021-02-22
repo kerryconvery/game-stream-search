@@ -1,8 +1,4 @@
-﻿using System;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
-
-namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
+﻿namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
 {
     public class YouTubeChannelSnippetThumbnailDto
     {

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using GameStreamSearch.StreamProviders.Gateways;
@@ -26,7 +25,7 @@ namespace GameStreamSearch.StreamProviders
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             var liveVideosResult = await youTubeV3Api.SearchGamingVideos(
                 filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
@@ -45,16 +44,16 @@ namespace GameStreamSearch.StreamProviders
                 return streamMapper.Map(videos, videoDetailResults, videoChannelResults);
             });
 
-            return streams.GetOrElse(PlatformStreams.Empty(StreamPlatform));
+            return streams.GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.Name));
         }
 
-        public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var channelsResults = await youTubeV3Api.SearchChannelsByUsername(channelName, 1);
 
             return channelMapper.Map(channelsResults);
         }
 
-        public StreamPlatform StreamPlatform => StreamPlatformType.YouTube;
+        public StreamPlatform StreamPlatform => StreamPlatform.YouTube;
     }
 }

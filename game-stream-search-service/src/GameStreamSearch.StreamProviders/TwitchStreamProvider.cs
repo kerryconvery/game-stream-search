@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.StreamProviders.Gateways;
 using GameStreamSearch.StreamProviders.Mappers;
@@ -28,7 +27,7 @@ namespace GameStreamSearch.StreamProviders
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             var pageOffset = int.Parse(pageToken);
 
@@ -48,13 +47,13 @@ namespace GameStreamSearch.StreamProviders
             return await twitchStreamApi.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
         }
 
-        public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var channelsResult = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
             return channelMapper.Map(TwitchChannelSelector.Select(channelName, channelsResult));
         }
 
-        public StreamPlatform StreamPlatform => StreamPlatformType.Twitch;
+        public StreamPlatform StreamPlatform => StreamPlatform.Twitch;
     }
 }

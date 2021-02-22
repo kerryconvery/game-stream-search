@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.Application.ValueObjects
+﻿namespace GameStreamSearch.Application.Types
 {
     public class ChannelDto
     {

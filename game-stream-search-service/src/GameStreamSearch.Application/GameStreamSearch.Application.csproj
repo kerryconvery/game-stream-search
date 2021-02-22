@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Dto\" />
-    <Folder Include="Enums\" />
     <Folder Include="Entities\" />
     <Folder Include="Services\" />
     <Folder Include="Providers\" />

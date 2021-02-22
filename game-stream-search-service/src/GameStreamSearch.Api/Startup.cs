@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GameStreamSearch.Application.Services;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders;
 using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;

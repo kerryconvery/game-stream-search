@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using System;
@@ -26,7 +25,7 @@ namespace GameStreamSearch.StreamProviders
             this.channelMapper = channelMapper;
         }
 
-        public async Task<PlatformStreams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
+        public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken)
         {
             if (!AreFilterOptionsSupported(filterOptions))
             {
@@ -40,7 +39,7 @@ namespace GameStreamSearch.StreamProviders
             return streamMapper.Map(liveStreamsResult, pageSize, pageOffset);
         }
 
-        public async Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
         {
             var userResult = await dliveApi.GetUserByDisplayName(channelName);
 
@@ -52,6 +51,6 @@ namespace GameStreamSearch.StreamProviders
             return string.IsNullOrEmpty(filterOptions.GameName);
         }
 
-        public StreamPlatform StreamPlatform => StreamPlatformType.DLive;
+        public StreamPlatform StreamPlatform => StreamPlatform.DLive;
     }
 }

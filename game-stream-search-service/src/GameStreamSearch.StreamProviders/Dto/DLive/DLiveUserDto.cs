@@ -1,8 +1,4 @@
-﻿using System;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
-
-namespace GameStreamSearch.StreamProviders.Dto.DLive
+﻿namespace GameStreamSearch.StreamProviders.Dto.DLive
 {
     public class DLiveUserDto
     {

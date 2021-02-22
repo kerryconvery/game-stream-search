@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
@@ -30,7 +29,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
                 .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreams.Empty(StreamPlatformType.YouTube));
+                .GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.YouTube));
 
             Assert.AreEqual(streams.Streams.First().StreamerName, "test channel");
             Assert.AreEqual(streams.Streams.First().StreamTitle, "test stream");
@@ -40,7 +39,8 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             Assert.AreEqual(streams.Streams.First().IsLive, true);
             Assert.AreEqual(streams.Streams.First().Views, 1);
             Assert.AreEqual(streams.NextPageToken, "nextPage");
-            Assert.AreEqual(streams.StreamPlatform, StreamPlatformType.YouTube);
+            Assert.AreEqual(streams.StreamPlatformName, StreamPlatform.YouTube.Name);
+
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
                 .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreams.Empty(StreamPlatformType.YouTube));
+                .GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.YouTube.Name));
 
             Assert.IsTrue(streams.IsEmpty());
         }

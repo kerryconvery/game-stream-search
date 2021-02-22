@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace GameStreamSearch.Application.ValueObjects
+namespace GameStreamSearch.Application.Types
 {
-    public class PlatformChannel
+    public class PlatformChannelDto
     {
         public string ChannelName { get; init; }
-        public StreamPlatform StreamPlatform { get; init; }
+        public string StreamPlatformName { get; init; }
         public string AvatarUrl { get; init; }
         public string ChannelUrl { get; init; }
 
         public Channel ToChannel(DateTime dateRegistered)
         {
-            return new Channel(ChannelName, StreamPlatform.PlatformId, dateRegistered, AvatarUrl, ChannelUrl);
+            return new Channel(ChannelName, StreamPlatformName, dateRegistered, AvatarUrl, ChannelUrl);
         }
     }
 }

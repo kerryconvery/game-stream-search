@@ -6,7 +6,7 @@ using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.UnitTests.Extensions;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {
@@ -48,7 +48,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
             Assert.AreEqual(streams.Streams.First().StreamUrl, "dlive.url/TestUserA");
             Assert.AreEqual(streams.Streams.First().Views, 1);
             Assert.AreEqual(streams.Streams.First().IsLive, true);
-            Assert.AreEqual(streams.StreamPlatform, StreamPlatformType.DLive);
+            Assert.AreEqual(streams.StreamPlatformName, StreamPlatform.DLive.Name);
         }
 
         [Test]

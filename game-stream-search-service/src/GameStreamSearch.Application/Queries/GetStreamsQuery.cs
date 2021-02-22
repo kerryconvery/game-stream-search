@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Services;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 
 namespace GameStreamSearch.Application.Queries
 {
@@ -41,12 +40,12 @@ namespace GameStreamSearch.Application.Queries
                     StreamUrl = s.StreamUrl,
                     IsLive = s.IsLive,
                     Views = s.Views,
-                    PlatformDisplayName = p.StreamPlatform.PlatformDisplayName,
+                    PlatformName = p.StreamPlatformName,
                     StreamThumbnailUrl = s.StreamThumbnailUrl,
                     StreamerAvatarUrl = s.StreamerAvatarUrl,
                 })),
                 NextPageToken = pageTokenService.PackPageTokens(
-                    platformStreams.ToDictionary(s => s.StreamPlatform.PlatformId, s => s.NextPageToken))
+                    platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))
             };
         }
     }

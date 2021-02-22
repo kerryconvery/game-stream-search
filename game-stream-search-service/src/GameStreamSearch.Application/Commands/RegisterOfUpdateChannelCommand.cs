@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.Services;
+using GameStreamSearch.Application.Types;
 
 namespace GameStreamSearch.Application.Commands
 {
@@ -18,7 +16,7 @@ namespace GameStreamSearch.Application.Commands
     {
         public string ChannelName { get; init; }
         public DateTime RegistrationDate { get; init; }
-        public string StreamPlatformId { get; init; }
+        public string StreamPlatformName { get; init; }
     }
 
     public class RegisterOrUpdateChannelCommandHandler : ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>
@@ -50,7 +48,7 @@ namespace GameStreamSearch.Application.Commands
 
         public async Task<RegisterOrUpdateChannelCommandResult> Handle(RegisterOrUpdateChannelCommand request)
         {
-            var streamChannelResult = await channelService.GetStreamerChannel(request.ChannelName, request.StreamPlatformId);
+            var streamChannelResult = await channelService.GetStreamerChannel(request.ChannelName, request.StreamPlatformName);
 
             if (streamChannelResult.IsFailure)
             {

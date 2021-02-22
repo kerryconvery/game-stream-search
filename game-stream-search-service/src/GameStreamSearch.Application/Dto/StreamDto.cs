@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.Application.ValueObjects
+﻿namespace GameStreamSearch.Application.Types
 {
     public class StreamDto
     {
@@ -7,7 +7,7 @@
         public string StreamUrl { get; init; }
         public string StreamerName { get; init; }
         public string StreamerAvatarUrl { get; init; }
-        public string PlatformDisplayName { get; set; }
+        public string PlatformName { get; set; }
         public bool IsLive { get; init; }
         public int Views { get; init; }
     }

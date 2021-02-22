@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.ValueObjects;
-using GameStreamSearch.Application.Enums;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application
@@ -19,8 +18,8 @@ namespace GameStreamSearch.Application
 
     public interface IStreamProvider
     {
-        Task<PlatformStreams> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null);
-        Task<MaybeResult<PlatformChannel, StreamProviderError>> GetStreamerChannel(string channelName);
+        Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, string pageToken = null);
+        Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName);
         bool AreFilterOptionsSupported(StreamFilterOptions filterOptions) => true;
 
         StreamPlatform StreamPlatform { get; }

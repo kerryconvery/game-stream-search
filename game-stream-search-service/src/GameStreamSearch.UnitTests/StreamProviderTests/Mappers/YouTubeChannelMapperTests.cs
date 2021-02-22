@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
@@ -36,11 +35,11 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 
             var channel = new YouTubeChannelMapper(youtubeWebUrl)
                 .Map(channelResults)
-                .GetOrElse(new PlatformChannel());
+                .GetOrElse(new PlatformChannelDto());
 
             Assert.AreEqual(channel.ChannelName, "testchannel");
             Assert.AreEqual(channel.AvatarUrl, "http://thumbnail.url");
-            Assert.AreEqual(channel.StreamPlatform, StreamPlatformType.YouTube);
+            Assert.AreEqual(channel.StreamPlatformName, StreamPlatform.YouTube.Name);
             Assert.AreEqual(channel.ChannelUrl, "http://youtube.com/user/testchannel");
 
         }

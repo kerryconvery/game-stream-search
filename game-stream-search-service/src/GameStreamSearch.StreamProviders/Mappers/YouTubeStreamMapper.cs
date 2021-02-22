@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Enums;
-using GameStreamSearch.Application.ValueObjects;
+using GameStreamSearch.Application.Types;
 using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Types;
 
@@ -18,7 +17,7 @@ namespace GameStreamSearch.StreamProviders.Mappers
             this.youTubeWebUrl = youTubeWebUrl;
         }
 
-        public MaybeResult<PlatformStreams, StreamProviderError> Map(
+        public MaybeResult<PlatformStreamsDto, StreamProviderError> Map(
             YouTubeSearchDto videoSearchResults,
             MaybeResult<IEnumerable<YouTubeVideoDto>, StreamProviderError> videoDetailResults,
             MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> videoChannelResults)
@@ -35,20 +34,20 @@ namespace GameStreamSearch.StreamProviders.Mappers
             });
         }
 
-        private PlatformStreams ToStreams(
+        private PlatformStreamsDto ToStreams(
             YouTubeSearchDto streams,
             Dictionary<string, YouTubeChannelSnippetDto> channelSnippets,
             Dictionary<string, YouTubeVideoLiveStreamingDetailsDto> liveStreamDetails)
         {
-            return new PlatformStreams
+            return new PlatformStreamsDto
             {
-                StreamPlatform = StreamPlatformType.YouTube,
+                StreamPlatformName = StreamPlatform.YouTube,
                 Streams = streams.items.Select(v =>
                 {
                     var viewers = liveStreamDetails.ContainsKey(v.id.videoId) ? liveStreamDetails[v.id.videoId].concurrentViewers : 0;
                     var avatarUrl = channelSnippets.ContainsKey(v.snippet.channelId) ? channelSnippets[v.snippet.channelId].thumbnails.@default.url : null;
 
-                    return new PlatformStream
+                    return new PlatformStreamDto
                     {
                         StreamerName = v.snippet.channelTitle,
                         StreamTitle = v.snippet.title,
