@@ -65,7 +65,7 @@ const StreamTile = ({
   streamUrl,
   streamerName,
   streamerAvatarUrl,
-  streamPlatformName,
+  platformName,
   views,
   onStreamOpened, }) => {
 
@@ -86,7 +86,7 @@ const StreamTile = ({
             </Tooltip>
             <div className={classes.streamSubDetails}>
               <div>{streamerName}</div>
-              <span>{streamPlatformName}</span>
+              <span>{platformName}</span>
               <span> • </span>
               <span>{`${views} viewers`}</span>
             </div>
@@ -103,7 +103,7 @@ StreamTile.propTypes = {
   streamThumbnailUrl: string.isRequired,
   streamUrl: string.isRequired,
   streamerAvatarUrl: string.isRequired,
-  streamPlatformName: string.isRequired,
+  platformName: string.isRequired,
   views: number.isRequired,
   onStreamOpened: func,
 }
@@ -195,7 +195,7 @@ GameStreamGrid.propTypes = {
     streamThumbnailUrl: string.isRequired,
     streamUrl: string.isRequired,
     streamerAvatarUrl: string.isRequired,
-    streamPlatformName: string.isRequired,
+    platformName: string.isRequired,
     views: number.isRequired,
   })),
   isLoading: bool,

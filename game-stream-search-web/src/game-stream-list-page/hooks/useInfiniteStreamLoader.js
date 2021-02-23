@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import useReducers from '../../shared-components/hooks/useReducers';
 
 const createReducers = state => ({
-  streamsLoaded: (items, nextPageToken) => (
-    { ...state, items: state.items.concat(items), nextPageToken, isLoading: false }
+  streamsLoaded: (streams, nextPageToken) => (
+    { ...state, streams: state.streams.concat(streams), nextPageToken, isLoading: false }
   ),
   filterStreams: (filters) => (
     {
       ...state,
-      items: [],
+      streams: [],
       filters: { ...state.filters, ...filters },
       nextPageToken: null, 
       currentPageToken: null,
@@ -21,7 +21,7 @@ const createReducers = state => ({
 })
 
 const initialState = {
-  items: [],
+  streams: [],
   filters: {},
   nextPageToken: null,
   currentPageToken: null,
@@ -36,16 +36,17 @@ const useInfiniteStreamLoader = (onLoadStreams, onLoadError, initialFilters = {}
     loadMoreStreams,
   ] = useReducers(createReducers, { ...initialState, filters: initialFilters });
 
-  const hasMoreStreams = state.nextPageToken !== null && !state.isLoading;
+  console.log('state.nextPageToken', state.nextPageToken);
+  const hasMoreStreams = state.nextPageToken !== "" && !state.isLoading;
   
   useEffect(() => {
     onLoadStreams(state.filters, state.currentPageToken)
-      .then(data => streamsLoaded(data.items, data.nextPageToken))
+      .then(data => streamsLoaded(data.streams, data.nextPageToken))
       .catch(onLoadError);
   }, [state.filters, state.currentPageToken]);
   
   return {
-    items: state.items,
+    streams: state.streams,
     isLoading: state.isLoading,
     filters: state.filters,
     hasMoreStreams,

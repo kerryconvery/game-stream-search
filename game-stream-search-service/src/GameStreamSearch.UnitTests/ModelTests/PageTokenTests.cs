@@ -43,5 +43,32 @@ namespace GameStreamSearch.UnitTests.ModelTests
             Assert.AreEqual(unpackedTokens.GetTokenOrEmpty("youtube").Token, "youtube token");
             Assert.AreEqual(unpackedTokens.GetTokenOrEmpty("twitch").Token, "twitch token");
         }
+
+        [Test]
+        public void Should_Return_An_Empty_String_When_All_Page_Tokens_Are_Empty()
+        {
+            var pageTokens = new PageTokens()
+                .AddToken("youtube", "")
+                .AddToken("twitch", "");
+
+            var packedTokens = pageTokens.PackTokens();
+
+            Assert.IsEmpty(packedTokens);
+        }
+
+        [Test]
+        public void Should_Only_Pack_Non_Empty_Tokens()
+        {
+            var pageTokens = new PageTokens()
+                .AddToken("youtube", "youtube token")
+                .AddToken("twitch", "");
+
+            var packedTokens = pageTokens.PackTokens();
+
+            var unpackedTokens = PageTokens.UnpackTokens(packedTokens);
+
+            Assert.AreEqual(unpackedTokens.GetTokenOrEmpty("youtube").Token, "youtube token");
+            Assert.AreEqual(unpackedTokens.GetTokenOrEmpty("twitch").Token, "");
+        }
     }
 }

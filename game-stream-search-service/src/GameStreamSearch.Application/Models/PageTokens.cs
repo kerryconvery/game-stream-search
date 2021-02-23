@@ -56,12 +56,14 @@ namespace GameStreamSearch.Application.Models
 
         public string PackTokens()
         {
-            if (!pageTokens.Any())
+            var tokenList = pageTokens
+                .Where(t => !t.IsEmpty())
+                .ToDictionary(t => t.StreamPlatformName, t => t.Token);
+
+            if (!tokenList.Any())
             {
                 return string.Empty;
             }
-
-            var tokenList = pageTokens.ToDictionary(t => t.StreamPlatformName, t => t.Token);
 
             var jsonTokens = JsonConvert.SerializeObject(tokenList);
 

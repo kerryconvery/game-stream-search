@@ -37,7 +37,7 @@ const GameStreamListPage = () => {
             hasMore={streams.hasMoreStreams}
           >
             <GameStreamGrid
-              streams={streams.items}
+              streams={streams.streams}
               isLoading={streams.isLoading}
               numberOfLoadingTiles={6}
               onStreamOpened={trackStreamOpened}
@@ -45,7 +45,7 @@ const GameStreamListPage = () => {
           </InfiniteScroll>
         </div>
       }
-      numberOfStreams={streams.items.length}
+      numberOfStreams={streams.streams.length}
       isLoadingStreams={streams.isLoading}
     />
   )
