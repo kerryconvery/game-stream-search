@@ -5,6 +5,8 @@ using GameStreamSearch.Application;
 using GameStreamSearch.Application.Commands;
 using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application.Providers;
+using GameStreamSearch.Application.Queries;
+using GameStreamSearch.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,16 +23,19 @@ namespace GameStreamSearch.Api.Controllers
     public class ChannelsController : ControllerBase
     {
         private readonly ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult> upsertChannelCommand;
-        private readonly IChannelRepository channelRepository;
+        private readonly IQueryHandler<GetAllChannelsQuery, ChannelListDto> getAllChannelsQueryHandler;
+        private readonly IQueryHandler<GetChannelQuery, Maybe<ChannelDto>> getChannelQueryHandler;
         private readonly ITimeProvider timeProvider;
 
         public ChannelsController(
             ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult> upsertChannelCommand,
-            IChannelRepository channelRepository,
+            IQueryHandler<GetAllChannelsQuery, ChannelListDto> getAllChannelsQueryHandler,
+            IQueryHandler<GetChannelQuery, Maybe<ChannelDto>> getChannelQueryHandler,
             ITimeProvider timeProvider)
         {
             this.upsertChannelCommand = upsertChannelCommand;
-            this.channelRepository = channelRepository;
+            this.getAllChannelsQueryHandler = getAllChannelsQueryHandler;
+            this.getChannelQueryHandler = getChannelQueryHandler;
             this.timeProvider = timeProvider;
         }
 
@@ -101,7 +106,7 @@ namespace GameStreamSearch.Api.Controllers
         [Route("channels")]
         public async Task<IActionResult> GetChannels()
         {
-            var channels = await channelRepository.SelectAllChannels();
+            var channels = await getAllChannelsQueryHandler.Execute(new GetAllChannelsQuery());
 
             return Ok(channels);
         }
@@ -110,10 +115,12 @@ namespace GameStreamSearch.Api.Controllers
         [Route("channels/{platformName}/{channelName}", Name = "GetChannel")]
         public async Task<IActionResult> GetChannel([FromRoute] string platformName, string channelName)
         {
-            var getChannelResult = await channelRepository.Get(platformName, channelName);
+            var getChannelQuery = new GetChannelQuery { platformName = platformName, channelName = channelName };
+
+            var getChannelResult = await getChannelQueryHandler.Execute(getChannelQuery);
 
             return getChannelResult
-                .Select<IActionResult>(v => new OkObjectResult(ChannelDto.FromEntity(v)))
+                .Select<IActionResult>(v => new OkObjectResult(v))
                 .GetOrElse(new NotFoundResult());
         }
     }

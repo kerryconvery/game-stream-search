@@ -3,8 +3,8 @@ import config from './config.json';
 
 const baseUrl = config.env[process.env.APP_ENV];
 
-describe.only('Live streams', () => {
-  it('should return http status code 200 and one stream from each provider', async () => {
+describe('Live streams', () => {
+  it('should return http status code 200 and one stream from each provider ordered by views', async () => {
     const response = await axios({
       url: `${baseUrl}/streams?pageSize=1`,
       method: 'get',
@@ -13,11 +13,28 @@ describe.only('Live streams', () => {
 
     expect(response.status).toEqual(200);
     expect(response.data.streams.length).toEqual(3);
-    expect(response.data.streams[0].platformName).toEqual("Twitch");
-    expect(response.data.streams[1].platformName).toEqual("YouTube");
-    expect(response.data.streams[2].platformName).toEqual("DLive");
+    expect(response.data.streams[0].platformName).toEqual('Twitch');
+    expect(response.data.streams[1].platformName).toEqual('YouTube');
+    expect(response.data.streams[2].platformName).toEqual('DLive');
     expect(response.data.streams[0].views > response.data.streams[1].views).toBeTruthy();
     expect(response.data.streams[1].views > response.data.streams[2].views).toBeTruthy();
+  });
+
+  it('should populate all of the expected fields', async () => {
+    const response = await axios({
+      url: `${baseUrl}/streams?pageSize=1`,
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    expect(response.data.streams[0].streamTitle || '').not.toEqual('');
+    expect(response.data.streams[0].streamThumbnailUrl || '').not.toEqual('');
+    expect(response.data.streams[0].streamUrl || '').not.toEqual('');
+    expect(response.data.streams[0].streamerName || '').not.toEqual('');
+    expect(response.data.streams[0].streamerAvatarUrl || '').not.toEqual('');
+    expect(response.data.streams[0].platformName || '').not.toEqual('');
+    expect(response.data.streams[0].isLive || false).toEqual(true);
+    expect(response.data.streams[0].views || '').not.toEqual('');
   });
 
   it('should return two pages of streams', async () => {
@@ -49,8 +66,8 @@ describe.only('Live streams', () => {
 
     expect(response.status).toEqual(200);
     expect(response.data.streams.length).toEqual(2);
-    expect(response.data.streams[0].platformName).toEqual("Twitch");
-    expect(response.data.streams[1].platformName).toEqual("YouTube");
+    expect(response.data.streams[0].platformName).toEqual('Twitch');
+    expect(response.data.streams[1].platformName).toEqual('YouTube');
   });
 });
 
@@ -63,7 +80,7 @@ describe('Channels', () => {
     });
 
     expect(putResponse.status).toEqual(201);
-    expect(putResponse.config.url).toEqual("http://localhost:5000/api/channels/twitch/christopherodd");
+    expect(putResponse.config.url).toEqual('http://localhost:5000/api/channels/twitch/christopherodd');
   });
 
   it('should update an existing channel and return 200', async () => {
@@ -84,10 +101,10 @@ describe('Channels', () => {
     });
 
     expect(response.status).toEqual(200);
-    expect(response.data.items.length).toEqual(1);
+    expect(response.data.channels.length).toEqual(1);
   });
 
-  it('should return a single channel', async () => {
+  it('should return a single channel with all expected fields populated', async () => {
     const response = await axios({
       url: `${baseUrl}/channels/Twitch/ChristopherOdd`,
       method: 'get',
@@ -97,5 +114,7 @@ describe('Channels', () => {
     expect(response.status).toEqual(200);
     expect(response.data.channelName).toEqual('ChristopherOdd');
     expect(response.data.streamPlatformId).toEqual('Twitch');
+    expect(response.data.avatarUrl || '').not.toEqual('');
+    expect(response.data.channelUrl || '').not.toEqual('');
   });
 });

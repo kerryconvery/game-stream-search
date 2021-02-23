@@ -5,10 +5,11 @@ using GameStreamSearch.Application;
 using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
 using GameStreamSearch.Repositories.Dto;
+using System.Collections.Generic;
 
 namespace GameStreamSearch.Repositories
 {
-    public class ChannelRepository : IChannelRepository
+    public class ChannelRepository : IRepository<Channel>
     {
         private readonly AwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable;
 
@@ -36,25 +37,11 @@ namespace GameStreamSearch.Repositories
             return awsDynamoDbTable.DeleteItem(streamPlatformId, channelName);
         }
 
-        public async Task<ChannelListDto> SelectAllChannels()
+        public async Task<IEnumerable<Channel>> GetAll()
         {
-            var channels = await awsDynamoDbTable.GetAllItems();
+            var channelDtos = await awsDynamoDbTable.GetAllItems();
 
-            ChannelListDto channelList = new ChannelListDto();
-
-            var channelDtos = channels.OrderBy(c => c.DateRegistered)
-                .Select(c => new ChannelDto
-                {
-                    ChannelName = c.ChannelName,
-                    StreamPlatformId = c.StreamPlatformId,
-                    AvatarUrl = c.AvatarUrl,
-                    ChannelUrl = c.ChannelUrl,
-                });
-
-            return new ChannelListDto
-            {
-                Items = channelDtos,
-            };
+            return channelDtos.Select(c => c.ToEntity());
         }
 
         public Task Update(Channel channel)

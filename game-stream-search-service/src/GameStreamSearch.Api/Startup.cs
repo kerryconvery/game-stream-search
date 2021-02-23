@@ -17,6 +17,7 @@ using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Repositories.Dto;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.Application.Queries;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Api
 {
@@ -87,11 +88,13 @@ namespace GameStreamSearch.Api
 
             services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>, RegisterOrUpdateChannelCommandHandler>();
             services.AddScoped<IQueryHandler<StreamsQuery, AggregatedStreamsDto>, GetStreamsQueryHandler>();
-            
+            services.AddScoped<IQueryHandler<GetAllChannelsQuery, ChannelListDto>, GetAllChannelsQueryHandler>();
+            services.AddScoped<IQueryHandler<GetChannelQuery, Maybe<ChannelDto>>, GetChannelQueryHandler>();
+
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 
             services.AddSingleton<AwsDynamoDbGateway<DynamoDbChannelDto>, AwsDynamoDbGateway<DynamoDbChannelDto>>();
-            services.AddSingleton<IChannelRepository, ChannelRepository>();
+            services.AddSingleton<IRepository<Channel>, ChannelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

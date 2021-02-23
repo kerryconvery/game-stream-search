@@ -21,10 +21,10 @@ namespace GameStreamSearch.Application.Commands
 
     public class RegisterOrUpdateChannelCommandHandler : ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>
     {
-        private readonly IChannelRepository channelRepository;
+        private readonly IRepository<Channel> channelRepository;
         private readonly IChannelService channelService;
 
-        public RegisterOrUpdateChannelCommandHandler(IChannelRepository channelRepository, IChannelService channelService)
+        public RegisterOrUpdateChannelCommandHandler(IRepository<Channel> channelRepository, IChannelService channelService)
         {
             this.channelRepository = channelRepository;
             this.channelService = channelService;
