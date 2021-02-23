@@ -12,13 +12,13 @@ import '@testing-library/jest-dom/extend-expect';
 describe('When viewing streams', () => {
   it('should render streams without errors', async () => {
     const streams = {
-      items: [{
+      streams: [{
         streamTitle: 'fake stream',
         streamThumbnailUrl: 'http://fake.stream1.thumbnail',
         streamUrl: 'fake.stream1.url',
         streamerName: 'fake steamer',
         streamerAvatarUrl: 'http://fake.channel1.url',
-        streamPlatformName: 'fake platform',
+        platformName: 'fake platform',
         isLive: true,
         views: 100
       }],
@@ -46,13 +46,13 @@ describe('When viewing streams', () => {
 
   it('should render loading tiles while loading streams', async () => {
     const streams = {
-      items: [{
+      streams: [{
         streamTitle: 'fake stream',
         streamThumbnailUrl: 'http://fake.stream1.thumbnail',
         streamUrl: 'fake.stream1.url',
         streamerName: 'fake steamer',
         streamerAvatarUrl: 'http://fake.channel1.url',
-        streamPlatformName: 'fake platform',
+        platformName: 'fake platform',
         isLive: true,
         views: 100
       }],
@@ -97,13 +97,13 @@ describe('When viewing streams', () => {
 
   it('should trigger a stream opened telemetry event when a stream is clicked on', async () => {
     const streams = {
-      items: [{
+      streams: [{
         streamTitle: 'fake stream',
         streamThumbnailUrl: 'http://fake.stream1.thumbnail',
         streamUrl: 'fake.stream1.url',
         streamerName: 'fake steamer',
         streamerAvatarUrl: 'http://fake.channel1.url',
-        streamPlatformName: 'fake platform',
+        platformName: 'fake platform',
         isLive: true,
         views: 100
       }],

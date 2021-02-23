@@ -23,7 +23,7 @@ const createReducers = state => ({
 const initialState = {
   streams: [],
   filters: {},
-  nextPageToken: null,
+  nextPageToken: "",
   currentPageToken: null,
   isLoading: true
 };
@@ -36,7 +36,6 @@ const useInfiniteStreamLoader = (onLoadStreams, onLoadError, initialFilters = {}
     loadMoreStreams,
   ] = useReducers(createReducers, { ...initialState, filters: initialFilters });
 
-  console.log('state.nextPageToken', state.nextPageToken);
   const hasMoreStreams = state.nextPageToken !== "" && !state.isLoading;
   
   useEffect(() => {

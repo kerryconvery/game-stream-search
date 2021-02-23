@@ -1,4 +1,4 @@
-const trackStreamOpened = ({ streamTitle, streamerName, streamPlatformName, views }) => {
+const trackStreamOpened = ({ streamTitle, streamerName, platformName, views }) => {
 
 }
 

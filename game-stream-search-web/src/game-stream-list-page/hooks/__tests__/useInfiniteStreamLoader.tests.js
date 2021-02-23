@@ -4,8 +4,8 @@ import useInfiniteStreamLoader from '../useInfiniteStreamLoader';
 describe('Use game stream data hook', () => {
   it('should start loading game streams when initially invoked', () => {
     const streamData = {
-      items: [],
-      nextPageToken: null,
+      streams: [],
+      nextPageToken: "",
     }
 
     const loadStreamsStub = () => new Promise(() => streamData);
@@ -17,8 +17,8 @@ describe('Use game stream data hook', () => {
 
   it('should return streams after the streams are loaded', async () => {
     const streamData = {
-      items: [{},{}],
-      nextPageToken: null,
+      streams: [{},{}],
+      nextPageToken: "",
     }
     
     const loadStreamsStub = () => new Promise(resolve => resolve(streamData));
@@ -27,13 +27,13 @@ describe('Use game stream data hook', () => {
 
     await act(loadStreamsStub);
  
-    expect(result.current.items.length).toEqual(2);
+    expect(result.current.streams.length).toEqual(2);
     expect(result.current.isLoading).toBeFalsy();
   });
 
   it('should start to load new streams when more streams are requested', async () => {
     const streams = {
-      items: [{},{}],
+      streams: [{},{}],
       nextPageToken: 'next page token',
     }
     
@@ -54,7 +54,7 @@ describe('Use game stream data hook', () => {
 
   it('should return new and existing streams when more streams are loaded', async () => {
     const streams = {
-      items: [{},{}],
+      streams: [{},{}],
       nextPageToken: 'next page token',
     }
     
@@ -68,18 +68,18 @@ describe('Use game stream data hook', () => {
 
     await act(loadStreamsStub);
 
-    expect(result.current.items.length).toEqual(4);
+    expect(result.current.streams.length).toEqual(4);
     expect(result.current.isLoading).toBeFalsy();
   });
 
   it('should return streams filtered by game when the filter changes', async () => {
     const streams = {
       testGameA: {
-        items: [{},{}],
+        streams: [{},{}],
         nextPageToken: 'next page token',
       },
       testGameB: {
-        items: [{},{},{}],
+        streams: [{},{},{}],
         nextPageToken: 'next page token',
       }
     }
@@ -96,13 +96,13 @@ describe('Use game stream data hook', () => {
  
     await act(() => loadGameStreamsStub({ gameName: 'testGameB' }));
 
-    expect(result.current.items.length).toEqual(3);
+    expect(result.current.streams.length).toEqual(3);
     expect(result.current.isLoading).toBeFalsy();
   });
 
   it('should report that more streams are available when there is a next page token', async () => {
     const streamData = {
-      items: [{},{}],
+      streams: [{},{}],
       nextPageToken: 'next page token',
     }
     
@@ -117,8 +117,8 @@ describe('Use game stream data hook', () => {
 
   it('should report that there are no more streams are available when there is no next page token', async () => {
     const streamData = {
-      items: [{},{}],
-      nextPageToken: null,
+      streams: [{},{}],
+      nextPageToken: "",
     }
     
     const loadStreamsStub = () => new Promise(resolve => resolve(streamData));

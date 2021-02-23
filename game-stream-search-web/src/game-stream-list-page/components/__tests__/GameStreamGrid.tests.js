@@ -11,7 +11,7 @@ describe('Game stream grid', () => {
         streamThumbnailUrl: 'http://test.stream.thumbnail.url',
         streamUrl: 'http://test.stream.url',
         streamerAvatarUrl: 'http://test.channel.thumbnail.url',
-        streamPlatformName: 'test platform',
+        platformName: 'test platform',
         views: 100
       },
       {
@@ -20,7 +20,7 @@ describe('Game stream grid', () => {
         streamThumbnailUrl: 'http://test.stream.thumbnail.url',
         streamUrl: 'http://test.stream.url',
         streamerAvatarUrl: 'http://test.channel.thumbnail.url',
-        streamPlatformName: 'test platform',
+        platformName: 'test platform',
         views: 10
       },
     ]
@@ -52,7 +52,7 @@ describe('Game stream grid', () => {
         streamThumbnailUrl: 'http://test.stream.thumbnail.url',
         streamUrl: 'http://test.stream.url',
         streamerAvatarUrl: 'http://test.channel.thumbnail.url',
-        streamPlatformName: 'test platform',
+        platformName: 'test platform',
         views: 100
       },
     ]

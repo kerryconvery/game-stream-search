@@ -73,7 +73,7 @@ describe('Can view featured channels', () => {
       'access-control-allow-credentials': 'true' 
     })
     .get('/api/streams?pageSize=10')
-    .reply(200, { items: [] });
+    .reply(200, { streams: [] });
   });
 
   const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));
