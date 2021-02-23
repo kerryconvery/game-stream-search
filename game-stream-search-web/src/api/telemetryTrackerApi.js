@@ -6,7 +6,7 @@ const trackStreamSearch = ({ gameName }) => {
 
 }
 
-const trackFeaturedChannelOpened = ({ channelName, streamPlatformDisplayName }) => {
+const trackFeaturedChannelOpened = ({ channelName, platformName }) => {
 
 }
 

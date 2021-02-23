@@ -7,13 +7,13 @@ describe('Channel List', () => {
     const channels = [
       {
         channelName: 'test channel 1',
-        streamPlatformDisplayName: 'YouTube',
+        platformName: 'YouTube',
         avatarUrl: '',
         channelUrl: '',
       },
       {
         channelName: 'test channel 2',
-        streamPlatformDisplayName: 'DLive',
+        platformName: 'DLive',
         avatarUrl: '',
         channelUrl: '',
       }

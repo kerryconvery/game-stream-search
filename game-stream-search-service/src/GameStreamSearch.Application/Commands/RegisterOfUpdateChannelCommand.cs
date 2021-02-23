@@ -32,7 +32,7 @@ namespace GameStreamSearch.Application.Commands
 
         private async Task<RegisterOrUpdateChannelCommandResult> UpsertChannel(Channel channel)
         {
-            var existingChannel = await channelRepository.Get(channel.StreamPlatformId, channel.ChannelName);
+            var existingChannel = await channelRepository.Get(channel.StreamPlatformName, channel.ChannelName);
 
             if (existingChannel.IsSome)
             {

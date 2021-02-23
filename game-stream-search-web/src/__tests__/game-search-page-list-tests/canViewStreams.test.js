@@ -134,7 +134,7 @@ describe('When viewing streams', () => {
       'access-control-allow-credentials': 'true' ,
     })
     .get('/api/channels')
-    .reply(200, { items: [] });
+    .reply(200, { channels: [] });
   });
   
   const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));

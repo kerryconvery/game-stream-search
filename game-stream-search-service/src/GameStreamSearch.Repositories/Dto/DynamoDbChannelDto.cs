@@ -8,7 +8,7 @@ namespace GameStreamSearch.Repositories.Dto
     public class DynamoDbChannelDto
     {
         [DynamoDBHashKey]
-        public string StreamPlatformId { get; init; }
+        public string StreamPlatformName { get; init; }
 
         [DynamoDBRangeKey]
         public string ChannelName { get; init; }
@@ -27,7 +27,7 @@ namespace GameStreamSearch.Repositories.Dto
             return new DynamoDbChannelDto
             {
                 ChannelName = channel.ChannelName,
-                StreamPlatformId = channel.StreamPlatformId,
+                StreamPlatformName = channel.StreamPlatformName,
                 DateRegistered = channel.DateRegistered,
                 AvatarUrl = channel.AvatarUrl,
                 ChannelUrl = channel.ChannelUrl,
@@ -36,7 +36,7 @@ namespace GameStreamSearch.Repositories.Dto
 
         public Channel ToEntity()
         {
-            return new Channel(ChannelName, StreamPlatformId, DateRegistered, AvatarUrl, ChannelUrl);
+            return new Channel(ChannelName, StreamPlatformName, DateRegistered, AvatarUrl, ChannelUrl);
         }
     }
 }

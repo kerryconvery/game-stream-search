@@ -12,10 +12,10 @@ import '@testing-library/jest-dom/extend-expect';
 describe('Can view featured channels', () => {
   it('should display a list of Featured channels on startup', async () => {
     const channelList = {
-      items: [
+      channels: [
         {
           channelName: 'testchannel',
-          streamPlatformDisplayName: 'Twitch',
+          platformName: 'Twitch',
           avatarUrl: '',
           channelUrl: '',
         }
@@ -39,10 +39,10 @@ describe('Can view featured channels', () => {
 
   it('should trigger a stream channel opened telemetry event', async () => {
     const channelList = {
-      items: [
+      channels: [
         {
           channelName: 'testchannel',
-          streamPlatformDisplayName: 'Twitch',
+          platformName: 'Twitch',
           avatarUrl: '',
           channelUrl: '',
         }

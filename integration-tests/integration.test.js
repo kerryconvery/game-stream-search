@@ -113,7 +113,7 @@ describe('Channels', () => {
 
     expect(response.status).toEqual(200);
     expect(response.data.channelName).toEqual('ChristopherOdd');
-    expect(response.data.streamPlatformId).toEqual('Twitch');
+    expect(response.data.platformName).toEqual('Twitch');
     expect(response.data.avatarUrl || '').not.toEqual('');
     expect(response.data.channelUrl || '').not.toEqual('');
   });

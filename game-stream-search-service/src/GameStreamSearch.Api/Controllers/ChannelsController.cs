@@ -78,25 +78,25 @@ namespace GameStreamSearch.Api.Controllers
             return new CreatedResult(Url.Link(nameof(GetChannel), urlParams), null);
         }
 
-        private IActionResult PresentChannelNotFoundOnPlatform(string platformId, string channelName)
+        private IActionResult PresentChannelNotFoundOnPlatform(string platformName, string channelName)
         {
             var errorResponse = new ErrorResponseContract()
                 .AddError(new ErrorContract
                 {
                     ErrorCode = ErrorCodeType.ChannelNotFoundOnPlatform,
-                    ErrorMessage = $"Channel {channelName} not found on {platformId}"
+                    ErrorMessage = $"Channel {channelName} not found on {platformName}"
                 });
 
             return new BadRequestObjectResult(errorResponse);
         }
 
-        private IActionResult PresentPlatformServiceIsUnavilable(string platformId)
+        private IActionResult PresentPlatformServiceIsUnavilable(string platformName)
         {
             var errorResponse = new ErrorResponseContract()
                 .AddError(new ErrorContract
                 {
                     ErrorCode = ErrorCodeType.PlatformServiceIsNotAvailable,
-                    ErrorMessage = $"The platform {platformId} is not available at this time"
+                    ErrorMessage = $"The platform {platformName} is not available at this time"
                 });
 
             return StatusCode(StatusCodes.Status424FailedDependency, errorResponse);

@@ -27,13 +27,13 @@ describe('Can add featured channels', () => {
   it('should save the new channel and close the form when the save button is pressed', async () => {
     const channel = {
       channelName: 'newchannel',
-      streamPlatformDisplayName: 'Twitch',
+      platformName: 'Twitch',
       avatarUrl: '',
       channelUrl: '',
     };
 
     const updateChannels = {
-      items: [channel]
+      channels: [channel]
     }
 
     nock('http://localhost:5000')
@@ -61,13 +61,13 @@ describe('Can add featured channels', () => {
   it('should update an exiting channel and close the form when the save button is pressed', async () => {
     const channel = {
       channelName: 'newchannel',
-      streamPlatformDisplayName: 'Twitch',
+      platformName: 'Twitch',
       avatarUrl: '',
       channelUrl: '',
     };
 
     const updateChannels = {
-      items: [channel]
+      channels: [channel]
     }
 
     nock('http://localhost:5000')
@@ -183,7 +183,7 @@ describe('Can add featured channels', () => {
         'access-control-allow-credentials': 'true' ,
       })
       .get('/api/channels')
-      .reply(200, { items: [] })
+      .reply(200, { channels: [] })
   })
   
   const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));

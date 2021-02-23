@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 
@@ -15,8 +16,7 @@ namespace GameStreamSearch.Repositories
         {
             AmazonDynamoDBConfig clientConfig = new AmazonDynamoDBConfig
             {
-                //RegionEndpoint = RegionEndpoint.APSoutheast2,
-                ServiceURL = "http://localhost:8000"
+                RegionEndpoint = RegionEndpoint.APSoutheast2,
             };
 
             dynamoDbClient = new AmazonDynamoDBClient(clientConfig);

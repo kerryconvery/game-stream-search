@@ -3,7 +3,7 @@
     public class ChannelDto
     {
         public string ChannelName { get; init; }
-        public string StreamPlatformId { get; init; }
+        public string PlatformName { get; init; }
         public string AvatarUrl { get; init; }
         public string ChannelUrl { get; init; }
 
@@ -12,7 +12,7 @@
             return new ChannelDto
             {
                 ChannelName = channel.ChannelName,
-                StreamPlatformId = channel.StreamPlatformId,
+                PlatformName = channel.StreamPlatformName,
                 AvatarUrl = channel.AvatarUrl,
                 ChannelUrl = channel.ChannelUrl,
             };

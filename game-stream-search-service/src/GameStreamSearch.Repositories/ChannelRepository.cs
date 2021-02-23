@@ -25,16 +25,16 @@ namespace GameStreamSearch.Repositories
             return awsDynamoDbTable.PutItem(channelDto);
         }
 
-        public async Task<Maybe<Channel>> Get(string streamPlatformId, string channelName)
+        public async Task<Maybe<Channel>> Get(string streamPlatformName, string channelName)
         {
-            var channelDto = await awsDynamoDbTable.GetItem(streamPlatformId, channelName);
+            var channelDto = await awsDynamoDbTable.GetItem(streamPlatformName, channelName);
 
             return Maybe<Channel>.ToMaybe(channelDto?.ToEntity());
         }
 
-        public Task Remove(string streamPlatformId, string channelName)
+        public Task Remove(string streamPlatformName, string channelName)
         {
-            return awsDynamoDbTable.DeleteItem(streamPlatformId, channelName);
+            return awsDynamoDbTable.DeleteItem(streamPlatformName, channelName);
         }
 
         public async Task<IEnumerable<Channel>> GetAll()

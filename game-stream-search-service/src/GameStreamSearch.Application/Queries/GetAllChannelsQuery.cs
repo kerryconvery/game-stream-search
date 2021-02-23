@@ -26,7 +26,7 @@ namespace GameStreamSearch.Application.Queries
                 .Select(c => new ChannelDto
                 {
                     ChannelName = c.ChannelName,
-                    StreamPlatformId = c.StreamPlatformId,
+                    PlatformName = c.StreamPlatformName,
                     AvatarUrl = c.AvatarUrl,
                     ChannelUrl = c.ChannelUrl,
                 });

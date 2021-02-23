@@ -4,7 +4,7 @@ namespace GameStreamSearch.Application.Models
 {
     public class Channel
     {
-        public Channel(string channelName, string streamPlatformId, DateTime dateRegistered, string avatarUrl, string channelUrl)
+        public Channel(string channelName, string streamPlatformName, DateTime dateRegistered, string avatarUrl, string channelUrl)
         {
             if (string.IsNullOrEmpty(channelName))
             {
@@ -12,7 +12,7 @@ namespace GameStreamSearch.Application.Models
             }
 
             ChannelName = channelName;
-            StreamPlatformId = streamPlatformId;
+            StreamPlatformName = streamPlatformName;
             DateRegistered = dateRegistered;
 
             SetAvatarUrl(avatarUrl);
@@ -41,7 +41,7 @@ namespace GameStreamSearch.Application.Models
         }
 
         public string ChannelName { get; }
-        public string StreamPlatformId { get; }
+        public string StreamPlatformName { get; }
         public DateTime DateRegistered { get; }
         public string AvatarUrl { get; private set; }
         public string ChannelUrl { get; private set; }

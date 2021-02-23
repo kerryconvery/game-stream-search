@@ -58,7 +58,7 @@ const getChannelsRequest = (baseUrl) => () => (
     url: `${baseUrl}/channels`,
     method: 'GET',
     params: {},
-  }).then(res => res.data.items)
+  }).then(res => res.data.channels)
 );
 
 const mapHttpResponse = (httpResponse, mapApiErrorsToFields) => {

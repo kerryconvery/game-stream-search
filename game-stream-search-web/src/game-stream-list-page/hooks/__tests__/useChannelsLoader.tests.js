@@ -14,13 +14,13 @@ describe('Channels loader hook', () => {
     const channels = [
       {
         name: 'test channel 1',
-        streamPlatformDisplayName: 'YouTube',
+        platformName: 'YouTube',
         channelAvatarUrl: '',
         channelUrl: '',
       },
       {
         name: 'test channel 2',
-        streamPlatformDisplayName: 'DLive',
+        platformName: 'DLive',
         channelAvatarUrl: '',
         channelUrl: '',
       }
@@ -52,7 +52,7 @@ describe('Channels loader hook', () => {
     const channels = [
       {
         channelName: 'test channel 1',
-        streamPlatformDisplayName: 'YouTube',
+        platformName: 'YouTube',
         avatarUrl: '',
         channelUrl: '',
       },
@@ -61,13 +61,13 @@ describe('Channels loader hook', () => {
     const newChannels = [
       {
         channelName: 'test channel 1',
-        streamPlatformDisplayName: 'YouTube',
+        platformName: 'YouTube',
         avatarUrl: 'updated url',
         channelUrl: '',
       },
       {
         channelName: 'test channel 2',
-        streamPlatformDisplayName: 'DLive',
+        platformName: 'DLive',
         avatarUrl: '',
         channelUrl: '',
       }
