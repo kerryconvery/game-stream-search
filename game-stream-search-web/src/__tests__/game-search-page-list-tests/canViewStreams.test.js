@@ -11,7 +11,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 describe('When viewing streams', () => {
   it('should render streams without errors', async () => {
-    const streams = {
+    const responseData = {
       streams: [{
         streamTitle: 'fake stream',
         streamThumbnailUrl: 'http://fake.stream1.thumbnail',
@@ -31,7 +31,7 @@ describe('When viewing streams', () => {
         'access-control-allow-credentials': 'true' 
       })
       .get('/api/streams?pageSize=10')
-      .reply(200, streams);
+      .reply(200, responseData);
 
     renderApplication();
 
@@ -45,7 +45,7 @@ describe('When viewing streams', () => {
   });
 
   it('should render loading tiles while loading streams', async () => {
-    const streams = {
+    const responseData = {
       streams: [{
         streamTitle: 'fake stream',
         streamThumbnailUrl: 'http://fake.stream1.thumbnail',
@@ -65,7 +65,7 @@ describe('When viewing streams', () => {
         'access-control-allow-credentials': 'true' 
       })
       .get('/api/streams?pageSize=10')
-      .reply(200, streams);
+      .reply(200, responseData);
 
     renderApplication();
 
@@ -96,7 +96,7 @@ describe('When viewing streams', () => {
   });
 
   it('should trigger a stream opened telemetry event when a stream is clicked on', async () => {
-    const streams = {
+    const responseData = {
       streams: [{
         streamTitle: 'fake stream',
         streamThumbnailUrl: 'http://fake.stream1.thumbnail',
@@ -116,7 +116,7 @@ describe('When viewing streams', () => {
         'access-control-allow-credentials': 'true' 
       })
       .get('/api/streams?pageSize=10')
-      .reply(200, streams);
+      .reply(200, responseData);
 
     renderApplication();
 

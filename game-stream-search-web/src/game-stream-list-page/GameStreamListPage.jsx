@@ -17,10 +17,10 @@ const GameStreamListPage = () => {
   const { dispatchEvent } = useEventBus();
   const { trackStreamOpened, trackStreamSearch } = useTelemetryTracker();
 
-  const streams = useInfiniteStreamLoader(getStreams, notifyApplicationIsOffline(dispatchEvent));
+  const streamLoader = useInfiniteStreamLoader(getStreams, notifyApplicationIsOffline(dispatchEvent));
 
   const filterStreams = (gameName) => {
-    streams.filterStreams({ gameName });
+    streamLoader.filterStreams({ gameName });
     trackStreamSearch({ gameName });
   }
 
@@ -28,25 +28,25 @@ const GameStreamListPage = () => {
     <GameStreamPageView
       searchBar={<GameSearchInput onGameChange={filterStreams} />}
       leftSideBar={<ChannelsSideBar />}
-      notFoundNotice={<NoStreamsFound searchTerm={streams.filters.gameName} />}
+      notFoundNotice={<NoStreamsFound searchTerm={streamLoader.filters.gameName} />}
       streamList={
         <div style={{ overflow: 'visible' }}>
           <InfiniteScroll
             pageStart={0}
-            loadMore={streams.loadMoreStreams}
-            hasMore={streams.hasMoreStreams}
+            loadMore={streamLoader.loadMoreStreams}
+            hasMore={streamLoader.hasMoreStreams}
           >
             <GameStreamGrid
-              streams={streams.streams}
-              isLoading={streams.isLoading}
+              streams={streamLoader.streams}
+              isLoading={streamLoader.isLoading}
               numberOfLoadingTiles={6}
               onStreamOpened={trackStreamOpened}
             />
           </InfiniteScroll>
         </div>
       }
-      numberOfStreams={streams.streams.length}
-      isLoadingStreams={streams.isLoading}
+      numberOfStreams={streamLoader.streams.length}
+      isLoadingStreams={streamLoader.isLoading}
     />
   )
 }
