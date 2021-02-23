@@ -13,9 +13,9 @@ namespace GameStreamSearch.Application.Queries
 
     public class GetChannelQueryHandler : IQueryHandler<GetChannelQuery, Maybe<ChannelDto>>
     {
-        private IRepository<Channel> channelRepository;
+        private IChannelRepository channelRepository;
 
-        public GetChannelQueryHandler(IRepository<Channel> channelRepository)
+        public GetChannelQueryHandler(IChannelRepository channelRepository)
         {
             this.channelRepository = channelRepository;
         }

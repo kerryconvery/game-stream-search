@@ -94,7 +94,7 @@ namespace GameStreamSearch.Api
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 
             services.AddSingleton<AwsDynamoDbGateway<DynamoDbChannelDto>, AwsDynamoDbGateway<DynamoDbChannelDto>>();
-            services.AddSingleton<IRepository<Channel>, ChannelRepository>();
+            services.AddSingleton<IChannelRepository, ChannelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,9 +9,9 @@ namespace GameStreamSearch.Application.Queries
 
     public class GetAllChannelsQueryHandler : IQueryHandler<GetAllChannelsQuery, ChannelListDto>
     {
-        private readonly IRepository<Channel> channelRepository;
+        private readonly IChannelRepository channelRepository;
 
-        public GetAllChannelsQueryHandler(IRepository<Channel> channelRepository)
+        public GetAllChannelsQueryHandler(IChannelRepository channelRepository)
         {
             this.channelRepository = channelRepository;
         }

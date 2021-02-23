@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameStreamSearch.Repositories
 {
-    public class ChannelRepository : IRepository<Channel>
+    public class ChannelRepository : IChannelRepository
     {
         private readonly AwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable;
 
