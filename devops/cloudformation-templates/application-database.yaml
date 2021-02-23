@@ -17,7 +17,7 @@ Resources:
       AttributeDefinitions:
         -
           AttributeName: 'StreamPlatformId'
-          AttributeType: 'N'
+          AttributeType: 'S'
         -
           AttributeName: 'ChannelName'
           AttributeType: 'S'
@@ -26,7 +26,7 @@ Resources:
           AttributeType: 'S'
       KeySchema:
         -
-          AttributeName: 'StreamPlatform'
+          AttributeName: 'StreamPlatformId'
           KeyType: 'HASH'
         -
           AttributeName: 'ChannelName'

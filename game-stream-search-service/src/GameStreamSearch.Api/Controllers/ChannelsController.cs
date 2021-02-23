@@ -13,7 +13,7 @@ namespace GameStreamSearch.Api.Controllers
     public class GetChannelParams
     {
         public string ChannelName { get; init; }
-        public string PlatformId { get; init; }
+        public string PlatformName { get; init; }
     }
 
     [ApiController]
@@ -35,13 +35,13 @@ namespace GameStreamSearch.Api.Controllers
         }
 
         [HttpPut]
-        [Route("channels/{platform}/{channelName}")]
-        public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platform, string channelName)
+        [Route("channels/{platformName}/{channelName}")]
+        public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platformName, string channelName)
         {
             var command = new RegisterOrUpdateChannelCommand
             {
                 ChannelName = channelName,
-                StreamPlatformName = platform,
+                StreamPlatformName = platformName,
                 RegistrationDate = timeProvider.GetNow(),
             };
 
@@ -50,24 +50,24 @@ namespace GameStreamSearch.Api.Controllers
             switch (commandResult)
             {
                 case RegisterOrUpdateChannelCommandResult.ChannelNotFoundOnPlatform:
-                    return PresentChannelNotFoundOnPlatform(platform, channelName);
+                    return PresentChannelNotFoundOnPlatform(platformName, channelName);
                 case RegisterOrUpdateChannelCommandResult.ChannelAdded:
-                    return PresentChannelAdded(platform, channelName);
+                    return PresentChannelAdded(platformName, channelName);
                 case RegisterOrUpdateChannelCommandResult.ChannelUpdated:
                     return new NoContentResult();
                 case RegisterOrUpdateChannelCommandResult.PlatformServiceIsNotAvailable:
-                    return PresentPlatformServiceIsUnavilable(platform);
+                    return PresentPlatformServiceIsUnavilable(platformName);
                 default:
                     throw new ArgumentException($"Unsupported channel upsert result {commandResult.ToString()}");
             }
         }
 
-        private IActionResult PresentChannelAdded(string platformId, string channelName)
+        private IActionResult PresentChannelAdded(string platformName, string channelName)
         {
             var urlParams = new GetChannelParams
             {
                 ChannelName = channelName,
-                PlatformId = platformId,
+                PlatformName = platformName,
             };
 
             return new CreatedResult(Url.Link(nameof(GetChannel), urlParams), null);
@@ -107,10 +107,10 @@ namespace GameStreamSearch.Api.Controllers
         }
 
         [HttpGet]
-        [Route("channels/{platform}/{channelName}", Name = "GetChannel")]
-        public async Task<IActionResult> GetChannel([FromRoute] string platform, string channelName)
+        [Route("channels/{platformName}/{channelName}", Name = "GetChannel")]
+        public async Task<IActionResult> GetChannel([FromRoute] string platformName, string channelName)
         {
-            var getChannelResult = await channelRepository.Get(platform, channelName);
+            var getChannelResult = await channelRepository.Get(platformName, channelName);
 
             return getChannelResult
                 .Select<IActionResult>(v => new OkObjectResult(ChannelDto.FromEntity(v)))

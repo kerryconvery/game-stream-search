@@ -48,7 +48,7 @@ namespace GameStreamSearch.Application.Commands
 
         public async Task<RegisterOrUpdateChannelCommandResult> Handle(RegisterOrUpdateChannelCommand request)
         {
-            var streamChannelResult = await channelService.GetStreamerChannel(request.ChannelName, request.StreamPlatformName);
+            var streamChannelResult = await channelService.GetStreamerChannel(request.StreamPlatformName, request.ChannelName);
 
             if (streamChannelResult.IsFailure)
             {

@@ -17,6 +17,7 @@ namespace GameStreamSearch.StreamProviders.Mappers
         {
             return twitchStreamResults.Select(streams =>
             {
+                var nextPagToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty;
                 return new PlatformStreamsDto
                 {
                     StreamPlatformName = StreamPlatform.Twitch,
@@ -30,7 +31,7 @@ namespace GameStreamSearch.StreamProviders.Mappers
                         IsLive = true,
                         Views = stream.viewers,
                     }),
-                    NextPageToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty
+                    NextPageToken = nextPagToken,
                 };
             }).GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.Twitch));
         }

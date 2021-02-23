@@ -16,3 +16,12 @@ services:
       - "8080:8080"
     depends_on:
       - web
+  dynamodb-integration-tests:
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./integration-tests/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal

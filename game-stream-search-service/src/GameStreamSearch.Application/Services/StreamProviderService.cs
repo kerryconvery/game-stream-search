@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Types;
 using GameStreamSearch.Application.Models;
+using System;
 
 namespace GameStreamSearch.Application.Services
 {
@@ -18,7 +19,7 @@ namespace GameStreamSearch.Application.Services
 
         public StreamProviderService()
         {
-            streamProviders = new Dictionary<string, IStreamProvider>();
+            streamProviders = new Dictionary<string, IStreamProvider>(StringComparer.OrdinalIgnoreCase);
         }
 
         public StreamProviderService RegisterStreamProvider(IStreamProvider streamProvider)

@@ -35,9 +35,7 @@ namespace GameStreamSearch.Application.Queries
                 .FromList(platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))
                 .PackTokens();
 
-            return new AggregatedStreamsDto
-            {
-                Streams = platformStreams.SelectMany(p => p.Streams.Select(s => new StreamDto
+            var aggregatedStreams = platformStreams.SelectMany(p => p.Streams.Select(s => new StreamDto
                 {
                     StreamTitle = s.StreamTitle,
                     StreamerName = s.StreamerName,
@@ -47,7 +45,11 @@ namespace GameStreamSearch.Application.Queries
                     PlatformName = p.StreamPlatformName,
                     StreamThumbnailUrl = s.StreamThumbnailUrl,
                     StreamerAvatarUrl = s.StreamerAvatarUrl,
-                })),
+                }));
+
+            return new AggregatedStreamsDto
+            {
+                Streams = aggregatedStreams.OrderByDescending(s => s.Views),
                 NextPageToken = packedTokens
             };
         }

@@ -17,7 +17,6 @@ namespace GameStreamSearch.Repositories
             AmazonDynamoDBConfig clientConfig = new AmazonDynamoDBConfig
             {
                 RegionEndpoint = RegionEndpoint.APSoutheast2,
-                
             };
 
             dynamoDbClient = new AmazonDynamoDBClient(clientConfig);
