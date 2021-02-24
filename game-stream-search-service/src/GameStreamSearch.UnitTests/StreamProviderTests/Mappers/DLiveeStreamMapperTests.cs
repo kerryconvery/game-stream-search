@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using GameStreamSearch.Application;
-using GameStreamSearch.StreamProviders.Dto.DLive;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.Application.Dto.DLive;
+using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.UnitTests.Extensions;

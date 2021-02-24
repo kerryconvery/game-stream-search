@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.Application.Dto.YouTube.YouTubeV3;
 
 namespace GameStreamSearch.UnitTests.Builders
 {

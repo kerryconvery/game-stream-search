@@ -6,12 +6,6 @@ using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application
 {
-    public enum StreamProviderError
-    {
-        None,
-        ProviderNotAvailable,
-    }
-
     public interface IStreamProvider
     {
         Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken);

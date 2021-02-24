@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application.Queries
 {
@@ -9,16 +11,16 @@ namespace GameStreamSearch.Application.Queries
 
     public class GetAllChannelsQueryHandler : IQueryHandler<GetAllChannelsQuery, ChannelListDto>
     {
-        private readonly IChannelRepository channelRepository;
+        private readonly AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway;
 
-        public GetAllChannelsQueryHandler(IChannelRepository channelRepository)
+        public GetAllChannelsQueryHandler(AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway)
         {
-            this.channelRepository = channelRepository;
+            this.dynamoDbGateway = dynamoDbGateway;
         }
 
         public async Task<ChannelListDto> Execute(GetAllChannelsQuery query)
         {
-            var channels = await channelRepository.GetAll();
+            var channels = await dynamoDbGateway.GetAllItems();
 
             ChannelListDto channelList = new ChannelListDto();
 

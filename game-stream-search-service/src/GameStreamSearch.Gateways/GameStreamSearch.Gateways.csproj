@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Dto\" />
+    <Folder Include="Dto\DLive\" />
+    <Folder Include="Dto\Twitch\" />
+    <Folder Include="Dto\YouTube\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Dto\DynamoDb\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Flurl" Version="3.0.1" />
+    <PackageReference Include="Flurl.Http" Version="3.0.1" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.5.4.31" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
+  </ItemGroup>
+</Project>

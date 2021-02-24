@@ -6,13 +6,14 @@
 
   <ItemGroup>
     <Folder Include="Dto\" />
-    <Folder Include="Entities\" />
     <Folder Include="Services\" />
     <Folder Include="Providers\" />
     <Folder Include="Commands\" />
     <Folder Include="Queries\" />
-    <Folder Include="ValueObjects\" />
     <Folder Include="Models\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Selectors\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -20,5 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Gateways\GameStreamSearch.Gateways.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Domain\GameStreamSearch.Domain.csproj" />
   </ItemGroup>
 </Project>

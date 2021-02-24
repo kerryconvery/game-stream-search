@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Repositories;
 
 namespace GameStreamSearch.Application.Commands
 {
@@ -21,10 +23,10 @@ namespace GameStreamSearch.Application.Commands
 
     public class RegisterOrUpdateChannelCommandHandler : ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>
     {
-        private readonly IChannelRepository channelRepository;
+        private readonly ChannelRepository channelRepository;
         private readonly IChannelService channelService;
 
-        public RegisterOrUpdateChannelCommandHandler(IChannelRepository channelRepository, IChannelService channelService)
+        public RegisterOrUpdateChannelCommandHandler(ChannelRepository channelRepository, IChannelService channelService)
         {
             this.channelRepository = channelRepository;
             this.channelService = channelService;

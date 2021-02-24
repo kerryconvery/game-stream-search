@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
 using NUnit.Framework;
 using GameStreamSearch.Types;
 using System.Collections.Generic;
-using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
+using GameStreamSearch.Application.Dto.Twitch.Kraken;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Models;
 

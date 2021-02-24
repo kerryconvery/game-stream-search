@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Queries
@@ -13,18 +15,24 @@ namespace GameStreamSearch.Application.Queries
 
     public class GetChannelQueryHandler : IQueryHandler<GetChannelQuery, Maybe<ChannelDto>>
     {
-        private IChannelRepository channelRepository;
+        private readonly AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway;
 
-        public GetChannelQueryHandler(IChannelRepository channelRepository)
+        public GetChannelQueryHandler(AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway)
         {
-            this.channelRepository = channelRepository;
+            this.dynamoDbGateway = dynamoDbGateway;
         }
 
         public async Task<Maybe<ChannelDto>> Execute(GetChannelQuery query)
         {
-           var channel = await channelRepository.Get(query.platformName, query.channelName);
+           var channel = await dynamoDbGateway.GetItem(query.platformName, query.channelName);
 
-            return channel.Select(v => ChannelDto.FromEntity(v));
+            return channel.Select(v => new ChannelDto
+            {
+                PlatformName = v.StreamPlatformName,
+                ChannelName = v.ChannelName,
+                ChannelUrl = v.ChannelUrl,
+                AvatarUrl = v.AvatarUrl
+            });
         }
     }
 }

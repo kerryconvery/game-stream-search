@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using GameStreamSearch.Application.Models;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
 using NUnit.Framework;

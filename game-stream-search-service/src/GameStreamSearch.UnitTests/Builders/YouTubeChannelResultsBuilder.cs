@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameStreamSearch.Application;
-using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.Application.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.UnitTests.Builders
