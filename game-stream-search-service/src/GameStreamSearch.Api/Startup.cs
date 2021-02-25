@@ -9,7 +9,6 @@ using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
-using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.Types;
 using GameStreamSearch.Gateways;
@@ -20,6 +19,8 @@ using GameStreamSearch.Domain.Queries;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Gateways.Dto.DynamoDb;
 using GameStreamSearch.Application.Repositories;
+using GameStreamSearch.StreamProviders;
+using GameStreamSearch.StreamProviders.Mappers;
 
 namespace GameStreamSearch.Api
 {

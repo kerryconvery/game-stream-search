@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
 using NUnit.Framework;

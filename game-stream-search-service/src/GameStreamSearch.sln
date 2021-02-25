@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Gateways",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Domain", "GameStreamSearch.Domain\GameStreamSearch.Domain.csproj", "{4AA67220-A79B-4AF2-9F0E-26EF96C76181}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.StreamProviders", "GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj", "{C5B5D04C-FF46-43E5-8414-207B9EAADAEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{4AA67220-A79B-4AF2-9F0E-26EF96C76181}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AA67220-A79B-4AF2-9F0E-26EF96C76181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AA67220-A79B-4AF2-9F0E-26EF96C76181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5B5D04C-FF46-43E5-8414-207B9EAADAEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5B5D04C-FF46-43E5-8414-207B9EAADAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5B5D04C-FF46-43E5-8414-207B9EAADAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5B5D04C-FF46-43E5-8414-207B9EAADAEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

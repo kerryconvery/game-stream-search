@@ -5,7 +5,7 @@ using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application.Mappers
+namespace GameStreamSearch.StreamProviders.Mappers
 {
     public class TwitchStreamMapper
     {

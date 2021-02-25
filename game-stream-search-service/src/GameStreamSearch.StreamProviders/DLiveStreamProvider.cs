@@ -2,12 +2,13 @@
 using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
 using System;
-using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Gateways;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application;
+using GameStreamSearch.StreamProviders.Mappers;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.StreamProviders
 {
     public class DLiveStreamProvider : IStreamProvider
     {

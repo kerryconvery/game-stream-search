@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Mappers;
-using GameStreamSearch.Application.Selectors;
 using GameStreamSearch.Types;
 using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Gateways;
 using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application;
+using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.StreamProviders.Selectors;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.StreamProviders
 {
     public class TwitchStreamProvider : IStreamProvider
     {

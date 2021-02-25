@@ -3,7 +3,7 @@ using GameStreamSearch.Gateways.Dto.DLive;
 using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Application.Dto;
 
-namespace GameStreamSearch.Application.Mappers
+namespace GameStreamSearch.StreamProviders.Mappers
 {
     public class DLiveChannelMapper
     {

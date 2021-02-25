@@ -4,7 +4,7 @@ using System.Linq;
 using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application.Selectors
+namespace GameStreamSearch.StreamProviders.Selectors
 {
     public static class TwitchChannelSelector
     {

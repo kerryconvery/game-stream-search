@@ -5,7 +5,7 @@ using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application.Mappers
+namespace GameStreamSearch.StreamProviders.Mappers
 {
     public class YouTubeStreamMapper
     {

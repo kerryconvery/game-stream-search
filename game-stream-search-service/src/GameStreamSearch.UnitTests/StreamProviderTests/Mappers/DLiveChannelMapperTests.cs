@@ -1,9 +1,9 @@
-﻿using GameStreamSearch.Application.Mappers;
-using GameStreamSearch.Types;
+﻿using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.Gateways.Dto.DLive;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.StreamProviders.Mappers;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {

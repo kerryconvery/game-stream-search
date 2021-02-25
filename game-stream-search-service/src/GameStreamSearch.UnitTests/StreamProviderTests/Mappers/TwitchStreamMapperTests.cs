@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
 using NUnit.Framework;
@@ -7,6 +6,7 @@ using GameStreamSearch.Types;
 using System.Collections.Generic;
 using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.StreamProviders.Mappers;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {

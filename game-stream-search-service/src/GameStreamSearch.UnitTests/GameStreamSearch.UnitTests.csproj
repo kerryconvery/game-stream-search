@@ -25,5 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj" />
   </ItemGroup>
 </Project>
