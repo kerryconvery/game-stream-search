@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto.YouTube.YouTubeV3;
 using Flurl;
 using Flurl.Http;
 using System.Linq;
 using GameStreamSearch.Types;
-using GameStreamSearch.Application.Extensions;
+using GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.Gateways.Extensions;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Gateways
 {
     public class YouTubeV3Gateway
     {

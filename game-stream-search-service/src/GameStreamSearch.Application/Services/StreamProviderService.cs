@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GameStreamSearch.Types;
 using GameStreamSearch.Application.Models;
 using System;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application.Services
 {

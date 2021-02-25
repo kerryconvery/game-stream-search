@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.Application.Models
+namespace GameStreamSearch.Application.Dto
 {
     public class ChannelListDto
     {

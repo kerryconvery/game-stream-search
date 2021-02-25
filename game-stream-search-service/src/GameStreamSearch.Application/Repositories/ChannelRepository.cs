@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using GameStreamSearch.Types;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
+﻿using System.Threading.Tasks;
 using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Gateways;
+using GameStreamSearch.Gateways.Dto.DynamoDb;
+using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Repositories
+namespace GameStreamSearch.Application.Repositories
 {
     public class ChannelRepository
     {
@@ -19,23 +17,35 @@ namespace GameStreamSearch.Repositories
 
         public Task Add(Channel channel)
         {
-            DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
+            DynamoDbChannelDto channelDto = FromChannel(channel);
 
             return awsDynamoDbTable.PutItem(channelDto);
         }
 
         public async Task<Maybe<Channel>> Get(string streamPlatformName, string channelName)
         {
-            var channelDto = await awsDynamoDbTable.GetItem(streamPlatformName, channelName);
+            var dynamoChannelDto = await awsDynamoDbTable.GetItem(streamPlatformName, channelName);
 
-            return Maybe<Channel>.ToMaybe(channelDto?.ToEntity());
+            return dynamoChannelDto.Select(c => new Channel(c.ChannelName, c.StreamPlatformName, c.DateRegistered, c.AvatarUrl, c.ChannelUrl));
         }
 
         public Task Update(Channel channel)
         {
-            DynamoDbChannelDto channelDto = DynamoDbChannelDto.FromEntity(channel);
+            DynamoDbChannelDto channelDto = FromChannel(channel);
 
             return awsDynamoDbTable.PutItem(channelDto);
+        }
+
+        private DynamoDbChannelDto FromChannel(Channel channel)
+        {
+            return new DynamoDbChannelDto
+            {
+                ChannelName = channel.ChannelName,
+                StreamPlatformName = channel.StreamPlatformName,
+                ChannelUrl = channel.ChannelUrl,
+                AvatarUrl = channel.AvatarUrl,
+                DateRegistered = channel.DateRegistered,
+            };
         }
     }
 }

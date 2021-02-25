@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace GameStreamSearch.Application.Dto.YouTube.YouTubeV3
+namespace GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3
 {
     public class YouTubeVideoLiveStreamingDetailsDto
     {

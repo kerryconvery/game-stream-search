@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.Models;
+using GameStreamSearch.Domain.Queries;
+using GameStreamSearch.Gateways;
+using GameStreamSearch.Gateways.Dto.DynamoDb;
 
-namespace GameStreamSearch.Application.Queries
+namespace GameStreamSearch.Application.QueryHandlers
 {
-    public class GetAllChannelsQuery {}
-
     public class GetAllChannelsQueryHandler : IQueryHandler<GetAllChannelsQuery, ChannelListDto>
     {
         private readonly AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway;

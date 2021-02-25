@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application;
 using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.Twitch.Kraken;
-using GameStreamSearch.Application.Gateways;
 using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Application.Selectors;
 using GameStreamSearch.Types;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Gateways;
+using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application
 {

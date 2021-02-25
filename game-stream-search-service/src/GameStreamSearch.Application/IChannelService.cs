@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Models

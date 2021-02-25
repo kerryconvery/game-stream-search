@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Models;
+using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Queries;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers
@@ -11,9 +11,9 @@ namespace GameStreamSearch.Api.Controllers
     public class StreamsController : ControllerBase
     {
         private readonly IStreamService streamService;
-        private readonly IQueryHandler<StreamsQuery, AggregatedStreamsDto> streamsQueryHandler;
+        private readonly IQueryHandler<GetStreamsQuery, AggregatedStreamsDto> streamsQueryHandler;
 
-        public StreamsController(IStreamService streamService, IQueryHandler<StreamsQuery, AggregatedStreamsDto> streamsQueryHandler)
+        public StreamsController(IStreamService streamService, IQueryHandler<GetStreamsQuery, AggregatedStreamsDto> streamsQueryHandler)
         {
             this.streamService = streamService;
             this.streamsQueryHandler = streamsQueryHandler;
@@ -31,12 +31,12 @@ namespace GameStreamSearch.Api.Controllers
                 GameName = gameName
             };
 
-            var streamsQuery = new StreamsQuery
+            var streamsQuery = new GetStreamsQuery
             {
                 StreamPlatformNames = streamService.GetSupportingPlatforms(filterOptions),
                 PageSize = pageSize,
                 PageToken = pageToken,
-                FilterOptions = filterOptions,
+                Filters = new StreamFilters { GameName = filterOptions.GameName },
             };
 
             var streams = await streamsQueryHandler.Execute(streamsQuery);

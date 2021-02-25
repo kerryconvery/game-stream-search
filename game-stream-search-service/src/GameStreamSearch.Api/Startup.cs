@@ -9,15 +9,17 @@ using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
-using GameStreamSearch.Application;
-using GameStreamSearch.Repositories;
-using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.Gateways;
 using GameStreamSearch.Application.Mappers;
-using GameStreamSearch.Repositories.Dto;
 using GameStreamSearch.Application.Services;
-using GameStreamSearch.Application.Queries;
 using GameStreamSearch.Types;
+using GameStreamSearch.Gateways;
+using GameStreamSearch.Domain.Commands;
+using GameStreamSearch.Application.CommandHandlers;
+using GameStreamSearch.Application.QueryHandlers;
+using GameStreamSearch.Domain.Queries;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Gateways.Dto.DynamoDb;
+using GameStreamSearch.Application.Repositories;
 
 namespace GameStreamSearch.Api
 {
@@ -87,14 +89,14 @@ namespace GameStreamSearch.Api
             services.AddScoped<IChannelService>(x => x.GetRequiredService<StreamProviderService>());
 
             services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>, RegisterOrUpdateChannelCommandHandler>();
-            services.AddScoped<IQueryHandler<StreamsQuery, AggregatedStreamsDto>, GetStreamsQueryHandler>();
+            services.AddScoped<IQueryHandler<GetStreamsQuery, AggregatedStreamsDto>, GetStreamsQueryHandler>();
             services.AddScoped<IQueryHandler<GetAllChannelsQuery, ChannelListDto>, GetAllChannelsQueryHandler>();
             services.AddScoped<IQueryHandler<GetChannelQuery, Maybe<ChannelDto>>, GetChannelQueryHandler>();
 
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 
             services.AddSingleton<AwsDynamoDbGateway<DynamoDbChannelDto>, AwsDynamoDbGateway<DynamoDbChannelDto>>();
-            services.AddSingleton<IChannelRepository, ChannelRepository>();
+            services.AddSingleton<ChannelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

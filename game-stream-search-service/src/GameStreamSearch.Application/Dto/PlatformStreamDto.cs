@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace GameStreamSearch.Application.Models
+﻿namespace GameStreamSearch.Application.Dto
 {
-    public class PlatformStreamDto : ValueObject
+    public class PlatformStreamDto
     {
         public string StreamTitle { get; init; }
         public string StreamThumbnailUrl { get; init; }
@@ -12,10 +9,5 @@ namespace GameStreamSearch.Application.Models
         public string StreamerAvatarUrl { get; init; }
         public bool IsLive { get; init; }
         public int Views { get; init; }
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return StreamUrl;
-        }
     }
 }

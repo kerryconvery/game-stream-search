@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application.Repositories;
+using GameStreamSearch.Domain.Commands;
 using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.Repositories;
 
-namespace GameStreamSearch.Application.Commands
+namespace GameStreamSearch.Application.CommandHandlers
 {
     public enum RegisterOrUpdateChannelCommandResult
     {
@@ -12,13 +13,6 @@ namespace GameStreamSearch.Application.Commands
         ChannelAdded,
         ChannelUpdated,
         PlatformServiceIsNotAvailable,
-    }
-
-    public class RegisterOrUpdateChannelCommand
-    {
-        public string ChannelName { get; init; }
-        public DateTime RegistrationDate { get; init; }
-        public string StreamPlatformName { get; init; }
     }
 
     public class RegisterOrUpdateChannelCommandHandler : ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>

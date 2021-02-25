@@ -1,7 +1,7 @@
-﻿using System;
-using GameStreamSearch.Application;
+﻿using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.Twitch.Kraken;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Mappers

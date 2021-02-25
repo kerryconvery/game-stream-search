@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.YouTube.YouTubeV3;
+﻿using System.Collections.Generic;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Mappers;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application;
@@ -7,6 +6,8 @@ using GameStreamSearch.Application.Services;
 using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
 using NUnit.Framework;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.UnitTests.DomainServiceTests
 {

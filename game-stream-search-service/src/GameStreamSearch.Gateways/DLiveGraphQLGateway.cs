@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Flurl.Http;
-using GameStreamSearch.Application.Dto.DLive;
-using GameStreamSearch.Application.Extensions;
+using GameStreamSearch.Gateways.Dto.DLive;
+using GameStreamSearch.Gateways.Extensions;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Gateways
 {
     public class DLiveGraphQLGateway
     {

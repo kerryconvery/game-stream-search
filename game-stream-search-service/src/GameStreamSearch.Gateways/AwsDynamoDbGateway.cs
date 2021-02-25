@@ -6,7 +6,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Gateways
 {
     public class AwsDynamoDbGateway<T> : IDisposable
     {

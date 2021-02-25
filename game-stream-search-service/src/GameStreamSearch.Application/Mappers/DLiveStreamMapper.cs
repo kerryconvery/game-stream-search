@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.DLive;
 using GameStreamSearch.Types;
-using GameStreamSearch.Application;
+using GameStreamSearch.Gateways.Dto.DLive;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application.Mappers
 {
@@ -44,6 +45,11 @@ namespace GameStreamSearch.Application.Mappers
                     NextPageToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty
                 };
             }).GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.DLive));
+        }
+
+        internal PlatformStreamsDto Map(MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError> liveStreamsResult, int pageSize, PageToken pageToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

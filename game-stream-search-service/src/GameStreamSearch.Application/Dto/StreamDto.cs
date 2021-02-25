@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.Application.Models
+﻿namespace GameStreamSearch.Application.Dto
 {
     public class StreamDto
     {

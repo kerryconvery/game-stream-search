@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.Twitch.Kraken;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
-using GameStreamSearch.Application;
 
 namespace GameStreamSearch.Application.Mappers
 {

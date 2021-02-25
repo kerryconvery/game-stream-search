@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto.DLive;
 using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.UnitTests.Extensions;
-using GameStreamSearch.Application.Models;
+using GameStreamSearch.Gateways.Dto.DLive;
+using GameStreamSearch.Domain.Entities;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {

@@ -8,8 +8,8 @@
     <Folder Include="Dto\" />
     <Folder Include="Services\" />
     <Folder Include="Providers\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
+    <Folder Include="CommandHandlers\" />
+    <Folder Include="QueryHandlers\" />
     <Folder Include="Models\" />
     <Folder Include="Repositories\" />
     <Folder Include="Mappers\" />
@@ -20,8 +20,8 @@
     <PackageReference Include="Base64Url" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
-    <ProjectReference Include="..\GameStreamSearch.Gateways\GameStreamSearch.Gateways.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Domain\GameStreamSearch.Domain.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Gateways\GameStreamSearch.Gateways.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
   </ItemGroup>
 </Project>

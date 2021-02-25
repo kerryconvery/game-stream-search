@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto.Twitch.Kraken;
 using GameStreamSearch.Application.Selectors;
+using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 

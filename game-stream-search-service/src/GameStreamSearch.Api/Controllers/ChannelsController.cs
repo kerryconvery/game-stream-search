@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using GameStreamSearch.Api.Contracts;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Commands;
-using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application.CommandHandlers;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Providers;
-using GameStreamSearch.Application.Queries;
+using GameStreamSearch.Domain.Commands;
+using GameStreamSearch.Domain.Queries;
 using GameStreamSearch.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

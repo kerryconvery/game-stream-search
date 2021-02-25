@@ -1,10 +1,9 @@
-﻿using System;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.Twitch.Kraken;
-using GameStreamSearch.Application.Mappers;
+﻿using GameStreamSearch.Application.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;
+using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
+using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Domain.Entities;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
 {

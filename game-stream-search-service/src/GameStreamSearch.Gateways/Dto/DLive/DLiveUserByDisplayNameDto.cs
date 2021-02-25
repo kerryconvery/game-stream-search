@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameStreamSearch.Application.Dto.DLive
+namespace GameStreamSearch.Gateways.Dto.DLive
 {
     public class DLiveUserByDisplayNameDataDto
     {

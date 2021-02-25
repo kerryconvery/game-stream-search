@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application;
 using GameStreamSearch.Types;
 using System;
-using GameStreamSearch.Application.Gateways;
 using GameStreamSearch.Application.Mappers;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Gateways;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application
 {

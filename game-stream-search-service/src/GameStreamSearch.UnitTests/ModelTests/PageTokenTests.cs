@@ -1,5 +1,4 @@
-﻿using System;
-using GameStreamSearch.Application.Models;
+﻿using GameStreamSearch.Application.Models;
 using NUnit.Framework;
 
 namespace GameStreamSearch.UnitTests.ModelTests

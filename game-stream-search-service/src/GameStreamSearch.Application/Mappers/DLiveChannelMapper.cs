@@ -1,8 +1,7 @@
-﻿using System;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Dto.DLive;
-using GameStreamSearch.Types;
+﻿using GameStreamSearch.Types;
+using GameStreamSearch.Gateways.Dto.DLive;
+using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.Application.Mappers
 {

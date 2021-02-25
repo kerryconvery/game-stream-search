@@ -1,20 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Services;
+using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application.Services;
+using GameStreamSearch.Domain.Queries;
 
-namespace GameStreamSearch.Application.Queries
+namespace GameStreamSearch.Application.QueryHandlers
 {
-    public class StreamsQuery
-    {
-        public IEnumerable<string> StreamPlatformNames { get; init; }
-        public StreamFilterOptions FilterOptions { get; init; }
-        public string PageToken { get; init; }
-        public int PageSize { get; init; }
-    }
-
-    public class GetStreamsQueryHandler : IQueryHandler<StreamsQuery, AggregatedStreamsDto>
+    public class GetStreamsQueryHandler : IQueryHandler<GetStreamsQuery, AggregatedStreamsDto>
     {
         private readonly StreamProviderService streamProviderService;
 
@@ -23,13 +16,15 @@ namespace GameStreamSearch.Application.Queries
             this.streamProviderService = streamProviderService;
         }
 
-        public async Task<AggregatedStreamsDto> Execute(StreamsQuery query)
+        public async Task<AggregatedStreamsDto> Execute(GetStreamsQuery query)
         {
+            var streamFilters = new StreamFilterOptions { GameName = query.Filters.GameName };
+
             var unpackedTokens = PageTokens.UnpackTokens(query.PageToken);
 
-            var supportedPlatforms = streamProviderService.GetSupportingPlatforms(query.FilterOptions);
+            var supportedPlatforms = streamProviderService.GetSupportingPlatforms(streamFilters);
 
-            var platformStreams = await streamProviderService.GetStreams(supportedPlatforms, query.FilterOptions, query.PageSize, unpackedTokens);
+            var platformStreams = await streamProviderService.GetStreams(supportedPlatforms, streamFilters, query.PageSize, unpackedTokens);
 
             var packedTokens = PageTokens
                 .FromList(platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))

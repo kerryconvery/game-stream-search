@@ -1,4 +1,6 @@
-﻿namespace GameStreamSearch.Application.Models
+﻿using GameStreamSearch.Domain.Entities;
+
+namespace GameStreamSearch.Application.Dto
 {
     public class ChannelDto
     {

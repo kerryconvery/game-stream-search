@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
-using GameStreamSearch.Application.Dto.Twitch.Kraken;
-using GameStreamSearch.Application.Extensions;
+using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
+using GameStreamSearch.Gateways.Extensions;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Gateways
 {
     public class TwitchKrakenGateway
     {
