@@ -5,12 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameStreamSearch.Gateways\GameStreamSearch.Gateways.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mappers\" />
     <Folder Include="Selectors\" />
+    <Folder Include="Gateways\" />
+    <Folder Include="Dto\" />
+    <Folder Include="Dto\DLive\" />
+    <Folder Include="Dto\Twitch\" />
+    <Folder Include="Dto\YouTube\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Flurl" Version="3.0.1" />
+    <PackageReference Include="Flurl.Http" Version="3.0.1" />
   </ItemGroup>
 </Project>

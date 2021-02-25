@@ -11,16 +11,17 @@ using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
 using GameStreamSearch.Application.Services;
 using GameStreamSearch.Types;
-using GameStreamSearch.Gateways;
+using GameStreamSearch.StreamProviders;
 using GameStreamSearch.Domain.Commands;
 using GameStreamSearch.Application.CommandHandlers;
 using GameStreamSearch.Application.QueryHandlers;
 using GameStreamSearch.Domain.Queries;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Gateways.Dto.DynamoDb;
 using GameStreamSearch.Application.Repositories;
-using GameStreamSearch.StreamProviders;
 using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.DataAccess;
+using GameStreamSearch.DataAccess.Dto;
+using GameStreamSearch.StreamProviders.Gateways;
 
 namespace GameStreamSearch.Api
 {
@@ -96,7 +97,7 @@ namespace GameStreamSearch.Api
 
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
 
-            services.AddSingleton<AwsDynamoDbGateway<DynamoDbChannelDto>, AwsDynamoDbGateway<DynamoDbChannelDto>>();
+            services.AddSingleton<AwsDynamoDbTable<ChannelTableDto>, AwsDynamoDbTable<ChannelTableDto>>();
             services.AddSingleton<ChannelRepository>();
         }
 

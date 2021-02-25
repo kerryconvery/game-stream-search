@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
 using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.Types;
 using NUnit.Framework;

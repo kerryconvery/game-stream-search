@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
+using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.UnitTests.Builders

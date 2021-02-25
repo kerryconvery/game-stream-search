@@ -2,7 +2,7 @@
 using Flurl.Http;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Gateways.Extensions
+namespace GameStreamSearch.StreamProviders.Extensions
 {
     public static class FlurlExtensions
     {

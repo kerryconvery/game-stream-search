@@ -1,23 +1,23 @@
 ﻿using System.Threading.Tasks;
+using GameStreamSearch.DataAccess;
+using GameStreamSearch.DataAccess.Dto;
 using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.Gateways;
-using GameStreamSearch.Gateways.Dto.DynamoDb;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Repositories
 {
     public class ChannelRepository
     {
-        private readonly AwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable;
+        private readonly AwsDynamoDbTable<ChannelTableDto> awsDynamoDbTable;
 
-        public ChannelRepository(AwsDynamoDbGateway<DynamoDbChannelDto> awsDynamoDbTable)
+        public ChannelRepository(AwsDynamoDbTable<ChannelTableDto> awsDynamoDbTable)
         {
             this.awsDynamoDbTable = awsDynamoDbTable;
         }
 
         public Task Add(Channel channel)
         {
-            DynamoDbChannelDto channelDto = FromChannel(channel);
+            ChannelTableDto channelDto = FromChannel(channel);
 
             return awsDynamoDbTable.PutItem(channelDto);
         }
@@ -31,14 +31,14 @@ namespace GameStreamSearch.Application.Repositories
 
         public Task Update(Channel channel)
         {
-            DynamoDbChannelDto channelDto = FromChannel(channel);
+            ChannelTableDto channelDto = FromChannel(channel);
 
             return awsDynamoDbTable.PutItem(channelDto);
         }
 
-        private DynamoDbChannelDto FromChannel(Channel channel)
+        private ChannelTableDto FromChannel(Channel channel)
         {
-            return new DynamoDbChannelDto
+            return new ChannelTableDto
             {
                 ChannelName = channel.ChannelName,
                 StreamPlatformName = channel.StreamPlatformName,

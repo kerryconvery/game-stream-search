@@ -19,7 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Domain\GameStreamSearch.Domain.csproj" />
-    <ProjectReference Include="..\GameStreamSearch.Gateways\GameStreamSearch.Gateways.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.DataAccess\GameStreamSearch.DataAccess.csproj" />
   </ItemGroup>
 </Project>

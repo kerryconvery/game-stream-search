@@ -1,5 +1,5 @@
 ﻿
-namespace GameStreamSearch.Gateways.Dto.Twitch.Kraken
+namespace GameStreamSearch.StreamProviders.Dto.Twitch.Kraken
 {
     public class TwitchChannelDto
     {

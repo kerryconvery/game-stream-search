@@ -4,10 +4,10 @@ using Flurl;
 using Flurl.Http;
 using System.Linq;
 using GameStreamSearch.Types;
-using GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3;
-using GameStreamSearch.Gateways.Extensions;
+using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.StreamProviders.Extensions;
 
-namespace GameStreamSearch.Gateways
+namespace GameStreamSearch.StreamProviders.Gateways
 {
     public class YouTubeV3Gateway
     {

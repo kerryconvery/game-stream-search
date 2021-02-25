@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Types;
 using GameStreamSearch.Domain.Queries;
-using GameStreamSearch.Gateways.Dto.DynamoDb;
-using GameStreamSearch.Gateways;
 using GameStreamSearch.Application.Dto;
+using GameStreamSearch.DataAccess;
+using GameStreamSearch.DataAccess.Dto;
 
 namespace GameStreamSearch.Application.QueryHandlers
 {
     public class GetChannelQueryHandler : IQueryHandler<GetChannelQuery, Maybe<ChannelDto>>
     {
-        private readonly AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway;
+        private readonly AwsDynamoDbTable<ChannelTableDto> dynamoDbGateway;
 
-        public GetChannelQueryHandler(AwsDynamoDbGateway<DynamoDbChannelDto> dynamoDbGateway)
+        public GetChannelQueryHandler(AwsDynamoDbTable<ChannelTableDto> dynamoDbGateway)
         {
             this.dynamoDbGateway = dynamoDbGateway;
         }

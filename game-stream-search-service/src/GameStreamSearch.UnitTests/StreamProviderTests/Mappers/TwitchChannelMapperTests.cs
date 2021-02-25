@@ -1,6 +1,6 @@
 ﻿using GameStreamSearch.Types;
 using NUnit.Framework;
-using GameStreamSearch.Gateways.Dto.Twitch.Kraken;
+using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.StreamProviders.Mappers;

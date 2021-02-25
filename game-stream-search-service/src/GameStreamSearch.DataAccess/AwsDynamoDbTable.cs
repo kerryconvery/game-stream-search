@@ -6,14 +6,14 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Gateways
+namespace GameStreamSearch.DataAccess
 {
-    public class AwsDynamoDbGateway<T> : IDisposable
+    public class AwsDynamoDbTable<T> : IDisposable
     {
         private DynamoDBContext dynamoDbContext;
         private AmazonDynamoDBClient dynamoDbClient;
 
-        public AwsDynamoDbGateway()
+        public AwsDynamoDbTable()
         {
             AmazonDynamoDBConfig clientConfig = new AmazonDynamoDBConfig
             {

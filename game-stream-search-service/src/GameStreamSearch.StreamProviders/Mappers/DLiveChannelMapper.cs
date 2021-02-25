@@ -1,5 +1,5 @@
 ﻿using GameStreamSearch.Types;
-using GameStreamSearch.Gateways.Dto.DLive;
+using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Application.Dto;
 

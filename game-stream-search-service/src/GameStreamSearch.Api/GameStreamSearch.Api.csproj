@@ -27,7 +27,7 @@
     <ProjectReference Include="..\GameStreamSearch.StreamProviders\GameStreamSearch.StreamProviders.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\GameStreamSearch.Gateways\GameStreamSearch.Gateways.csproj">
+    <ProjectReference Include="..\GameStreamSearch.DataAccess\GameStreamSearch.DataAccess.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

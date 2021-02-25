@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
 using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.Gateways;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application;
 using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.StreamProviders.Gateways;
 
 namespace GameStreamSearch.StreamProviders
 {

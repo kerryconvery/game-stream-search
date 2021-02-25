@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameStreamSearch.Application.Models;
 using GameStreamSearch.Types;
-using GameStreamSearch.Gateways.Dto.DLive;
+using GameStreamSearch.StreamProviders.Dto.DLive;
 using GameStreamSearch.Domain.Entities;
 using GameStreamSearch.Application.Dto;
 

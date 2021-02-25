@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.Gateways.Dto.YouTube.YouTubeV3
+﻿namespace GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3
 {
     public class YouTubeChannelSnippetThumbnailDto
     {
