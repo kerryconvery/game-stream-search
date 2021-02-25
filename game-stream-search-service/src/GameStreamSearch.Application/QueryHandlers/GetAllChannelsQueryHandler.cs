@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Models;
 using GameStreamSearch.Domain.Queries;
 using GameStreamSearch.Gateways;
 using GameStreamSearch.Gateways.Dto.DynamoDb;
@@ -24,7 +22,8 @@ namespace GameStreamSearch.Application.QueryHandlers
 
             ChannelListDto channelList = new ChannelListDto();
 
-            var channelDtos = channels.OrderBy(c => c.DateRegistered)
+            var channelDtos = channels
+                .OrderBy(c => c.DateRegistered)
                 .Select(c => new ChannelDto
                 {
                     ChannelName = c.ChannelName,
