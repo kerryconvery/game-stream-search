@@ -186,7 +186,7 @@ describe('Can add featured channels', () => {
       .reply(200, { channels: [] })
   })
   
-  const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi({}));
+  const telemetryTrackerApiMock = autoMockObject(getTelemetryTrackerApi());
   const addChannelFormName = 'Add Channel';
 
   const renderApplication = () => {
