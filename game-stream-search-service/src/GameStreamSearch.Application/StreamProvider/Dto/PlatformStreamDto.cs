@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.Application.Dto
+﻿namespace GameStreamSearch.Application.StreamProvider.Dto
 {
     public class PlatformStreamDto
     {

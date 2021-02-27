@@ -5,23 +5,28 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Providers;
 using Newtonsoft.Json.Converters;
-using GameStreamSearch.Application.Services;
 using GameStreamSearch.Types;
-using GameStreamSearch.StreamProviders;
-using GameStreamSearch.Domain.Commands;
-using GameStreamSearch.Application.CommandHandlers;
-using GameStreamSearch.Application.QueryHandlers;
-using GameStreamSearch.Domain.Queries;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.Application.Repositories;
-using GameStreamSearch.StreamProviders.Mappers;
 using GameStreamSearch.DataAccess;
 using GameStreamSearch.DataAccess.Dto;
-using GameStreamSearch.StreamProviders.Gateways;
+using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.StreamProviders.Twitch.Gateways;
+using GameStreamSearch.StreamProviders.Twitch;
+using GameStreamSearch.StreamProviders.Twitch.Mappers;
+using GameStreamSearch.StreamProviders.YouTube;
+using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
+using GameStreamSearch.StreamProviders.YouTube.Gateways.V3;
+using GameStreamSearch.StreamProviders.DLive;
+using GameStreamSearch.StreamProviders.DLive.Gateways;
+using GameStreamSearch.StreamProviders.DLive.Mappers;
+using GameStreamSearch.Application.RegisterOrUpdateChannel;
+using GameStreamSearch.Application.GetAllChannels;
+using GameStreamSearch.Application.GetASingleChannel;
+using GameStreamSearch.Application.GetStreams;
+using GameStreamSearch.Application.GetStreams.Dto;
 
 namespace GameStreamSearch.Api
 {
@@ -93,9 +98,7 @@ namespace GameStreamSearch.Api
             services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>, RegisterOrUpdateChannelCommandHandler>();
             services.AddScoped<IQueryHandler<GetStreamsQuery, AggregatedStreamsDto>, GetStreamsQueryHandler>();
             services.AddScoped<IQueryHandler<GetAllChannelsQuery, ChannelListDto>, GetAllChannelsQueryHandler>();
-            services.AddScoped<IQueryHandler<GetChannelQuery, Maybe<ChannelDto>>, GetChannelQueryHandler>();
-
-            services.AddScoped<ITimeProvider, UtcTimeProvider>();
+            services.AddScoped<IQueryHandler<GetASingleChannelQuery, Maybe<ChannelDto>>, GetASingleChannelQueryHandler>();
 
             services.AddSingleton<AwsDynamoDbTable<ChannelTableDto>, AwsDynamoDbTable<ChannelTableDto>>();
             services.AddSingleton<ChannelRepository>();

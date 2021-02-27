@@ -9,14 +9,21 @@
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mappers\" />
-    <Folder Include="Selectors\" />
-    <Folder Include="Gateways\" />
-    <Folder Include="Dto\" />
-    <Folder Include="Dto\DLive\" />
-    <Folder Include="Dto\Twitch\" />
-    <Folder Include="Dto\YouTube\" />
     <Folder Include="Extensions\" />
+    <Folder Include="DLive\" />
+    <Folder Include="Twitch\" />
+    <Folder Include="YouTube\" />
+    <Folder Include="DLive\Mappers\" />
+    <Folder Include="Twitch\Mappers\" />
+    <Folder Include="YouTube\Mappers\" />
+    <Folder Include="YouTube\Gateways\" />
+    <Folder Include="YouTube\Gateways\Dto\" />
+    <Folder Include="Twitch\Gateways\" />
+    <Folder Include="Twitch\Gateways\Dto\" />
+    <Folder Include="Twitch\Selectors\" />
+    <Folder Include="YouTube\Gateways\Dto\V3\" />
+    <Folder Include="DLive\Gateways\" />
+    <Folder Include="DLive\Gateways\Dto\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Flurl" Version="3.0.1" />

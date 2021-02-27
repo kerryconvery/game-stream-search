@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
+using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
+namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
 {
     public class YouTubeChannelMapperTests
     {

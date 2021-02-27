@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application.Models
+namespace GameStreamSearch.Application.Services.StreamProvider
 {
     public interface IChannelService
     {

@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using GameStreamSearch.Application.Dto;
 using GameStreamSearch.DataAccess;
 using GameStreamSearch.DataAccess.Dto;
-using GameStreamSearch.Domain.Queries;
 
-namespace GameStreamSearch.Application.QueryHandlers
+namespace GameStreamSearch.Application.GetAllChannels
 {
     public class GetAllChannelsQueryHandler : IQueryHandler<GetAllChannelsQuery, ChannelListDto>
     {

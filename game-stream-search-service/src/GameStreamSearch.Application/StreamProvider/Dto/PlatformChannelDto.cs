@@ -1,7 +1,7 @@
 ﻿using System;
-using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Domain;
 
-namespace GameStreamSearch.Application.Dto
+namespace GameStreamSearch.Application.StreamProvider.Dto
 {
     public class PlatformChannelDto
     {

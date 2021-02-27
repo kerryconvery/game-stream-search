@@ -1,10 +1,9 @@
 ﻿using System;
-namespace GameStreamSearch.Domain.Commands
+namespace GameStreamSearch.Application.RegisterOrUpdateChannel
 {
     public class RegisterOrUpdateChannelCommand
     {
         public string ChannelName { get; init; }
-        public DateTime RegistrationDate { get; init; }
         public string StreamPlatformName { get; init; }
     }
 }

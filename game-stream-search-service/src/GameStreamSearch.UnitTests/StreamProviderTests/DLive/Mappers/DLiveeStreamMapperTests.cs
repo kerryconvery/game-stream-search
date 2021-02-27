@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 using GameStreamSearch.UnitTests.Extensions;
-using GameStreamSearch.StreamProviders.Dto.DLive;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.StreamProviders.DLive.Gateways.Dto;
+using GameStreamSearch.StreamProviders.DLive.Mappers;
+using GameStreamSearch.Domain;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
+namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
 {
     public class DLiveeStreamMapperTests
     {

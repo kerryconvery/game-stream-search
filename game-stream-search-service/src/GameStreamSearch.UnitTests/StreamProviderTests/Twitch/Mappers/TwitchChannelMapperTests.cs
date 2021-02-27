@@ -1,11 +1,11 @@
-﻿using GameStreamSearch.Types;
+﻿using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
+using GameStreamSearch.StreamProviders.Twitch.Mappers;
+using GameStreamSearch.Types;
 using NUnit.Framework;
-using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.StreamProviders.Mappers;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
+namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
 {
     public class TwitchChannelMapperTests
     {

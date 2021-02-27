@@ -1,5 +1,5 @@
 ﻿using System;
-namespace GameStreamSearch.Domain.Queries
+namespace GameStreamSearch.Application.GetAllChannels
 {
     public class GetAllChannelsQuery { }
 }

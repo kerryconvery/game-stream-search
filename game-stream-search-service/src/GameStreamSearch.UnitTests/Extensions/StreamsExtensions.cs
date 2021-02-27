@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.StreamProvider.Dto;
 
 namespace GameStreamSearch.UnitTests.Extensions
 {

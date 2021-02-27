@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application;
-using GameStreamSearch.Application.Services;
-using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.Application.StreamProvider;
+using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Domain;
 using GameStreamSearch.Types;
 using NUnit.Framework;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.Application.Dto;
 
 namespace GameStreamSearch.UnitTests.DomainServiceTests
 {

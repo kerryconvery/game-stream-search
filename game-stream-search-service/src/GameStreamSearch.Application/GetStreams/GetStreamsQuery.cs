@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameStreamSearch.Domain.Queries
+namespace GameStreamSearch.Application.GetStreams
 {
     public class StreamFilters
     {

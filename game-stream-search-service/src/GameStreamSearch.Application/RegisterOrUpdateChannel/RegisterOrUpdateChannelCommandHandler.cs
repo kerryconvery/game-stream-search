@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Models;
 using GameStreamSearch.Application.Repositories;
-using GameStreamSearch.Domain.Commands;
-using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.Domain;
 
-namespace GameStreamSearch.Application.CommandHandlers
+namespace GameStreamSearch.Application.RegisterOrUpdateChannel
 {
     public enum RegisterOrUpdateChannelCommandResult
     {
@@ -52,7 +51,7 @@ namespace GameStreamSearch.Application.CommandHandlers
             }
 
             return await streamChannelResult.Value
-                .Select(s => s.ToChannel(request.RegistrationDate))
+                .Select(s => s.ToChannel(DateTime.UtcNow))
                 .Select(c => UpsertChannel(c))
                 .GetOrElse(Task.FromResult(RegisterOrUpdateChannelCommandResult.ChannelNotFoundOnPlatform));
         }

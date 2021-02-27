@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Models;
+using GameStreamSearch.Application.StreamProvider;
+using GameStreamSearch.Application.StreamProvider.Dto;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Application.Services.StreamProvider
 {
-    public class StreamFilterOptions
-    {
-        public string GameName { get; set; }
-    }
-
     public interface IStreamService
     {
         IEnumerable<string> GetSupportingPlatforms(StreamFilterOptions streamFilterOptions);

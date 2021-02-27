@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameStreamSearch.Domain.Entities
+namespace GameStreamSearch.Domain
 {
     public class Channel
     {

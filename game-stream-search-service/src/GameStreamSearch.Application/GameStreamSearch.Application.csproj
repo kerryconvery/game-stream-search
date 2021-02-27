@@ -7,11 +7,15 @@
   <ItemGroup>
     <Folder Include="Dto\" />
     <Folder Include="Services\" />
-    <Folder Include="Providers\" />
-    <Folder Include="CommandHandlers\" />
-    <Folder Include="QueryHandlers\" />
-    <Folder Include="Models\" />
     <Folder Include="Repositories\" />
+    <Folder Include="GetStreams\" />
+    <Folder Include="RegisterOrUpdateChannel\" />
+    <Folder Include="GetAllChannels\" />
+    <Folder Include="GetASingleChannel\" />
+    <Folder Include="GetStreams\Dto\" />
+    <Folder Include="StreamProvider\" />
+    <Folder Include="StreamProvider\Dto\" />
+    <Folder Include="Services\StreamProvider\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

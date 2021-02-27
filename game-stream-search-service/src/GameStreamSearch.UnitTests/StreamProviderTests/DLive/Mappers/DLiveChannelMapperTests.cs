@@ -1,11 +1,11 @@
-﻿using GameStreamSearch.Types;
+﻿using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.DLive.Gateways.Dto;
+using GameStreamSearch.StreamProviders.DLive.Mappers;
+using GameStreamSearch.Types;
 using NUnit.Framework;
-using GameStreamSearch.StreamProviders.Dto.DLive;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.StreamProviders.Mappers;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
+namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
 {
     public class DLiveChannelMapperTests
     {

@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
 using NUnit.Framework;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
+namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
 {
     public class YouTubeStreamMapperTests
     {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Types;
-using GameStreamSearch.Application.Models;
 using System;
-using GameStreamSearch.Application.Dto;
+using GameStreamSearch.Application.StreamProvider;
+using GameStreamSearch.Application.StreamProvider.Dto;
 
-namespace GameStreamSearch.Application.Services
+namespace GameStreamSearch.Application.Services.StreamProvider
 {
     public struct PlatformPageTokenPair
     {

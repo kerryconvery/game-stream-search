@@ -1,7 +1,7 @@
 ﻿using System;
-namespace GameStreamSearch.Domain.Queries
+namespace GameStreamSearch.Application.GetASingleChannel
 {
-    public struct GetChannelQuery
+    public struct GetASingleChannelQuery
     {
         public string platformName { get; init; }
         public string channelName { get; init; }

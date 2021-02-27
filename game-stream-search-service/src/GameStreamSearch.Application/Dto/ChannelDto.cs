@@ -1,4 +1,5 @@
-﻿using GameStreamSearch.Domain.Entities;
+﻿
+using GameStreamSearch.Domain;
 
 namespace GameStreamSearch.Application.Dto
 {

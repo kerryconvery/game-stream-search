@@ -1,10 +1,8 @@
-﻿using System;
-namespace GameStreamSearch.Application.StreamProvider
+﻿namespace GameStreamSearch.Application.StreamProvider
 {
     public class StreamFilterOptions
     {
-        public StreamFilterOptions()
-        {
-        }
+        public string GameName { get; set; }
     }
+
 }

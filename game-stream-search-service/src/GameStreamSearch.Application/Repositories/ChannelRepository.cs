@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.DataAccess;
 using GameStreamSearch.DataAccess.Dto;
-using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Domain;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.Repositories

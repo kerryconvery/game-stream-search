@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
-using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
 using GameStreamSearch.StreamProviders.Extensions;
+using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.Twitch.Gateways

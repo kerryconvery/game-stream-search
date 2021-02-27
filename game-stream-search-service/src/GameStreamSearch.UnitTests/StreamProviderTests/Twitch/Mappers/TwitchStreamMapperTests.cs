@@ -4,11 +4,11 @@ using GameStreamSearch.UnitTests.Extensions;
 using NUnit.Framework;
 using GameStreamSearch.Types;
 using System.Collections.Generic;
-using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
-using GameStreamSearch.Domain.Entities;
-using GameStreamSearch.StreamProviders.Mappers;
+using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
+using GameStreamSearch.StreamProviders.Twitch.Mappers;
+using GameStreamSearch.Domain;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Mappers
+namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
 {
     public class TwitchStreamMapperTests
     {

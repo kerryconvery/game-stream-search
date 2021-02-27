@@ -4,7 +4,7 @@ using GameStreamSearch.StreamProviders.Twitch.Selectors;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 
-namespace GameStreamSearch.UnitTests.StreamProviders.Selectors.Twitch
+namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Selectors
 {
     public class TwitchChannelSelectorTests
     {

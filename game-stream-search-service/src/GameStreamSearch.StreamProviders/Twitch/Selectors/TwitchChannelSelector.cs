@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameStreamSearch.StreamProviders.Dto.Twitch.Kraken;
+using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.StreamProviders.Selectors
+namespace GameStreamSearch.StreamProviders.Twitch.Selectors
 {
     public static class TwitchChannelSelector
     {

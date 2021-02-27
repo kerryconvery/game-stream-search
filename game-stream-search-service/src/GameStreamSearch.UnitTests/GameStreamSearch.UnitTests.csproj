@@ -15,12 +15,17 @@
   <ItemGroup>
     <Folder Include="TypeTests\" />
     <Folder Include="StreamProviderTests\" />
-    <Folder Include="StreamProviderTests\Selectors\" />
-    <Folder Include="StreamProviderTests\Mappers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Builders\" />
     <Folder Include="DomainServiceTests\" />
-    <Folder Include="ModelTests\" />
+    <Folder Include="StreamProviderServiceTests\" />
+    <Folder Include="StreamProviderTests\Twitch\" />
+    <Folder Include="StreamProviderTests\DLive\" />
+    <Folder Include="StreamProviderTests\YouTube\" />
+    <Folder Include="StreamProviderTests\DLive\Mappers\" />
+    <Folder Include="StreamProviderTests\Twitch\Mappers\" />
+    <Folder Include="StreamProviderTests\Twitch\Selectors\" />
+    <Folder Include="StreamProviderTests\YouTube\Mappers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />

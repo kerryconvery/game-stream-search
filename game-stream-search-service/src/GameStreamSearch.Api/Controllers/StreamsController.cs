@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Domain.Queries;
+using GameStreamSearch.Application.GetStreams;
+using GameStreamSearch.Application.GetStreams.Dto;
+using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.Application.StreamProvider;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers

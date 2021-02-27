@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GameStreamSearch.StreamProviders.Dto.YouTube.YouTubeV3;
+using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
 
 namespace GameStreamSearch.UnitTests.Builders
 {

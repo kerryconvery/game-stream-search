@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Application.Services;
-using GameStreamSearch.Domain.Queries;
+using GameStreamSearch.Application.GetStreams.Dto;
+using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.Application.StreamProvider;
 
-namespace GameStreamSearch.Application.QueryHandlers
+namespace GameStreamSearch.Application.GetStreams
 {
     public class GetStreamsQueryHandler : IQueryHandler<GetStreamsQuery, AggregatedStreamsDto>
     {

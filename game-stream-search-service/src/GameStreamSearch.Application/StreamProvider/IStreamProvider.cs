@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Models;
-using GameStreamSearch.Domain.Entities;
+using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Domain;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application
+namespace GameStreamSearch.Application.StreamProvider
 {
     public interface IStreamProvider
     {

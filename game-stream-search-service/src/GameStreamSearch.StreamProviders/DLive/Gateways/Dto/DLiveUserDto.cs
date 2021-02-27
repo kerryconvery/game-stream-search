@@ -1,4 +1,4 @@
-﻿namespace GameStreamSearch.StreamProviders.Dto.DLive
+﻿namespace GameStreamSearch.StreamProviders.DLive.Gateways.Dto
 {
     public class DLiveUserDto
     {
