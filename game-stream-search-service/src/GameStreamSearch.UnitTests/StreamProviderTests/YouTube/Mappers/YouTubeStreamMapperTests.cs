@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
 using GameStreamSearch.UnitTests.Builders;
 using GameStreamSearch.UnitTests.Extensions;
@@ -40,7 +40,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
             Assert.AreEqual(streams.Streams.First().IsLive, true);
             Assert.AreEqual(streams.Streams.First().Views, 1);
             Assert.AreEqual(streams.NextPageToken, "nextPage");
-            Assert.AreEqual(streams.StreamPlatformName, StreamPlatform.YouTube.Name);
+            Assert.AreEqual(streams.StreamPlatformName, StreamPlatform.YouTube);
 
         }
 
@@ -53,7 +53,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
                 .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.YouTube.Name));
+                .GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.YouTube));
 
             Assert.IsTrue(streams.IsEmpty());
         }

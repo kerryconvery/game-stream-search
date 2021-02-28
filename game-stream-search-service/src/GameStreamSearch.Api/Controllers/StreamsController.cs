@@ -12,10 +12,10 @@ namespace GameStreamSearch.Api.Controllers
     [Route("api")]
     public class StreamsController : ControllerBase
     {
-        private readonly IStreamService streamService;
+        private readonly StreamPlatformService streamService;
         private readonly IQueryHandler<GetStreamsQuery, AggregatedStreamsDto> streamsQueryHandler;
 
-        public StreamsController(IStreamService streamService, IQueryHandler<GetStreamsQuery, AggregatedStreamsDto> streamsQueryHandler)
+        public StreamsController(StreamPlatformService streamService, IQueryHandler<GetStreamsQuery, AggregatedStreamsDto> streamsQueryHandler)
         {
             this.streamService = streamService;
             this.streamsQueryHandler = streamsQueryHandler;

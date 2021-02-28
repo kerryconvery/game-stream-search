@@ -24,6 +24,7 @@
     <Folder Include="YouTube\Gateways\Dto\V3\" />
     <Folder Include="DLive\Gateways\" />
     <Folder Include="DLive\Gateways\Dto\" />
+    <Folder Include="Consts\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Flurl" Version="3.0.1" />

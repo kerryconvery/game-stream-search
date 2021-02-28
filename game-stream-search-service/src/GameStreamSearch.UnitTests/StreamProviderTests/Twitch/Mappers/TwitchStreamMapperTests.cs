@@ -6,7 +6,7 @@ using GameStreamSearch.Types;
 using System.Collections.Generic;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.StreamProviders.Twitch.Mappers;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 
 namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
 {
@@ -39,7 +39,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
             Assert.AreEqual(platformStreams.Streams.First().StreamThumbnailUrl, "http://stream.thumbnail.url");
             Assert.AreEqual(platformStreams.Streams.First().IsLive, true);
             Assert.AreEqual(platformStreams.Streams.First().Views, 1);
-            Assert.AreEqual(platformStreams.StreamPlatformName, StreamPlatform.Twitch.Name);
+            Assert.AreEqual(platformStreams.StreamPlatformName, StreamPlatform.Twitch);
         }
 
         [Test]

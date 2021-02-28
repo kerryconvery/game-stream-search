@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
 using GameStreamSearch.Types;
 

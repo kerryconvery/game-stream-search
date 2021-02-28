@@ -1,5 +1,5 @@
 ﻿using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.Types;
 

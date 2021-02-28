@@ -5,7 +5,7 @@ using GameStreamSearch.Application.StreamProvider;
 using GameStreamSearch.StreamProviders.YouTube.Gateways.V3;
 using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
 using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 
 namespace GameStreamSearch.StreamProviders.YouTube
 {
@@ -45,7 +45,7 @@ namespace GameStreamSearch.StreamProviders.YouTube
                 return streamMapper.Map(videos, videoDetailResults, videoChannelResults);
             });
 
-            return streams.GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.Name));
+            return streams.GetOrElse(PlatformStreamsDto.Empty(StreamPlatformName));
         }
 
         public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
@@ -55,6 +55,6 @@ namespace GameStreamSearch.StreamProviders.YouTube
             return channelMapper.Map(channelsResults);
         }
 
-        public StreamPlatform StreamPlatform => StreamPlatform.YouTube;
+        public string StreamPlatformName => StreamPlatform.YouTube;
     }
 }

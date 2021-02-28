@@ -8,24 +8,18 @@ using GameStreamSearch.Application.StreamProvider.Dto;
 
 namespace GameStreamSearch.Application.Services.StreamProvider
 {
-    public struct PlatformPageTokenPair
-    {
-        public string streamPlatformName { get; set; }
-        public PageToken pageToken { get; set; }
-    }
-
-    public class StreamProviderService : IStreamService, IChannelService
+    public class StreamPlatformService
     {
         private Dictionary<string, IStreamProvider> streamProviders;
 
-        public StreamProviderService()
+        public StreamPlatformService()
         {
             streamProviders = new Dictionary<string, IStreamProvider>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public StreamProviderService RegisterStreamProvider(IStreamProvider streamProvider)
+        public StreamPlatformService RegisterStreamProvider(IStreamProvider streamProvider)
         {
-            streamProviders.Add(streamProvider.StreamPlatform.Name, streamProvider);
+            streamProviders.Add(streamProvider.StreamPlatformName, streamProvider);
 
             return this;
         }
@@ -35,7 +29,7 @@ namespace GameStreamSearch.Application.Services.StreamProvider
             return streamProviders
                 .Values
                 .Where(p => p.AreFilterOptionsSupported(streamFilterOptions))
-                .Select(p => p.StreamPlatform.Name);
+                .Select(p => p.StreamPlatformName);
         }
 
         public async Task<IEnumerable<PlatformStreamsDto>> GetStreams(
@@ -50,7 +44,7 @@ namespace GameStreamSearch.Application.Services.StreamProvider
             return await Task.WhenAll(tasks);
         }
 
-        public Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string streamingPlatformName, string streamerName)
+        public Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetPlatformChannel(string streamingPlatformName, string streamerName)
         {
             var streamProvider = streamProviders[streamingPlatformName];
 

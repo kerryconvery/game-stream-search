@@ -74,7 +74,7 @@ namespace GameStreamSearch.Api
 
             services.AddScoped(service =>
             {
-                return new StreamProviderService()
+                return new StreamPlatformService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
                             new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
                             new TwitchStreamMapper(),
@@ -91,9 +91,6 @@ namespace GameStreamSearch.Api
                             new DLiveChannelMapper(Configuration["DLive:WebUrl"])
                     ));
             });
-
-            services.AddScoped<IStreamService>(x => x.GetRequiredService<StreamProviderService>());
-            services.AddScoped<IChannelService>(x => x.GetRequiredService<StreamProviderService>());
 
             services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>, RegisterOrUpdateChannelCommandHandler>();
             services.AddScoped<IQueryHandler<GetStreamsQuery, AggregatedStreamsDto>, GetStreamsQueryHandler>();

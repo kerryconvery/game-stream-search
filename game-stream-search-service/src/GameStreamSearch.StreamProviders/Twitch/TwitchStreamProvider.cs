@@ -7,7 +7,7 @@ using GameStreamSearch.StreamProviders.Twitch.Mappers;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.StreamProviders.Twitch.Selectors;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 
 namespace GameStreamSearch.StreamProviders.Twitch
 {
@@ -53,6 +53,6 @@ namespace GameStreamSearch.StreamProviders.Twitch
             return channelMapper.Map(TwitchChannelSelector.Select(channelName, channelsResult));
         }
 
-        public StreamPlatform StreamPlatform => StreamPlatform.Twitch;
+        public string StreamPlatformName => StreamPlatform.Twitch;
     }
 }

@@ -15,7 +15,7 @@
     <Folder Include="GetStreams\Dto\" />
     <Folder Include="StreamProvider\" />
     <Folder Include="StreamProvider\Dto\" />
-    <Folder Include="Services\StreamProvider\" />
+    <Folder Include="Services\StreamPlatformService\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

@@ -11,6 +11,6 @@ namespace GameStreamSearch.Application.StreamProvider
         Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName);
         bool AreFilterOptionsSupported(StreamFilterOptions filterOptions) => true;
 
-        StreamPlatform StreamPlatform { get; }
+        string StreamPlatformName { get; }
     }
 }

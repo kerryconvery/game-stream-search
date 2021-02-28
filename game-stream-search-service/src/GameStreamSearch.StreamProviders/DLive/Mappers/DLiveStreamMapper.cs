@@ -4,8 +4,8 @@ using System.Linq;
 using GameStreamSearch.Types;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.StreamProviders.DLive.Gateways.Dto;
-using GameStreamSearch.Domain;
 using GameStreamSearch.Application.StreamProvider;
+using GameStreamSearch.StreamProviders.Const;
 
 namespace GameStreamSearch.StreamProviders.DLive.Mappers
 {

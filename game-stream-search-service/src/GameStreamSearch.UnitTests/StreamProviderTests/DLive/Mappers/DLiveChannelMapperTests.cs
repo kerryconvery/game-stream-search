@@ -1,5 +1,5 @@
 ﻿using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.StreamProviders.DLive.Gateways.Dto;
 using GameStreamSearch.StreamProviders.DLive.Mappers;
 using GameStreamSearch.Types;
@@ -26,7 +26,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
 
             Assert.AreEqual(platformChannl.ChannelName, "testuser");
             Assert.AreEqual(platformChannl.AvatarUrl, "http://avatar.url");
-            Assert.AreEqual(platformChannl.StreamPlatformName, StreamPlatform.DLive.Name);
+            Assert.AreEqual(platformChannl.StreamPlatformName, StreamPlatform.DLive);
             Assert.AreEqual(platformChannl.ChannelUrl, "http://dlive.com/testuser");
         }
     }

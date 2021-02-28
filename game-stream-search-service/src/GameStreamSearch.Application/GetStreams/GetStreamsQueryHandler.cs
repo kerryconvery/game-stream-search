@@ -8,11 +8,11 @@ namespace GameStreamSearch.Application.GetStreams
 {
     public class GetStreamsQueryHandler : IQueryHandler<GetStreamsQuery, AggregatedStreamsDto>
     {
-        private readonly StreamProviderService streamProviderService;
+        private readonly StreamPlatformService streamPlatformService;
 
-        public GetStreamsQueryHandler(StreamProviderService streamProviderService)
+        public GetStreamsQueryHandler(StreamPlatformService streamPlatformService)
         {
-            this.streamProviderService = streamProviderService;
+            this.streamPlatformService = streamPlatformService;
         }
 
         public async Task<AggregatedStreamsDto> Execute(GetStreamsQuery query)
@@ -21,9 +21,9 @@ namespace GameStreamSearch.Application.GetStreams
 
             var unpackedTokens = PageTokens.UnpackTokens(query.PageToken);
 
-            var supportedPlatforms = streamProviderService.GetSupportingPlatforms(streamFilters);
+            var supportedPlatforms = streamPlatformService.GetSupportingPlatforms(streamFilters);
 
-            var platformStreams = await streamProviderService.GetStreams(supportedPlatforms, streamFilters, query.PageSize, unpackedTokens);
+            var platformStreams = await streamPlatformService.GetStreams(supportedPlatforms, streamFilters, query.PageSize, unpackedTokens);
 
             var packedTokens = PageTokens
                 .FromList(platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))

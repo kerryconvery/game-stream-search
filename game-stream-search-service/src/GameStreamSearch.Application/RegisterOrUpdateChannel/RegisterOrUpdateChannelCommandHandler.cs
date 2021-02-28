@@ -17,12 +17,12 @@ namespace GameStreamSearch.Application.RegisterOrUpdateChannel
     public class RegisterOrUpdateChannelCommandHandler : ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelCommandResult>
     {
         private readonly ChannelRepository channelRepository;
-        private readonly IChannelService channelService;
+        private readonly StreamPlatformService streamPlatformService;
 
-        public RegisterOrUpdateChannelCommandHandler(ChannelRepository channelRepository, IChannelService channelService)
+        public RegisterOrUpdateChannelCommandHandler(ChannelRepository channelRepository, StreamPlatformService streamPlatformService)
         {
             this.channelRepository = channelRepository;
-            this.channelService = channelService;
+            this.streamPlatformService = streamPlatformService;
         }
 
         private async Task<RegisterOrUpdateChannelCommandResult> UpsertChannel(Channel channel)
@@ -43,7 +43,7 @@ namespace GameStreamSearch.Application.RegisterOrUpdateChannel
 
         public async Task<RegisterOrUpdateChannelCommandResult> Handle(RegisterOrUpdateChannelCommand request)
         {
-            var streamChannelResult = await channelService.GetStreamerChannel(request.StreamPlatformName, request.ChannelName);
+            var streamChannelResult = await streamPlatformService.GetPlatformChannel(request.StreamPlatformName, request.ChannelName);
 
             if (streamChannelResult.IsFailure)
             {

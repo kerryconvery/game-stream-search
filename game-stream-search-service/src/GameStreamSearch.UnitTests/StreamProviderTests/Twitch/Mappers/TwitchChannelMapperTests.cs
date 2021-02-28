@@ -1,5 +1,5 @@
 ﻿using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.StreamProviders.Twitch.Mappers;
 using GameStreamSearch.Types;
@@ -25,7 +25,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
             Assert.AreEqual(platformChannel.ChannelName, "test channel");
             Assert.AreEqual(platformChannel.AvatarUrl, "http://logo.url");
             Assert.AreEqual(platformChannel.ChannelUrl, "http://channel.url");
-            Assert.AreEqual(platformChannel.StreamPlatformName, StreamPlatform.Twitch.Name);
+            Assert.AreEqual(platformChannel.StreamPlatformName, StreamPlatform.Twitch);
         }
     }
 }

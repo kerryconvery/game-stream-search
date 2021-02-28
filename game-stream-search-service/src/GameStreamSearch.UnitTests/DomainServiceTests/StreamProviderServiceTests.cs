@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using GameStreamSearch.Application.Services.StreamProvider;
 using GameStreamSearch.Application.StreamProvider;
 using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Domain;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 
@@ -12,31 +11,31 @@ namespace GameStreamSearch.UnitTests.DomainServiceTests
 {
     public class StreamProviderServiceTests
     {
-        private StreamPlatform twitchPlatform = new StreamPlatform("twitch");
-        private StreamPlatform youTubePlatform = new StreamPlatform("youtube");
+        private string twitchPlatform = "twitch";
+        private string youTubePlatform = "youtube";
 
         [Test]
         public void Should_Return_A_List_Of_Providers_That_Support_The_Selected_Filters()
         {
-            var streamProviderService = new StreamProviderService()
+            var streamPlatformService = new StreamPlatformService()
                 .RegisterStreamProvider(new FakeProvider(youTubePlatform, true))
                 .RegisterStreamProvider(new FakeProvider(twitchPlatform, false));
 
-            var streamSources = streamProviderService.GetSupportingPlatforms(new StreamFilterOptions());
+            var streamSources = streamPlatformService.GetSupportingPlatforms(new StreamFilterOptions());
 
             Assert.AreEqual(streamSources.Count(), 1);
-            Assert.AreEqual(streamSources.First(), youTubePlatform.Name);
+            Assert.AreEqual(streamSources.First(), youTubePlatform);
         }
     }
 
     internal class FakeProvider : IStreamProvider
     {
-        private readonly StreamPlatform streamPlatform;
+        private readonly string streamPlatformName;
         private readonly bool isFilterSupported;
 
-        public FakeProvider(StreamPlatform streamPlatform, bool isFilterSupported)
+        public FakeProvider(string streamPlatformName, bool isFilterSupported)
         {
-            this.streamPlatform = streamPlatform;
+            this.streamPlatformName = streamPlatformName;
             this.isFilterSupported = isFilterSupported;
         }
 
@@ -50,7 +49,7 @@ namespace GameStreamSearch.UnitTests.DomainServiceTests
             throw new NotImplementedException();
         }
 
-        public StreamPlatform StreamPlatform => streamPlatform;
+        public string StreamPlatformName => streamPlatformName;
 
         public bool AreFilterOptionsSupported(StreamFilterOptions filterOptions) => isFilterSupported;
     }

@@ -5,7 +5,7 @@ using GameStreamSearch.StreamProviders.DLive.Gateways;
 using GameStreamSearch.StreamProviders.DLive.Mappers;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.Application.StreamProvider;
-using GameStreamSearch.Domain;
+using GameStreamSearch.StreamProviders.Const;
 
 namespace GameStreamSearch.StreamProviders.DLive
 {
@@ -50,6 +50,6 @@ namespace GameStreamSearch.StreamProviders.DLive
             return string.IsNullOrEmpty(filterOptions.GameName);
         }
 
-        public StreamPlatform StreamPlatform => StreamPlatform.DLive;
+        public string StreamPlatformName => StreamPlatform.DLive;
     }
 }
