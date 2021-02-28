@@ -70,7 +70,7 @@ Onion Architecture + CQS
 ![alt text](https://github.com/kerryconvery/game-stream-search/blob/master/documentation/Game-Stream-Search-Architecture.png?raw=true)
 
 ### Backend Class Diagram
-![alt text](https://github.com/kerryconvery/game-stream-search/blob/master/documentation/Game-Stream-Service-Class Diagram.png?raw=true)
+![alt text](https://github.com/kerryconvery/game-stream-search/blob/master/documentation/Game-Stream-Service-Class-Diagram.png?raw=true)
 
 ### Frontend Architecture
 
