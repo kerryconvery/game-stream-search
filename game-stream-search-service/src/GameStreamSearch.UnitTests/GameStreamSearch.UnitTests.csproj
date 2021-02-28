@@ -18,7 +18,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Builders\" />
     <Folder Include="DomainServiceTests\" />
-    <Folder Include="StreamProviderServiceTests\" />
+    <Folder Include="StreamPlatformServiceTests\" />
     <Folder Include="StreamProviderTests\Twitch\" />
     <Folder Include="StreamProviderTests\DLive\" />
     <Folder Include="StreamProviderTests\YouTube\" />

@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Dto\" />
     <Folder Include="Services\" />
-    <Folder Include="Repositories\" />
     <Folder Include="GetStreams\" />
     <Folder Include="RegisterOrUpdateChannel\" />
     <Folder Include="GetAllChannels\" />

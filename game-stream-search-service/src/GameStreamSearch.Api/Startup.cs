@@ -9,7 +9,6 @@ using GameStreamSearch.Application;
 using Newtonsoft.Json.Converters;
 using GameStreamSearch.Types;
 using GameStreamSearch.Application.Dto;
-using GameStreamSearch.Application.Repositories;
 using GameStreamSearch.DataAccess;
 using GameStreamSearch.DataAccess.Dto;
 using GameStreamSearch.Application.Services.StreamProvider;
@@ -27,6 +26,7 @@ using GameStreamSearch.Application.GetAllChannels;
 using GameStreamSearch.Application.GetASingleChannel;
 using GameStreamSearch.Application.GetStreams;
 using GameStreamSearch.Application.GetStreams.Dto;
+using GameStreamSearch.Domain.Channel;
 
 namespace GameStreamSearch.Api
 {

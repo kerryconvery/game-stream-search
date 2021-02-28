@@ -1,5 +1,4 @@
-﻿
-using GameStreamSearch.Domain;
+﻿using GameStreamSearch.Domain.Channel;
 
 namespace GameStreamSearch.Application.Dto
 {

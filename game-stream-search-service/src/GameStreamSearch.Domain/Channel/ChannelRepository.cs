@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.DataAccess;
 using GameStreamSearch.DataAccess.Dto;
-using GameStreamSearch.Domain;
 using GameStreamSearch.Types;
 
-namespace GameStreamSearch.Application.Repositories
+namespace GameStreamSearch.Domain.Channel
 {
     public class ChannelRepository
     {

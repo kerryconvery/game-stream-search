@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Repositories;
 using GameStreamSearch.Application.Services.StreamProvider;
-using GameStreamSearch.Domain;
+using GameStreamSearch.Domain.Channel;
 
 namespace GameStreamSearch.Application.RegisterOrUpdateChannel
 {
