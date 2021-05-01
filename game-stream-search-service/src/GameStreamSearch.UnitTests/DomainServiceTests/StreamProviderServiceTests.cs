@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.Application.Services;
 using GameStreamSearch.Application.StreamProvider;
 using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Common;
 using GameStreamSearch.Types;
 using NUnit.Framework;
 
@@ -17,11 +18,11 @@ namespace GameStreamSearch.UnitTests.DomainServiceTests
         [Test]
         public void Should_Return_A_List_Of_Providers_That_Support_The_Selected_Filters()
         {
-            var streamPlatformService = new StreamPlatformService()
+            var streamProviderService = new StreamProviderService()
                 .RegisterStreamProvider(new FakeProvider(youTubePlatform, true))
                 .RegisterStreamProvider(new FakeProvider(twitchPlatform, false));
 
-            var streamSources = streamPlatformService.GetSupportingPlatforms(new StreamFilterOptions());
+            var streamSources = streamProviderService.GetSupportingPlatforms(new StreamFilterOptions());
 
             Assert.AreEqual(streamSources.Count(), 1);
             Assert.AreEqual(streamSources.First(), youTubePlatform);

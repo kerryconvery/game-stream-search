@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.DataAccess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Domain", "GameStreamSearch.Domain\GameStreamSearch.Domain.csproj", "{33E0D633-1738-4FA0-8BF6-91B45492E550}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStreamSearch.Common", "GameStreamSearch.Common\GameStreamSearch.Common.csproj", "{508FA280-8847-40C8-9C84-5BAC71B35114}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,14 @@ Global
 		{33E0D633-1738-4FA0-8BF6-91B45492E550}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33E0D633-1738-4FA0-8BF6-91B45492E550}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33E0D633-1738-4FA0-8BF6-91B45492E550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Docker|Any CPU.ActiveCfg = Debug|Any CPU
+		{508FA280-8847-40C8-9C84-5BAC71B35114}.Docker|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

@@ -3,18 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Services.StreamProvider;
 using GameStreamSearch.Application.StreamProvider;
+using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Common;
 
 namespace GameStreamSearch.Application.GetStreams
 {
-    public class StreamFilters
-    {
-        public string GameName { get; init; }
-    }
-
     public class GetStreamsQuery
     {
         public IEnumerable<string> StreamPlatformNames { get; init; }
-        public StreamFilters Filters { get; init; }
+        public StreamFilterOptions Filters { get; init; }
         public string PageToken { get; init; }
         public int PageSize { get; init; }
     }
@@ -29,15 +26,30 @@ namespace GameStreamSearch.Application.GetStreams
         public string PlatformName { get; set; }
         public bool IsLive { get; init; }
         public int Views { get; init; }
+
+        public static Stream Create(string platformName, PlatformStreamDto platformStream)
+        {
+            return new Stream
+            {
+                StreamTitle = platformStream.StreamTitle,
+                StreamerName = platformStream.StreamerName,
+                StreamUrl = platformStream.StreamUrl,
+                IsLive = platformStream.IsLive,
+                Views = platformStream.Views,
+                PlatformName = platformName,
+                StreamThumbnailUrl = platformStream.StreamThumbnailUrl,
+                StreamerAvatarUrl = platformStream.StreamerAvatarUrl,
+            };
+        }
     }
 
-    public class GetStreamsResponse
+    public class GetStreamsQueryResponseDto
     {
         public IEnumerable<Stream> Streams { get; init; }
         public string NextPageToken { get; init; }
     }
 
-    public class GetStreamsQueryHandler : IQueryHandler<GetStreamsQuery, GetStreamsResponse>
+    public class GetStreamsQueryHandler : IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto>
     {
         private readonly StreamPlatformService streamPlatformService;
 
@@ -46,37 +58,33 @@ namespace GameStreamSearch.Application.GetStreams
             this.streamPlatformService = streamPlatformService;
         }
 
-        public async Task<GetStreamsResponse> Execute(GetStreamsQuery query)
+        public async Task<GetStreamsQueryResponseDto> Execute(GetStreamsQuery query)
         {
-            var streamFilters = new StreamFilterOptions { GameName = query.Filters.GameName };
-
             var unpackedTokens = PageTokens.UnpackTokens(query.PageToken);
 
-            var supportedPlatforms = streamPlatformService.GetSupportingPlatforms(streamFilters);
+            var platformStreams = await streamPlatformService.GetStreams(query.StreamPlatformNames, query.Filters, query.PageSize, unpackedTokens);
 
-            var platformStreams = await streamPlatformService.GetStreams(supportedPlatforms, streamFilters, query.PageSize, unpackedTokens);
+            var packedTokens = PackPageTokens(platformStreams);
 
-            var packedTokens = PageTokens
-                .FromList(platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))
-                .PackTokens();
+            var aggregatedStreams = AggregatePlatformStreams(platformStreams);
 
-            var aggregatedStreams = platformStreams.SelectMany(p => p.Streams.Select(s => new Stream
-                {
-                    StreamTitle = s.StreamTitle,
-                    StreamerName = s.StreamerName,
-                    StreamUrl = s.StreamUrl,
-                    IsLive = s.IsLive,
-                    Views = s.Views,
-                    PlatformName = p.StreamPlatformName,
-                    StreamThumbnailUrl = s.StreamThumbnailUrl,
-                    StreamerAvatarUrl = s.StreamerAvatarUrl,
-                }));
-
-            return new GetStreamsResponse
+            return new GetStreamsQueryResponseDto
             {
                 Streams = aggregatedStreams.OrderByDescending(s => s.Views),
-                NextPageToken = packedTokens
+                NextPageToken = packedTokens,
             };
+        }
+
+        private string PackPageTokens(IEnumerable<PlatformStreamsDto> platformStreams)
+        {
+            return PageTokens
+                .FromList(platformStreams.Select(p => new PageToken(p.StreamPlatformName, p.NextPageToken)))
+                .PackTokens();
+        }
+
+        private IEnumerable<Stream> AggregatePlatformStreams(IEnumerable<PlatformStreamsDto> platformStreams)
+        {
+            return platformStreams.SelectMany(platform => platform.Streams.Select(stream => Stream.Create(platform.StreamPlatformName, stream)));
         }
     }
 }

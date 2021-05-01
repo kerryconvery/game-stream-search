@@ -8,6 +8,7 @@ using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.StreamProviders.Twitch.Selectors;
 using GameStreamSearch.StreamProviders.Const;
+using GameStreamSearch.Common;
 
 namespace GameStreamSearch.StreamProviders.Twitch
 {

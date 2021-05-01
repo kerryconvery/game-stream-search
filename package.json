@@ -8,7 +8,7 @@
   "scripts": {
     "start:service": "docker-compose up web",
     "stop:service": "docker-compose down",
-    "start:blank": "rm -rf dynamodb && docker-compose up --detach web && ./devops/local/create-database-tables.sh",
+    "start:blank": "rm -rf dynamodb && docker-compose up --detach web && ./devops/local/recreate-database-tables.sh",
     "test": "dotnet test ./game-stream-search-service/src"
   },
   "devDependencies": {

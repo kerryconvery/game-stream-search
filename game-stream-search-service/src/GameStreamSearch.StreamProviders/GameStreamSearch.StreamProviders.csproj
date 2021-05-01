@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Application\GameStreamSearch.Application.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Common\GameStreamSearch.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />

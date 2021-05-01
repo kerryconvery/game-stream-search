@@ -6,6 +6,7 @@ using GameStreamSearch.StreamProviders.YouTube.Gateways.V3;
 using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.StreamProviders.Const;
+using GameStreamSearch.Common;
 
 namespace GameStreamSearch.StreamProviders.YouTube
 {

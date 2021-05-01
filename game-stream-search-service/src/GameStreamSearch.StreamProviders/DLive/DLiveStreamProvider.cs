@@ -6,6 +6,7 @@ using GameStreamSearch.StreamProviders.DLive.Mappers;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.Application.StreamProvider;
 using GameStreamSearch.StreamProviders.Const;
+using GameStreamSearch.Common;
 
 namespace GameStreamSearch.StreamProviders.DLive
 {

@@ -23,5 +23,6 @@
     <ProjectReference Include="..\GameStreamSearch.Domain\GameStreamSearch.Domain.csproj" />
     <ProjectReference Include="..\GameStreamSearch.Types\GameStreamSearch.Types.csproj" />
     <ProjectReference Include="..\GameStreamSearch.DataAccess\GameStreamSearch.DataAccess.csproj" />
+    <ProjectReference Include="..\GameStreamSearch.Common\GameStreamSearch.Common.csproj" />
   </ItemGroup>
 </Project>

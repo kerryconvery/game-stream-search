@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application;
 using GameStreamSearch.Application.GetStreams;
-using GameStreamSearch.Application.Services.StreamProvider;
+using GameStreamSearch.Application.Services;
 using GameStreamSearch.Application.StreamProvider;
+using GameStreamSearch.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers
@@ -11,12 +12,12 @@ namespace GameStreamSearch.Api.Controllers
     [Route("api")]
     public class StreamsController : ControllerBase
     {
-        private readonly StreamPlatformService streamService;
-        private readonly IQueryHandler<GetStreamsQuery, GetStreamsResponse> streamsQueryHandler;
+        private readonly StreamProviderService streamProviderService;
+        private readonly IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto> streamsQueryHandler;
 
-        public StreamsController(StreamPlatformService streamService, IQueryHandler<GetStreamsQuery, GetStreamsResponse> streamsQueryHandler)
+        public StreamsController(StreamProviderService streamProviderService, IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto> streamsQueryHandler)
         {
-            this.streamService = streamService;
+            this.streamProviderService = streamProviderService;
             this.streamsQueryHandler = streamsQueryHandler;
         }
 
@@ -34,10 +35,10 @@ namespace GameStreamSearch.Api.Controllers
 
             var streamsQuery = new GetStreamsQuery
             {
-                StreamPlatformNames = streamService.GetSupportingPlatforms(filterOptions),
+                StreamPlatformNames = streamProviderService.GetSupportingPlatforms(filterOptions),
                 PageSize = pageSize,
                 PageToken = pageToken,
-                Filters = new StreamFilters { GameName = filterOptions.GameName },
+                Filters = new StreamFilterOptions { GameName = filterOptions.GameName },
             };
 
             var streams = await streamsQueryHandler.Execute(streamsQuery);

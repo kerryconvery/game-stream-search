@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GameStreamSearch.Application;
 using Newtonsoft.Json.Converters;
-using GameStreamSearch.Types;
 using GameStreamSearch.DataAccess;
 using GameStreamSearch.DataAccess.Dto;
 using GameStreamSearch.Application.Services.StreamProvider;
@@ -26,6 +25,7 @@ using GameStreamSearch.Application.GetASingleChannel;
 using GameStreamSearch.Application.GetStreams;
 using GameStreamSearch.Domain.Channel;
 using Amazon.DynamoDBv2;
+using GameStreamSearch.Application.Services;
 
 namespace GameStreamSearch.Api
 {
@@ -73,7 +73,7 @@ namespace GameStreamSearch.Api
 
             services.AddScoped(service =>
             {
-                return new StreamPlatformService()
+                return new StreamProviderService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
                             new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
                             new TwitchStreamMapper(),
@@ -91,8 +91,10 @@ namespace GameStreamSearch.Api
                     ));
             });
 
+            services.AddScoped<StreamPlatformService>();
+
             services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelResponse>, RegisterOrUpdateChannelCommandHandler>();
-            services.AddScoped<IQueryHandler<GetStreamsQuery, GetStreamsResponse>, GetStreamsQueryHandler>();
+            services.AddScoped<IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto>, GetStreamsQueryHandler>();
             services.AddScoped<IQueryHandler<GetAllChannelsQuery, GetAllChannelsResponse>, GetAllChannelsQueryHandler>();
             services.AddScoped<IQueryHandler<GetASingleChannelQuery, GetASingleChannelResponse>, GetASingleChannelQueryHandler>();
 

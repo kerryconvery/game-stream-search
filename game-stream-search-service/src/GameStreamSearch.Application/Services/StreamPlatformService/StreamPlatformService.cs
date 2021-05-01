@@ -2,43 +2,27 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameStreamSearch.Types;
-using System;
-using GameStreamSearch.Application.StreamProvider;
 using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Common;
 
 namespace GameStreamSearch.Application.Services.StreamProvider
 {
     public class StreamPlatformService
     {
-        private Dictionary<string, IStreamProvider> streamProviders;
+        private readonly StreamProviderService streamProviderService;
 
-        public StreamPlatformService()
+        public StreamPlatformService(StreamProviderService streamProviderService)
         {
-            streamProviders = new Dictionary<string, IStreamProvider>(StringComparer.OrdinalIgnoreCase);
-        }
-
-        public StreamPlatformService RegisterStreamProvider(IStreamProvider streamProvider)
-        {
-            streamProviders.Add(streamProvider.StreamPlatformName, streamProvider);
-
-            return this;
-        }
-
-        public IEnumerable<string> GetSupportingPlatforms(StreamFilterOptions streamFilterOptions)
-        {
-            return streamProviders
-                .Values
-                .Where(p => p.AreFilterOptionsSupported(streamFilterOptions))
-                .Select(p => p.StreamPlatformName);
+            this.streamProviderService = streamProviderService;
         }
 
         public async Task<IEnumerable<PlatformStreamsDto>> GetStreams(
             IEnumerable<string> streamPlatforms, StreamFilterOptions filterOptions, int pageSize, PageTokens pageTokens
         )
         {
-            var tasks = streamPlatforms.Select(p =>
+            var tasks = streamPlatforms.Select(providerName =>
             {
-                return streamProviders[p].GetLiveStreams(filterOptions, pageSize, pageTokens.GetTokenOrEmpty(p));
+                return streamProviderService.GetProviderByName(providerName).GetLiveStreams(filterOptions, pageSize, pageTokens.GetTokenOrEmpty(providerName));
             });
 
             return await Task.WhenAll(tasks);
@@ -46,7 +30,7 @@ namespace GameStreamSearch.Application.Services.StreamProvider
 
         public Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetPlatformChannel(string streamingPlatformName, string streamerName)
         {
-            var streamProvider = streamProviders[streamingPlatformName];
+            var streamProvider = streamProviderService.GetProviderByName(streamingPlatformName);
 
             return streamProvider.GetStreamerChannel(streamerName);
         }

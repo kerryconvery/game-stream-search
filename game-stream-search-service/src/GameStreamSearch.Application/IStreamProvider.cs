@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using GameStreamSearch.Application.StreamProvider.Dto;
+using GameStreamSearch.Common;
 using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.StreamProvider
