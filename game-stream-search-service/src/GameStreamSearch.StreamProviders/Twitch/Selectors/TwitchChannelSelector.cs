@@ -8,11 +8,9 @@ namespace GameStreamSearch.StreamProviders.Twitch.Selectors
 {
     public static class TwitchChannelSelector
     {
-        public static MaybeResult<TwitchChannelDto, StreamProviderError> Select(
-            string channelName, MaybeResult<IEnumerable<TwitchChannelDto>, StreamProviderError> channelSearchResults)
+        public static Maybe<TwitchChannelDto> Select(string channelName, IEnumerable<TwitchChannelDto> channels)
         {
-            return channelSearchResults
-                .Select(channels => channels
+            return Maybe< TwitchChannelDto>.ToMaybe(channels
                     .Where(channel => channel.display_name.Equals(channelName, StringComparison.CurrentCultureIgnoreCase))
                     .FirstOrDefault());
         }

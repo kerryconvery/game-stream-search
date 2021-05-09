@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using System.Linq;
-using GameStreamSearch.Types;
 using GameStreamSearch.StreamProviders.Extensions;
 using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
 
@@ -20,10 +19,10 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
             this.googleApiKey = googleApiKey;
         }
 
-        public async Task<MaybeResult<YouTubeSearchDto, StreamProviderError>> SearchGamingVideos(
+        public Task<YouTubeSearchDto> SearchGamingVideos(
             string query, VideoEventType eventType, VideoSortType order, int pageSize, string pageToken)
         {
-            return await BuildRequest("/youtube/v3/search")
+            return BuildRequest("/youtube/v3/search")
                 .SetQueryParam("part", "snippet")
                 .SetQueryParam("eventType", eventType.GetAsString())
                 .SetQueryParam("q", query)
@@ -33,22 +32,22 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
                 .SetQueryParam("pageToken", pageToken)
                 .SetQueryParam("order", order.GetAsString())
                 .GetAsync()
-                .GetOrError<YouTubeSearchDto>();
+                .GetJsonResponseAsync<YouTubeSearchDto>();
         }
 
-        public async Task<MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError>> GetChannels(string[] channelIds)
+        public async Task<IEnumerable<YouTubeChannelDto>> GetChannels(string[] channelIds)
         {
             var response = await BuildRequest("/youtube/v3/channels")
                 .SetQueryParam("part", "id")
                 .SetQueryParam("part", "snippet")
                 .SetQueryParams(channelIds.Select(id => $"id={id}").ToArray())
                 .GetAsync()
-                .GetOrError<YouTubeChannelsDto>();
+                .GetJsonResponseAsync<YouTubeChannelsDto>();
 
-            return response.Select(c => c.items);
+            return response.items;
         }
 
-        public async Task<MaybeResult<IEnumerable<YouTubeVideoDto>, StreamProviderError>> GetVideos(string[] videoIds)
+        public async Task<IEnumerable<YouTubeVideoDto>> GetVideos(string[] videoIds)
         {
             var response = await BuildRequest("/youtube/v3/videos")
                 .SetQueryParam("part", "id")
@@ -56,12 +55,12 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
                 .SetQueryParam("part", "liveStreamingDetails")
                 .SetQueryParams(videoIds.Select(id => $"id={id}").ToArray())
                 .GetAsync()
-                .GetOrError<YouTubeVideosDto>();
+                .GetJsonResponseAsync<YouTubeVideosDto>();
 
-            return response.Select(v => v.items);
+            return response.items;
         }
 
-        public async Task<MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError>> SearchChannelById(string channelId, int pageSize)
+        public async Task<IEnumerable<YouTubeChannelDto>> SearchChannelById(string channelId, int pageSize)
         {
             var response = await BuildRequest("/youtube/v3/channels")
                 .SetQueryParam("part", "id")
@@ -69,9 +68,9 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
                 .SetQueryParam("id", channelId)
                 .SetQueryParam("maxResults", pageSize)
                 .GetAsync()
-                .GetOrError<YouTubeChannelsDto>();
+                .GetJsonResponseAsync<YouTubeChannelsDto>();
 
-            return response.Select(v => v.items);
+            return response.items;
         }
 
         private IFlurlRequest BuildRequest(string endpoint)

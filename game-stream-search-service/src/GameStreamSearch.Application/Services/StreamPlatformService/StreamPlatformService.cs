@@ -28,7 +28,7 @@ namespace GameStreamSearch.Application.Services.StreamProvider
             return await Task.WhenAll(tasks);
         }
 
-        public Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetPlatformChannel(string streamingPlatformName, string streamerName)
+        public Task<Maybe<PlatformChannelDto>> GetPlatformChannel(string streamingPlatformName, string streamerName)
         {
             var streamProvider = streamProviderService.GetProviderByName(streamingPlatformName);
 

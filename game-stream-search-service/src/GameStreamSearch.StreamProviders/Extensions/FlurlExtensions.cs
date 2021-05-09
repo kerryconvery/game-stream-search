@@ -19,5 +19,12 @@ namespace GameStreamSearch.StreamProviders.Extensions
 
             return MaybeResult<T, StreamProviderError>.Success(payload);
         }
+
+        public static async Task<T> GetJsonResponseAsync<T>(this Task<IFlurlResponse> responseTask)
+        {
+            var response = await responseTask;
+
+            return await response.GetJsonAsync<T>();
+        }
     }
 }

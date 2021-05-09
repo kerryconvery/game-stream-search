@@ -7,6 +7,9 @@ using GameStreamSearch.StreamProviders.YouTube.Mappers.V3;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.Common;
+using System;
+using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
+using System.Collections.Generic;
 
 namespace GameStreamSearch.StreamProviders.YouTube
 {
@@ -29,31 +32,51 @@ namespace GameStreamSearch.StreamProviders.YouTube
 
         public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
-            var liveVideosResult = await youTubeV3Api.SearchGamingVideos(
-                filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
-
-            var streams = await liveVideosResult.ChainAsync(async videos =>
+            try
             {
-                var videoIds = videos.items.Select(v => v.id.videoId);
-                var channelIds = videos.items.Select(v => v.snippet.channelId);
-
-                var getVideoDetails = youTubeV3Api.GetVideos(videoIds.ToArray());
-                var getVideoChannels = youTubeV3Api.GetChannels(channelIds.ToArray());
-
-                var videoDetailResults = await getVideoDetails;
-                var videoChannelResults = await getVideoChannels;
-
-                return streamMapper.Map(videos, videoDetailResults, videoChannelResults);
-            });
-
-            return streams.GetOrElse(PlatformStreamsDto.Empty(StreamPlatformName));
+                return await TryGetLivePlatformStreams(filterOptions, pageSize, pageToken);
+            } catch(Exception)
+            {
+                return PlatformStreamsDto.Empty(StreamPlatformName);
+            }
         }
 
-        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
+        private async Task<PlatformStreamsDto> TryGetLivePlatformStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
-            var channelsResults = await youTubeV3Api.SearchChannelById(channelName, 1);
+            var searchResults = await youTubeV3Api.SearchGamingVideos(
+                filterOptions.GameName, VideoEventType.Live, VideoSortType.ViewCount, pageSize, pageToken);
 
-            return channelMapper.Map(channelsResults);
+            var taskGetVideos = GetVideosForSearchItems(searchResults.items);
+            var taskGetChannels = GetChannelsForSearchItems(searchResults.items);
+
+            var videos = await taskGetVideos;
+            var channels = await taskGetChannels;
+
+            return streamMapper.Map(searchResults, videos, channels);
+        }
+
+        private Task<IEnumerable<YouTubeVideoDto>> GetVideosForSearchItems(IEnumerable<YouTubeSearchItemDto> videoSearchItems)
+        {
+            var videoIds = videoSearchItems.Select(v => v.id.videoId);
+
+            return youTubeV3Api.GetVideos(videoIds.ToArray());
+        }
+
+        private Task<IEnumerable<YouTubeChannelDto>> GetChannelsForSearchItems(IEnumerable<YouTubeSearchItemDto> videoSearchItems)
+        {
+            var channelIds = videoSearchItems.Select(v => v.snippet.channelId);
+
+            return youTubeV3Api.GetChannels(channelIds.ToArray());
+        }
+
+        public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
+        {
+            var channels = await youTubeV3Api.SearchChannelById(channelName, 1);
+            var channel = channels
+                .Select(channel => channelMapper.Map(channel))
+                .FirstOrDefault();
+
+            return Maybe<PlatformChannelDto>.ToMaybe(channel);
         }
 
         public string StreamPlatformName => StreamPlatform.YouTube;

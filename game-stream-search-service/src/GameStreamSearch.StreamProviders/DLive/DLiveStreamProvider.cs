@@ -29,21 +29,35 @@ namespace GameStreamSearch.StreamProviders.DLive
 
         public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
-            if (!AreFilterOptionsSupported(filterOptions))
+            try
             {
-                throw new ArgumentException("The Dlive platform does not support these filter options");
-            };
-
-            var liveStreamsResult = await dliveApi.GetLiveStreams(pageSize, pageToken, StreamSortOrder.Trending);
-
-            return streamMapper.Map(liveStreamsResult, pageSize, pageToken);
+                return await TryGetLivePlatformStreams(filterOptions, pageSize, pageToken);
+            } catch(ArgumentException)
+            {
+                throw;
+            } catch(Exception)
+            {
+                return PlatformStreamsDto.Empty(StreamPlatformName);
+            }
         }
 
-        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
+        private async Task<PlatformStreamsDto> TryGetLivePlatformStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
-            var userResult = await dliveApi.GetUserByDisplayName(channelName);
+            if (!AreFilterOptionsSupported(filterOptions))
+            {
+                throw new ArgumentException("The DLive platform does not support these filter options");
+            };
 
-            return channelMapper.Map(userResult);
+            var liveStreams = await dliveApi.GetLiveStreams(pageSize, pageToken, StreamSortOrder.Trending);
+
+            return streamMapper.Map(liveStreams, pageSize, pageToken);
+        }
+
+        public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
+        {
+            var maybeUser = await dliveApi.GetUserByDisplayName(channelName);
+
+            return maybeUser.Select(channelMapper.Map);
         }
 
         public bool AreFilterOptionsSupported(StreamFilterOptions filterOptions)

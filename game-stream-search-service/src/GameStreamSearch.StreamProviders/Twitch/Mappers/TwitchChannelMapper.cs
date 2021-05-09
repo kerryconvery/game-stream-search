@@ -7,10 +7,10 @@ namespace GameStreamSearch.StreamProviders.Twitch.Mappers
 {
     public class TwitchChannelMapper
     {
-        public MaybeResult<PlatformChannelDto, StreamProviderError> Map(
-            MaybeResult<TwitchChannelDto, StreamProviderError> twitchChannelResult)
+        public Maybe<PlatformChannelDto> Map(
+            Maybe<TwitchChannelDto> maybeChannel)
         {
-            return twitchChannelResult.Select(channel =>
+            return maybeChannel.Select(channel =>
             {
                 return new PlatformChannelDto
                 {

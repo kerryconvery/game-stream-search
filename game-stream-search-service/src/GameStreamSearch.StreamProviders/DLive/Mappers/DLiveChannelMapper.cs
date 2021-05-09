@@ -14,19 +14,16 @@ namespace GameStreamSearch.StreamProviders.DLive.Mappers
             this.dliveWebUrl = dliveWebUrl;
         }
 
-        public MaybeResult<PlatformChannelDto, StreamProviderError> Map(
-            MaybeResult<DLiveUserDto, StreamProviderError> userSearchResult)
+        public PlatformChannelDto Map(
+            DLiveUserDto user)
         {
-            return userSearchResult.Select(user =>
+            return new PlatformChannelDto
             {
-                return new PlatformChannelDto
-                {
-                    ChannelName = user.displayName,
-                    AvatarUrl = user.avatar,
-                    ChannelUrl = $"{dliveWebUrl}/{user.displayName}",
-                    StreamPlatformName = StreamPlatform.DLive,
-                };
-            });
+                ChannelName = user.displayName,
+                AvatarUrl = user.avatar,
+                ChannelUrl = $"{dliveWebUrl}/{user.displayName}",
+                StreamPlatformName = StreamPlatform.DLive,
+            };
         }
     }
 }

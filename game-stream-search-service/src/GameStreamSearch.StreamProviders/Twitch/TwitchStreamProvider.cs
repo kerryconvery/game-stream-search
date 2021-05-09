@@ -9,6 +9,7 @@ using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
 using GameStreamSearch.StreamProviders.Twitch.Selectors;
 using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.Common;
+using System;
 
 namespace GameStreamSearch.StreamProviders.Twitch
 {
@@ -31,27 +32,38 @@ namespace GameStreamSearch.StreamProviders.Twitch
 
         public async Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
-            var liveStreamsResult = await FindLiveStreams(filterOptions, pageSize, pageToken);
+            try
+            {
+                return await TryGetLivePlatformStreams(filterOptions, pageSize, pageToken);
 
-            return streamMapper.Map(liveStreamsResult, pageSize, pageToken);
+            } catch(Exception)
+            {
+                return PlatformStreamsDto.Empty(StreamPlatformName);
+            }
+        }
+        
+        private async Task<PlatformStreamsDto> TryGetLivePlatformStreams(StreamFilterOptions filterOptions, int pageSize, int pageOffset)
+        {
+            var liveStreams = await GetLiveStreamsWithFilter(filterOptions, pageSize, pageOffset);
+
+            return streamMapper.Map(liveStreams, pageSize, pageOffset);
         }
 
-        private async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> FindLiveStreams(
-            StreamFilterOptions filterOptions, int pageSize, int pageOffset)
+        private Task<IEnumerable<TwitchStreamDto>> GetLiveStreamsWithFilter(StreamFilterOptions filterOptions, int pageSize, int pageOffset)
         {
             if (string.IsNullOrEmpty(filterOptions.GameName))
             {
-                return await twitchStreamApi.GetLiveStreams(pageSize, pageOffset);
+                return twitchStreamApi.GetLiveStreams(pageSize, pageOffset);
             }
 
-            return await twitchStreamApi.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
+            return twitchStreamApi.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
         }
 
-        public async Task<MaybeResult<PlatformChannelDto, StreamProviderError>> GetStreamerChannel(string channelName)
+        public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
         {
-            var channelsResult = await twitchStreamApi.SearchChannels(channelName, 1, 0);
+            var channels = await twitchStreamApi.SearchChannels(channelName, 1, 0);
 
-            return channelMapper.Map(TwitchChannelSelector.Select(channelName, channelsResult));
+            return channelMapper.Map(TwitchChannelSelector.Select(channelName, channels));
         }
 
         public string StreamPlatformName => StreamPlatform.Twitch;

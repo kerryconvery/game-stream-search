@@ -18,32 +18,29 @@ namespace GameStreamSearch.StreamProviders.DLive.Mappers
         }
 
         public PlatformStreamsDto Map(
-            MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError> streamSearchResults,
+            IEnumerable<DLiveStreamItemDto> streams,
             int pageSize,
             int pageOffset
         )
         {
-            return streamSearchResults.Select(streams =>
+            return new PlatformStreamsDto
             {
-                return new PlatformStreamsDto
+                StreamPlatformName = StreamPlatform.DLive,
+                Streams = streams.Select(stream =>
                 {
-                    StreamPlatformName = StreamPlatform.DLive,
-                    Streams = streams.Select(stream =>
+                    return new PlatformStreamDto
                     {
-                        return new PlatformStreamDto
-                        {
-                            StreamTitle = stream.title,
-                            StreamerName = stream.creator.displayName,
-                            StreamThumbnailUrl = stream.thumbnailUrl,
-                            StreamerAvatarUrl = stream.creator.avatar,
-                            StreamUrl = $"{dliveWebUrl}/{stream.creator.displayName}",
-                            IsLive = true,
-                            Views = stream.watchingCount,
-                        };
-                    }),
-                    NextPageToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty
-                };
-            }).GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.DLive));
+                        StreamTitle = stream.title,
+                        StreamerName = stream.creator.displayName,
+                        StreamThumbnailUrl = stream.thumbnailUrl,
+                        StreamerAvatarUrl = stream.creator.avatar,
+                        StreamUrl = $"{dliveWebUrl}/{stream.creator.displayName}",
+                        IsLive = true,
+                        Views = stream.watchingCount,
+                    };
+                }),
+                NextPageToken = streams.Count() == pageSize ? (pageOffset + pageSize).ToString() : string.Empty
+            };
         }
     }
 }

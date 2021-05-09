@@ -16,7 +16,7 @@ namespace GameStreamSearch.StreamProviders.DLive.Gateways
             this.dliveGraphQLApiUrl = dliveGraphQLApiUrl;
         }
 
-        public async Task<MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>> GetLiveStreams(
+        public async Task<IEnumerable<DLiveStreamItemDto>> GetLiveStreams(
             int pageSize, int pageOffset, StreamSortOrder sortOrder)
         {
             var graphQuery = new
@@ -28,23 +28,23 @@ namespace GameStreamSearch.StreamProviders.DLive.Gateways
 
             var streams = await BuildRequest()
                 .PostJsonAsync(graphQuery)
-                .GetOrError<DLiveStreamDto>();
+                .GetJsonResponseAsync<DLiveStreamDto>();
 
-            return streams.Select(s => s.data.livestreams.list);
+            return streams.data.livestreams.list;
         }
 
-        public async Task<MaybeResult<DLiveUserDto, StreamProviderError>> GetUserByDisplayName(string displayName)
+        public async Task<Maybe<DLiveUserDto>> GetUserByDisplayName(string displayName)
         {
             var graphQuery = new
             {
                 query = $"query {{userByDisplayName(displayname: \"{displayName}\") {{ displayname, avatar }} }}",
             };
 
-            var streams = await BuildRequest()
+            var user = await BuildRequest()
                 .PostJsonAsync(graphQuery)
-                .GetOrError<DLiveUserByDisplayNameDto>();
+                .GetJsonResponseAsync<DLiveUserByDisplayNameDto>();
 
-            return streams.Select(s => s.data.userByDisplayName);
+            return Maybe<DLiveUserDto>.ToMaybe(user.data.userByDisplayName);
         }
 
         private IFlurlRequest BuildRequest()

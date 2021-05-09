@@ -16,32 +16,18 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
             this.youTubeWebUrl = youTubeWebUrl;
         }
 
-        public MaybeResult<PlatformStreamsDto, StreamProviderError> Map(
-            YouTubeSearchDto videoSearchResults,
-            MaybeResult<IEnumerable<YouTubeVideoDto>, StreamProviderError> videoDetailResults,
-            MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> videoChannelResults)
+        public PlatformStreamsDto Map(
+            YouTubeSearchDto searchResults,
+            IEnumerable<YouTubeVideoDto> videos,
+            IEnumerable<YouTubeChannelDto> channels)
         {
-            return videoDetailResults.Chain(videosResult =>
-            {
-                return videoChannelResults.Select(channelResults =>
-                {
-                    var videoDetails = videosResult.ToDictionary(v => v.id, v => v.liveStreamingDetails);
-                    var videoChannels = channelResults.ToDictionary(c => c.id, c => c.snippet);
+            var liveStreamDetails = videos.ToDictionary(video => video.id, video => video.liveStreamingDetails);
+            var channelSnippets = channels.ToDictionary(channel => channel.id, channel => channel.snippet);
 
-                    return ToStreams(videoSearchResults, videoChannels, videoDetails);
-                });
-            });
-        }
-
-        private PlatformStreamsDto ToStreams(
-            YouTubeSearchDto streams,
-            Dictionary<string, YouTubeChannelSnippetDto> channelSnippets,
-            Dictionary<string, YouTubeVideoLiveStreamingDetailsDto> liveStreamDetails)
-        {
             return new PlatformStreamsDto
             {
                 StreamPlatformName = StreamPlatform.YouTube,
-                Streams = streams.items.Select(v =>
+                Streams = searchResults.items.Select(v =>
                 {
                     var viewers = liveStreamDetails.ContainsKey(v.id.videoId) ? liveStreamDetails[v.id.videoId].concurrentViewers : 0;
                     var avatarUrl = channelSnippets.ContainsKey(v.snippet.channelId) ? channelSnippets[v.snippet.channelId].thumbnails.@default.url : null;
@@ -57,7 +43,7 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
                         Views = viewers,
                     };
                 }),
-                NextPageToken = streams.nextPageToken ?? string.Empty,
+                NextPageToken = searchResults.nextPageToken ?? string.Empty,
             };
         }
     }

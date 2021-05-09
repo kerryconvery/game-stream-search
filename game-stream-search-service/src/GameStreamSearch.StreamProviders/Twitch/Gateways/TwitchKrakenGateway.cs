@@ -4,7 +4,6 @@ using Flurl;
 using Flurl.Http;
 using GameStreamSearch.StreamProviders.Extensions;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
-using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.Twitch.Gateways
 {
@@ -19,33 +18,33 @@ namespace GameStreamSearch.StreamProviders.Twitch.Gateways
             this.twitchClientId = twitchClientId;
         }
 
-        public async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> GetLiveStreams(int pageSize, int pageOffset)
+        public async Task<IEnumerable<TwitchStreamDto>> GetLiveStreams(int pageSize, int pageOffset)
         {
-            var streams = await BuildPagedRequest("/kraken/streams", pageSize, pageOffset)
+            var response = await BuildPagedRequest("/kraken/streams", pageSize, pageOffset)
                 .GetAsync()
-                .GetOrError<TwitchLiveStreamDto>();
+                .GetJsonResponseAsync<TwitchLiveStreamDto>();
 
-            return streams.Select(s => s.streams);
+            return response.streams;
         }
 
-        public async Task<MaybeResult<IEnumerable<TwitchChannelDto>, StreamProviderError>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
+        public async Task<IEnumerable<TwitchStreamDto>> SearchStreams(string searchTerm, int pageSize, int pageOffset)
+        {
+            var response = await BuildPagedRequest("/kraken/search/streams", pageSize, pageOffset)
+                .WithSearchTerm(searchTerm)
+                .GetAsync()
+                .GetJsonResponseAsync<TwitchLiveStreamDto>();
+
+            return response.streams;
+        }
+
+        public async Task<IEnumerable<TwitchChannelDto>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
         {
             var response = await BuildPagedRequest("/kraken/search/channels", pageSize, pageOffset)
                 .WithSearchTerm(searchTerm)
                 .GetAsync()
-                .GetOrError<TwitchChannelsDto>();
+                .GetJsonResponseAsync<TwitchChannelsDto>();
 
-            return response.Select(c => c.Channels);
-        }
-
-        public async Task<MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>> SearchStreams(string searchTerm, int pageSize, int pageOffset)
-        {
-            var streams = await BuildPagedRequest("/kraken/search/streams", pageSize, pageOffset)
-                .WithSearchTerm(searchTerm)
-                .GetAsync()
-                .GetOrError<TwitchLiveStreamDto>();
-
-            return streams.Select(s => s.streams);
+            return response.Channels;
         }
 
         private IFlurlRequest BuildPagedRequest(string endpoint, int pageSize, int pageOffset)

@@ -16,23 +16,15 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
             this.youTubeWebUrl = youTubeWebUrl;
         }
 
-        public MaybeResult<PlatformChannelDto, StreamProviderError> Map(
-            MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> channelSnippetResults)
+        public PlatformChannelDto Map(YouTubeChannelDto channel)
         {
-            return channelSnippetResults.Select(channelSnippets =>
+            return new PlatformChannelDto
             {
-                return channelSnippets.Select(channelSnippet =>
-                {
-                    return new PlatformChannelDto
-                    {
-                        ChannelName = channelSnippet.snippet.title,
-                        AvatarUrl = channelSnippet.snippet.thumbnails.@default.url,
-                        ChannelUrl = $"{youTubeWebUrl}/channel/{channelSnippet.id}",
-                        StreamPlatformName = StreamPlatform.YouTube,
-                    };
-                })
-                .FirstOrDefault();
-            });
+                ChannelName = channel.snippet.title,
+                AvatarUrl = channel.snippet.thumbnails.@default.url,
+                ChannelUrl = $"{youTubeWebUrl}/channel/{channel.id}",
+                StreamPlatformName = StreamPlatform.YouTube,
+            };
         }
     }
 }

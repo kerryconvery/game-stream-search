@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace GameStreamSearch.Application
 {
-    public interface ICommandHandler<TCommand, TResult>
+    public interface ICommandHandler<TCommand>
     {
-        Task<TResult> Handle(TCommand request);
+        Task Handle(TCommand request);
     }
 }

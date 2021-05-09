@@ -93,7 +93,7 @@ namespace GameStreamSearch.Api
 
             services.AddScoped<StreamPlatformService>();
 
-            services.AddScoped<ICommandHandler<RegisterOrUpdateChannelCommand, RegisterOrUpdateChannelResponse>, RegisterOrUpdateChannelCommandHandler>();
+            services.AddScoped<ICommandHandler<RegisterChannelCommand, RegisterOrUpdateChannelResponse>, RegisterChannelCommandHandler>();
             services.AddScoped<IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto>, GetStreamsQueryHandler>();
             services.AddScoped<IQueryHandler<GetAllChannelsQuery, GetAllChannelsResponse>, GetAllChannelsQueryHandler>();
             services.AddScoped<IQueryHandler<GetASingleChannelQuery, GetASingleChannelResponse>, GetASingleChannelQueryHandler>();
