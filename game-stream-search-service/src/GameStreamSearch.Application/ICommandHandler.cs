@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application
 {
-    public interface ICommandHandler<TCommand>
+    public interface ICommandHandler<TCommand, TError>
     {
-        Task Handle(TCommand request);
+        Task<Result<TError>> Handle(TCommand request);
     }
 }

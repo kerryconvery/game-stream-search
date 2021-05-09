@@ -20,12 +20,12 @@ namespace GameStreamSearch.Api.Controllers
     [Route("api")]
     public class ChannelsController : ControllerBase
     {
-        private readonly ICommandHandler<RegisterChannelCommand> registerChannelCommand;
+        private readonly ICommandHandler<RegisterChannelCommand, RegisterChannelCommandErrorType> registerChannelCommand;
         private readonly IQueryHandler<GetAllChannelsQuery, GetAllChannelsResponse> getAllChannelsQueryHandler;
         private readonly IQueryHandler<GetASingleChannelQuery, GetASingleChannelResponse> getChannelQueryHandler;
 
         public ChannelsController(
-            ICommandHandler<RegisterChannelCommand> registerChannelCommand,
+            ICommandHandler<RegisterChannelCommand, RegisterChannelCommandErrorType> registerChannelCommand,
             IQueryHandler<GetAllChannelsQuery, GetAllChannelsResponse> getAllChannelsQueryHandler,
             IQueryHandler<GetASingleChannelQuery, GetASingleChannelResponse> getChannelQueryHandler)
         {
@@ -38,26 +38,18 @@ namespace GameStreamSearch.Api.Controllers
         [Route("channels/{platformName}/{channelName}")]
         public async Task<IActionResult> RegisterOrUpdateChannel([FromRoute] string platformName, string channelName)
         {
-            try
-            {
-                return await TryRegisterChannel(platformName, channelName);
-            } catch(ChannelNotFoundException exception)
-            {
-                return PresentChannelNotFoundOnPlatform(exception.StreamPlatformName, exception.ChannelName);
-            }
-        }
-
-        private async Task<IActionResult> TryRegisterChannel(string platformName, string channelName)
-        {
             var command = new RegisterChannelCommand
             {
                 ChannelName = channelName,
                 StreamPlatformName = platformName,
             };
 
-            await registerChannelCommand.Handle(command);
+            var result = await registerChannelCommand.Handle(command);
 
-            return PresentChannelAdded(platformName, channelName);
+            return result.Check(
+                onSuccess: () => PresentChannelAdded(platformName, channelName),
+                onFailure: (RegisterChannelCommandErrorType) => PresentChannelNotFoundOnPlatform(platformName, channelName)
+             );
         }
 
         private IActionResult PresentChannelAdded(string platformName, string channelName)

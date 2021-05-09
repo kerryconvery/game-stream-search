@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using GameStreamSearch.Application.Services.StreamProvider;
 using GameStreamSearch.Application.StreamProvider.Dto;
-using GameStreamSearch.Common;
 using GameStreamSearch.Domain.Channel;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.Application.RegisterOrUpdateChannel
 {
@@ -13,7 +13,12 @@ namespace GameStreamSearch.Application.RegisterOrUpdateChannel
         public string StreamPlatformName { get; init; }
     }
 
-    public class RegisterChannelCommandHandler : ICommandHandler<RegisterChannelCommand>
+    public enum RegisterChannelCommandErrorType
+    {
+        ChannelNotFound,
+    }
+
+    public class RegisterChannelCommandHandler : ICommandHandler<RegisterChannelCommand, RegisterChannelCommandErrorType>
     {
         private readonly ChannelRepository channelRepository;
         private readonly StreamPlatformService streamPlatformService;
@@ -24,16 +29,18 @@ namespace GameStreamSearch.Application.RegisterOrUpdateChannel
             this.streamPlatformService = streamPlatformService;
         }
 
-        public async Task Handle(RegisterChannelCommand request)
+        public async Task<Result<RegisterChannelCommandErrorType>> Handle(RegisterChannelCommand request)
         {
             var maybeChannel = await streamPlatformService.GetPlatformChannel(request.StreamPlatformName, request.ChannelName);
 
             if (maybeChannel.IsNothing)
             {
-                throw new ChannelNotFoundException(request.ChannelName, request.StreamPlatformName);
+                return Result<RegisterChannelCommandErrorType>.Fail(RegisterChannelCommandErrorType.ChannelNotFound);
             };
 
             maybeChannel.Select(SaveChannel);
+
+            return Result<RegisterChannelCommandErrorType>.Success();
         }
 
         private Task SaveChannel(PlatformChannelDto platformChannel)

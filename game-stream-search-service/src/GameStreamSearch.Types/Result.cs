@@ -2,8 +2,11 @@
 
 namespace GameStreamSearch.Types
 {
-    public struct Result<E> where E : Enum
+    public struct Result<E>
     {
+        private E Error;
+        private bool IsSuccess;
+
         public static Result<E> Success()
         {
             return new Result<E>()
@@ -21,34 +24,14 @@ namespace GameStreamSearch.Types
             };
         }
 
-        public bool IsSuccess { get; init; }
-        public bool IsFailure => !IsSuccess;
-        public E Error { get; init; }
-    }
-
-    public struct Result<V, E> where E : Enum
-    {
-        public static Result<V, E> Success(V value)
+        public TResult Check<TResult>(Func<TResult> onSuccess, Func<E, TResult> onFailure)
         {
-            return new Result<V, E>
+            if(IsSuccess)
             {
-                IsSuccess = true,
-                Value = value,
-            };
-        }
+                return onSuccess();
+            }
 
-        public static Result<V, E> Fail(E error)
-        {
-            return new Result<V, E>
-            {
-                IsSuccess = false,
-                Error = error,
-            };
+            return onFailure(Error);
         }
-
-        public bool IsSuccess { get; init; }
-        public bool IsFailure => !IsSuccess;
-        public E Error { get; init; }
-        public V? Value { get; init; }
     }
 }
