@@ -32,9 +32,6 @@ namespace GameStreamSearch.StreamProviders.DLive
             try
             {
                 return await TryGetLivePlatformStreams(filterOptions, pageSize, pageToken);
-            } catch(ArgumentException)
-            {
-                throw;
             } catch(Exception)
             {
                 return PlatformStreamsDto.Empty(StreamPlatformName);
@@ -45,7 +42,7 @@ namespace GameStreamSearch.StreamProviders.DLive
         {
             if (!AreFilterOptionsSupported(filterOptions))
             {
-                throw new ArgumentException("The DLive platform does not support these filter options");
+                return PlatformStreamsDto.Empty(StreamPlatformName);
             };
 
             var liveStreams = await dliveApi.GetLiveStreams(pageSize, pageToken, StreamSortOrder.Trending);

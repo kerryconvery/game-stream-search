@@ -16,13 +16,11 @@ namespace GameStreamSearch.Application.Services.StreamProvider
             this.streamProviderService = streamProviderService;
         }
 
-        public async Task<IEnumerable<PlatformStreamsDto>> GetStreams(
-            IEnumerable<string> streamPlatforms, StreamFilterOptions filterOptions, int pageSize, PageTokens pageTokens
-        )
+        public async Task<IEnumerable<PlatformStreamsDto>> GetStreams(StreamFilterOptions filterOptions, int pageSize, PageTokens pageTokens)
         {
-            var tasks = streamPlatforms.Select(providerName =>
+            var tasks = streamProviderService.StreamProviders.Select(provider =>
             {
-                return streamProviderService.GetProviderByName(providerName).GetLiveStreams(filterOptions, pageSize, pageTokens.GetTokenOrEmpty(providerName));
+                return provider.GetLiveStreams(filterOptions, pageSize, pageTokens.GetTokenOrEmpty(provider.StreamPlatformName));
             });
 
             return await Task.WhenAll(tasks);

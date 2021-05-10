@@ -10,7 +10,6 @@ namespace GameStreamSearch.Application.GetStreams
 {
     public class GetStreamsQuery
     {
-        public IEnumerable<string> StreamPlatformNames { get; init; }
         public StreamFilterOptions Filters { get; init; }
         public string PageToken { get; init; }
         public int PageSize { get; init; }
@@ -62,7 +61,7 @@ namespace GameStreamSearch.Application.GetStreams
         {
             var unpackedTokens = PageTokens.UnpackTokens(query.PageToken);
 
-            var platformStreams = await streamPlatformService.GetStreams(query.StreamPlatformNames, query.Filters, query.PageSize, unpackedTokens);
+            var platformStreams = await streamPlatformService.GetStreams(query.Filters, query.PageSize, unpackedTokens);
 
             var packedTokens = PackPageTokens(platformStreams);
 

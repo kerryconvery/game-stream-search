@@ -12,12 +12,10 @@ namespace GameStreamSearch.Api.Controllers
     [Route("api")]
     public class StreamsController : ControllerBase
     {
-        private readonly StreamProviderService streamProviderService;
         private readonly IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto> streamsQueryHandler;
 
-        public StreamsController(StreamProviderService streamProviderService, IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto> streamsQueryHandler)
+        public StreamsController(IQueryHandler<GetStreamsQuery, GetStreamsQueryResponseDto> streamsQueryHandler)
         {
-            this.streamProviderService = streamProviderService;
             this.streamsQueryHandler = streamsQueryHandler;
         }
 
@@ -35,7 +33,6 @@ namespace GameStreamSearch.Api.Controllers
 
             var streamsQuery = new GetStreamsQuery
             {
-                StreamPlatformNames = streamProviderService.GetSupportingPlatforms(filterOptions),
                 PageSize = pageSize,
                 PageToken = pageToken,
                 Filters = new StreamFilterOptions { GameName = filterOptions.GameName },
