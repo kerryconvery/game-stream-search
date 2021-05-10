@@ -14,13 +14,13 @@ namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
         private string dliveUrl = "dlive.url";
         private int pageSize = 1;
         private int pageOffset = 0;
-        private MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError> streamSearchResults;
+        private  IEnumerable<DLiveStreamItemDto> dliveStreams;
         private DLiveStreamMapper dliveStreamMapper;
 
         [SetUp]
         public void Setup()
         {
-            var dliveStreams = new List<DLiveStreamItemDto>
+            dliveStreams = new List<DLiveStreamItemDto>
             {
                 new DLiveStreamItemDto
                 {
@@ -31,14 +31,13 @@ namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
                 },
             };
 
-            streamSearchResults = MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>.Success(dliveStreams);
             dliveStreamMapper = new DLiveStreamMapper(dliveUrl);
         }
 
         [Test]
         public void Should_Map_DLive_Streams_To_Streams()
         {
-            var streams = dliveStreamMapper.Map(streamSearchResults, pageSize, pageOffset);
+            var streams = dliveStreamMapper.Map(dliveStreams, pageSize, pageOffset);
 
             Assert.AreEqual(streams.Streams.First().StreamTitle, "test stream");
             Assert.AreEqual(streams.Streams.First().StreamerName, "TestUserA");
@@ -53,7 +52,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
         [Test]
         public void Should_Return_The_Next_Page_Token_When_The_Number_Of_Streams_Is_Equal_To_The_Page_Size()
         {
-            var platformStreams = dliveStreamMapper.Map(streamSearchResults, 1, 0);
+            var platformStreams = dliveStreamMapper.Map(dliveStreams, 1, 0);
 
             Assert.AreEqual(platformStreams.NextPageToken, "1");
         }
@@ -61,10 +60,9 @@ namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
         [Test]
         public void Should_Return_An_Empty_Next_Page_Token_When_The_Number_Of_Streams_Is_Less_Than_The_Page_Size()
         {
-            var emptySearchResults = MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>
-                .Success(new List<DLiveStreamItemDto>());
+            var noSearchItems = new List<DLiveStreamItemDto>();
 
-            var streams = dliveStreamMapper.Map(emptySearchResults, pageSize, pageOffset);
+            var streams = dliveStreamMapper.Map(noSearchItems, pageSize, pageOffset);
 
             Assert.IsTrue(streams.IsEmpty());
             Assert.IsEmpty(streams.NextPageToken);
@@ -73,10 +71,9 @@ namespace GameStreamSearch.UnitTests.StreamProviders.DLive.Mappers
         [Test]
         public void Should_Return_An_Empty_List_Of_Streams_When_No_Streams_Where_Returned_From_The_Streaming_Platform()
         {
-            var emptySearchResults = MaybeResult<IEnumerable<DLiveStreamItemDto>, StreamProviderError>
-                .Success(new List<DLiveStreamItemDto>());
+            var noSearchItems = new List<DLiveStreamItemDto>();
 
-            var streams = dliveStreamMapper.Map(emptySearchResults, pageSize, pageOffset);
+            var streams = dliveStreamMapper.Map(noSearchItems, pageSize, pageOffset);
 
             Assert.IsTrue(streams.IsEmpty());
             Assert.IsEmpty(streams.NextPageToken);

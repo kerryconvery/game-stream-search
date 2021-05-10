@@ -15,9 +15,8 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Selectors
         public void Should_Return_Back_The_Matching_Channel()
         {
             var channels = new List<TwitchChannelDto> { expectedChannel, anotherChannel };
-            var channelResults = MaybeResult<IEnumerable<TwitchChannelDto>, StreamProviderError>.Success(channels);
 
-            var channel = TwitchChannelSelector.Select(expectedChannel.display_name, channelResults);
+            var channel = TwitchChannelSelector.Select(expectedChannel.display_name, channels);
 
             Assert.AreEqual(channel.GetOrElse(new TwitchChannelDto()), expectedChannel);
         }
@@ -26,9 +25,8 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Selectors
         public void Should_Return_Back_Nothing_When_No_Matching_Channel_Was_Found()
         {
             var channels = new List<TwitchChannelDto> { anotherChannel };
-            var channelResults = MaybeResult<IEnumerable<TwitchChannelDto>, StreamProviderError>.Success(channels);
            
-            var channel = TwitchChannelSelector.Select(expectedChannel.display_name, channelResults);
+            var channel = TwitchChannelSelector.Select(expectedChannel.display_name, channels);
 
             Assert.IsTrue(channel.IsNothing);
         }

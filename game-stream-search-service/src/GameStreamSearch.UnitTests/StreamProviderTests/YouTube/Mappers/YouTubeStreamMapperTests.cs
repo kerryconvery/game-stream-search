@@ -29,8 +29,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
                 .Build();
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
-                .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.YouTube));
+                .Map(youTubeSearchResults, videoDetails, videoChannels);
 
             Assert.AreEqual(streams.Streams.First().StreamerName, "test channel");
             Assert.AreEqual(streams.Streams.First().StreamTitle, "test stream");
@@ -52,8 +51,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
             var videoChannels = new YouTubeChannelResultsBuilder().Build();
 
             var streams = new YouTubeStreamMapper(youTubeWebUrl)
-                .Map(youTubeSearchResults, videoDetails, videoChannels)
-                .GetOrElse(PlatformStreamsDto.Empty(StreamPlatform.YouTube));
+                .Map(youTubeSearchResults, videoDetails, videoChannels);
 
             Assert.IsTrue(streams.IsEmpty());
         }

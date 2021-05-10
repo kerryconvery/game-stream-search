@@ -29,9 +29,9 @@ namespace GameStreamSearch.UnitTests.Builders
             return this;
         }
 
-        public MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError> Build()
+        public IEnumerable<YouTubeChannelDto> Build()
         {
-            return MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError>.Success(channelDtos);
+            return channelDtos;
         }
     }
 }

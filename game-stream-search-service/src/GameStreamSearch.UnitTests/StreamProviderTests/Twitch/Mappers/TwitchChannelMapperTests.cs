@@ -18,9 +18,10 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
                 logo = "http://logo.url",
                 url = "http://channel.url",
             };
-            var twitchChannelResult = MaybeResult<TwitchChannelDto, StreamProviderError>.Success(twitchChannelDto);
 
-            var platformChannel = new TwitchChannelMapper().Map(twitchChannelResult).GetOrElse(new PlatformChannelDto());
+            var platformChannel = new TwitchChannelMapper()
+                .Map(Maybe<TwitchChannelDto>.Some(twitchChannelDto))
+                .GetOrElse(new PlatformChannelDto());
 
             Assert.AreEqual(platformChannel.ChannelName, "test channel");
             Assert.AreEqual(platformChannel.AvatarUrl, "http://logo.url");

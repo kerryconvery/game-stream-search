@@ -8,9 +8,9 @@ namespace GameStreamSearch.UnitTests.Builders
     {
         private List<TwitchStreamDto> twitchStreams = new List<TwitchStreamDto>();
 
-        public MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError> Build()
+        public IEnumerable<TwitchStreamDto> Build()
         {
-            return MaybeResult<IEnumerable<TwitchStreamDto>, StreamProviderError>.Success(twitchStreams);
+            return twitchStreams;
         }
 
         public TwitchStreamPreviewResultsBuilder Add(

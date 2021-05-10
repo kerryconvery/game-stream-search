@@ -34,24 +34,23 @@ namespace GameStreamSearch.UnitTests.DomainServiceTests
         private readonly string streamPlatformName;
         private readonly bool isFilterSupported;
 
+        public string StreamPlatformName => streamPlatformName;
+        public bool AreFilterOptionsSupported(StreamFilterOptions filterOptions) => isFilterSupported;
+
         public FakeProvider(string streamPlatformName, bool isFilterSupported)
         {
             this.streamPlatformName = streamPlatformName;
             this.isFilterSupported = isFilterSupported;
         }
 
-        Task<PlatformStreamsDto> IStreamProvider.GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
+        public Task<PlatformStreamsDto> GetLiveStreams(StreamFilterOptions filterOptions, int pageSize, PageToken pageToken)
         {
             throw new NotImplementedException();
         }
 
-        Task<MaybeResult<PlatformChannelDto, StreamProviderError>> IStreamProvider.GetStreamerChannel(string channelName)
+        public Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
         {
             throw new NotImplementedException();
         }
-
-        public string StreamPlatformName => streamPlatformName;
-
-        public bool AreFilterOptionsSupported(StreamFilterOptions filterOptions) => isFilterSupported;
     }
 }

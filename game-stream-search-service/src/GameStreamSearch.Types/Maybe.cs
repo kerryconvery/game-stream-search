@@ -39,55 +39,6 @@ namespace GameStreamSearch.Types
             return Maybe<TResult>.ToMaybe(selector(value)); 
         }
 
-        public Maybe<TResult> Chain<TResult>(Func<T, Maybe<TResult>> selector)
-        {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            if (!hasValue)
-            {
-                return Maybe<TResult>.Nothing;
-            }
-
-            return Maybe<TResult>.ToMaybe(selector(value).value);
-        }
-
-        public async Task<Maybe<TResult>> SelectAsync<TResult>(Func<T, Task<TResult>> selector)
-        {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            if (!hasValue)
-            {
-                return Maybe<TResult>.Nothing;
-            }
-
-            var result = await selector(value);
-
-            return Maybe<TResult>.ToMaybe(result);
-        }
-
-        public async Task<Maybe<TResult>> ChainAsync<TResult>(Func<T, Task<Maybe<TResult>>> selector)
-        {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            if (!hasValue)
-            {
-                return Maybe<TResult>.Nothing;
-            }
-
-            var result = await selector(value);
-
-            return Maybe<TResult>.ToMaybe(result.value);
-        }
-
         public T GetOrElse(T elseValue)
         {
             if (elseValue == null)

@@ -5,7 +5,6 @@ using GameStreamSearch.Application;
 using GameStreamSearch.Application.GetAllChannels;
 using GameStreamSearch.Application.GetASingleChannel;
 using GameStreamSearch.Application.RegisterOrUpdateChannel;
-using GameStreamSearch.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStreamSearch.Api.Controllers

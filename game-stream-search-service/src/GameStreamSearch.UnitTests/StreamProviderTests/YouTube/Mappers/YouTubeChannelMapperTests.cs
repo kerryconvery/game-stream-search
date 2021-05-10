@@ -13,34 +13,30 @@ namespace GameStreamSearch.UnitTests.StreamProviders.YouTube.Mappers
         private string youtubeWebUrl = "http://youtube.com";
 
         [Test]
-        public void Should_Includ_A_Currectly_Structured_Channel_Url()
+        public void Should_Include_A_Correctly_Structured_Channel_Url()
         {
-            var channels = new List<YouTubeChannelDto>
+            var channel = new YouTubeChannelDto
             {
-                new YouTubeChannelDto {
-                    id = "testchannelid",
-                    snippet = new YouTubeChannelSnippetDto {
-                        title = "testchannel",
-                        thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                id = "testchannelid",
+                snippet = new YouTubeChannelSnippetDto
+                {
+                    title = "testchannel",
+                    thumbnails = new YouTubeChannelSnippetThumbnailsDto
+                    {
+                        @default = new YouTubeChannelSnippetThumbnailDto
                         {
-                            @default = new YouTubeChannelSnippetThumbnailDto
-                            {
-                                url = "http://thumbnail.url"
-                            }
+                            url = "http://thumbnail.url"
                         }
                     }
                 }
             };
-            var channelResults = MaybeResult<IEnumerable<YouTubeChannelDto>, StreamProviderError>.Success(channels);
 
-            var channel = new YouTubeChannelMapper(youtubeWebUrl)
-                .Map(channelResults)
-                .GetOrElse(new PlatformChannelDto());
+            var platformChannel = new YouTubeChannelMapper(youtubeWebUrl).Map(channel);
 
-            Assert.AreEqual(channel.ChannelName, "testchannel");
-            Assert.AreEqual(channel.AvatarUrl, "http://thumbnail.url");
-            Assert.AreEqual(channel.StreamPlatformName, StreamPlatform.YouTube);
-            Assert.AreEqual(channel.ChannelUrl, "http://youtube.com/channel/testchannelid");
+            Assert.AreEqual(platformChannel.ChannelName, "testchannel");
+            Assert.AreEqual(platformChannel.AvatarUrl, "http://thumbnail.url");
+            Assert.AreEqual(platformChannel.StreamPlatformName, StreamPlatform.YouTube);
+            Assert.AreEqual(platformChannel.ChannelUrl, "http://youtube.com/channel/testchannelid");
 
         }
     }
