@@ -7,19 +7,15 @@ namespace GameStreamSearch.StreamProviders.Twitch.Mappers
 {
     public class TwitchChannelMapper
     {
-        public Maybe<PlatformChannelDto> Map(
-            Maybe<TwitchChannelDto> maybeChannel)
+        public PlatformChannelDto Map(TwitchChannelDto channel)
         {
-            return maybeChannel.Select(channel =>
+            return new PlatformChannelDto
             {
-                return new PlatformChannelDto
-                {
-                    ChannelName = channel.display_name,
-                    AvatarUrl = channel.logo,
-                    ChannelUrl = channel.url,
-                    StreamPlatformName = StreamPlatform.Twitch,
-                };
-            });
+                ChannelName = channel.display_name,
+                AvatarUrl = channel.logo,
+                ChannelUrl = channel.url,
+                StreamPlatformName = StreamPlatform.Twitch,
+            };
         }
     }
 }

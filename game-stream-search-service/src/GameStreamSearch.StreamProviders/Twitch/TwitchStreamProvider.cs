@@ -6,7 +6,6 @@ using GameStreamSearch.StreamProviders.Twitch.Gateways;
 using GameStreamSearch.StreamProviders.Twitch.Mappers;
 using GameStreamSearch.Application.StreamProvider.Dto;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
-using GameStreamSearch.StreamProviders.Twitch.Selectors;
 using GameStreamSearch.StreamProviders.Const;
 using GameStreamSearch.Common;
 using System;
@@ -35,7 +34,6 @@ namespace GameStreamSearch.StreamProviders.Twitch
             try
             {
                 return await TryGetLivePlatformStreams(filterOptions, pageSize, pageToken);
-
             } catch(Exception)
             {
                 return PlatformStreamsDto.Empty(StreamPlatformName);
@@ -61,9 +59,9 @@ namespace GameStreamSearch.StreamProviders.Twitch
 
         public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
         {
-            var channels = await twitchStreamApi.SearchChannels(channelName, 1, 0);
+            var channel = await twitchStreamApi.GetChannelByName(channelName);
 
-            return channelMapper.Map(TwitchChannelSelector.Select(channelName, channels));
+            return channel.Select(channelMapper.Map);
         }
 
         public string StreamPlatformName => StreamPlatform.Twitch;

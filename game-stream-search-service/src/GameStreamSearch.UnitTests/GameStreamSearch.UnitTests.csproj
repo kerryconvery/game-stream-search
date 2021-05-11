@@ -17,14 +17,12 @@
     <Folder Include="StreamProviderTests\" />
     <Folder Include="Extensions\" />
     <Folder Include="Builders\" />
-    <Folder Include="DomainServiceTests\" />
     <Folder Include="StreamPlatformServiceTests\" />
     <Folder Include="StreamProviderTests\Twitch\" />
     <Folder Include="StreamProviderTests\DLive\" />
     <Folder Include="StreamProviderTests\YouTube\" />
     <Folder Include="StreamProviderTests\DLive\Mappers\" />
     <Folder Include="StreamProviderTests\Twitch\Mappers\" />
-    <Folder Include="StreamProviderTests\Twitch\Selectors\" />
     <Folder Include="StreamProviderTests\YouTube\Mappers\" />
   </ItemGroup>
   <ItemGroup>

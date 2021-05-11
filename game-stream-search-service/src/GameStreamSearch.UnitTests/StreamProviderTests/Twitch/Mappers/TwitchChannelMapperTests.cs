@@ -10,7 +10,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
     public class TwitchChannelMapperTests
     {
         [Test]
-        public void Should_Map_The_Channel_Exactly_Matching_The_Channel_Name_To_PlatformChannel()
+        public void Should_Map_A_Twitch_Channel_To_A_PlatformChannel()
         {
             var twitchChannelDto = new TwitchChannelDto
             {
@@ -20,8 +20,7 @@ namespace GameStreamSearch.UnitTests.StreamProviders.Twitch.Mappers
             };
 
             var platformChannel = new TwitchChannelMapper()
-                .Map(Maybe<TwitchChannelDto>.Some(twitchChannelDto))
-                .GetOrElse(new PlatformChannelDto());
+                .Map(twitchChannelDto);
 
             Assert.AreEqual(platformChannel.ChannelName, "test channel");
             Assert.AreEqual(platformChannel.AvatarUrl, "http://logo.url");

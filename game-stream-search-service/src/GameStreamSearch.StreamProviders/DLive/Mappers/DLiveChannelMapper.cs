@@ -14,8 +14,7 @@ namespace GameStreamSearch.StreamProviders.DLive.Mappers
             this.dliveWebUrl = dliveWebUrl;
         }
 
-        public PlatformChannelDto Map(
-            DLiveUserDto user)
+        public PlatformChannelDto Map(DLiveUserDto user)
         {
             return new PlatformChannelDto
             {

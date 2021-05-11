@@ -21,7 +21,6 @@
     <Folder Include="YouTube\Gateways\Dto\" />
     <Folder Include="Twitch\Gateways\" />
     <Folder Include="Twitch\Gateways\Dto\" />
-    <Folder Include="Twitch\Selectors\" />
     <Folder Include="YouTube\Gateways\Dto\V3\" />
     <Folder Include="DLive\Gateways\" />
     <Folder Include="DLive\Gateways\Dto\" />

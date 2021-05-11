@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using GameStreamSearch.StreamProviders.Extensions;
 using GameStreamSearch.StreamProviders.Twitch.Gateways.Dto.Kraken;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.Twitch.Gateways
 {
@@ -45,6 +47,17 @@ namespace GameStreamSearch.StreamProviders.Twitch.Gateways
                 .GetJsonResponseAsync<TwitchChannelsDto>();
 
             return response.Channels;
+        }
+
+        public async Task<Maybe<TwitchChannelDto>> GetChannelByName(string channelName)
+        {
+            var channels = await SearchChannels(channelName, 1, 0);
+
+            var channel = channels
+                .Where(channel => channel.display_name == channelName)
+                .FirstOrDefault();
+
+            return Maybe<TwitchChannelDto>.ToMaybe(channel);
         }
 
         private IFlurlRequest BuildPagedRequest(string endpoint, int pageSize, int pageOffset)
