@@ -10,21 +10,25 @@ using GameStreamSearch.Common;
 using System;
 using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
 using System.Collections.Generic;
+using GameStreamSearch.StreamProviders.YouTube.Gateways;
 
 namespace GameStreamSearch.StreamProviders.YouTube
 {
     public class YouTubeStreamProvider : IStreamProvider
     {
+        private readonly YouTubeChannelGateway channelGateway;
         private readonly YouTubeV3Gateway youTubeV3Api;
         private readonly YouTubeStreamMapper streamMapper;
         private readonly YouTubeChannelMapper channelMapper;
 
         public YouTubeStreamProvider(
+            YouTubeChannelGateway channelGateway,
             YouTubeV3Gateway youTubeV3Api,
             YouTubeStreamMapper streamMapper,
             YouTubeChannelMapper channelMapper
         )
         {
+            this.channelGateway = channelGateway;
             this.youTubeV3Api = youTubeV3Api;
             this.streamMapper = streamMapper;
             this.channelMapper = channelMapper;
@@ -66,17 +70,14 @@ namespace GameStreamSearch.StreamProviders.YouTube
         {
             var channelIds = videoSearchItems.Select(v => v.snippet.channelId);
 
-            return youTubeV3Api.GetChannels(channelIds.ToArray());
+            return channelGateway.BulkGetAvartarByChannelId(channelIds.ToArray());
         }
 
         public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
         {
-            var channels = await youTubeV3Api.SearchChannelById(channelName, 1);
-            var channel = channels
-                .Select(channel => channelMapper.Map(channel))
-                .FirstOrDefault();
+            var channel = await channelGateway.GetChannelByName(channelName);
 
-            return Maybe<PlatformChannelDto>.ToMaybe(channel);
+            return channel.Select(channelMapper.Map);
         }
 
         public string StreamPlatformName => StreamPlatform.YouTube;

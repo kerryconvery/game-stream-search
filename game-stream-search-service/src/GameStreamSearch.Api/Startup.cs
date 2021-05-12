@@ -76,6 +76,7 @@ namespace GameStreamSearch.Api
                 return new StreamProviderService()
                     .RegisterStreamProvider(new TwitchStreamProvider(
                             new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
+                            new TwitchKrakenGateway(Configuration["Twitch:ApiUrl"], Configuration["Twitch:ClientId"]),
                             new TwitchStreamMapper(),
                             new TwitchChannelMapper()
                     ))
@@ -85,6 +86,7 @@ namespace GameStreamSearch.Api
                             new YouTubeChannelMapper(Configuration["YouTube:WebUrl"])
                     ))
                     .RegisterStreamProvider(new DLiveStreamProvider(
+                            new DLiveGraphQLGateway(Configuration["DLive:Apiurl"]),
                             new DLiveGraphQLGateway(Configuration["DLive:Apiurl"]),
                             new DLiveStreamMapper(Configuration["DLive:WebUrl"]),
                             new DLiveChannelMapper(Configuration["DLive:WebUrl"])

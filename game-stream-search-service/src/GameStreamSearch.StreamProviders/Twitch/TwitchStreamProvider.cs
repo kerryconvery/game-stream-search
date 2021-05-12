@@ -14,17 +14,20 @@ namespace GameStreamSearch.StreamProviders.Twitch
 {
     public class TwitchStreamProvider : IStreamProvider
     {
-        private readonly TwitchKrakenGateway twitchStreamApi;
+        private readonly TwitchStreamGateway streamGateway;
+        private readonly TwitchChannelGateway channelGateway;
         private readonly TwitchStreamMapper streamMapper;
         private readonly TwitchChannelMapper channelMapper;
 
         public TwitchStreamProvider(
-            TwitchKrakenGateway twitchStreamApi,
+            TwitchStreamGateway streamGateway,
+            TwitchChannelGateway channelGateway,
             TwitchStreamMapper streamMapper,
             TwitchChannelMapper channelMapper
         )
         {
-            this.twitchStreamApi = twitchStreamApi;
+            this.streamGateway = streamGateway;
+            this.channelGateway = channelGateway;
             this.streamMapper = streamMapper;
             this.channelMapper = channelMapper;
         }
@@ -51,15 +54,15 @@ namespace GameStreamSearch.StreamProviders.Twitch
         {
             if (string.IsNullOrEmpty(filterOptions.GameName))
             {
-                return twitchStreamApi.GetLiveStreams(pageSize, pageOffset);
+                return streamGateway.GetLiveStreams(pageSize, pageOffset);
             }
 
-            return twitchStreamApi.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
+            return streamGateway.SearchStreams(filterOptions.GameName, pageSize, pageOffset);
         }
 
         public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
         {
-            var channel = await twitchStreamApi.GetChannelByName(channelName);
+            var channel = await channelGateway.GetChannelByName(channelName);
 
             return channel.Select(channelMapper.Map);
         }

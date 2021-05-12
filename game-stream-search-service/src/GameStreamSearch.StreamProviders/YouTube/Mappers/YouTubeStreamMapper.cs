@@ -10,6 +10,7 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
     public class YouTubeStreamMapper
     {
         private readonly string youTubeWebUrl;
+        private IEnumerable<YouTubeChannelDto> videoChannels;
 
         public YouTubeStreamMapper(string youTubeWebUrl)
         {
@@ -19,10 +20,11 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
         public PlatformStreamsDto Map(
             YouTubeSearchDto searchResults,
             IEnumerable<YouTubeVideoDto> videos,
-            IEnumerable<YouTubeChannelDto> channels)
+            IEnumerable<YouTubeChannelDto> videoChannels)
         {
+            this.videoChannels = videoChannels;
+
             var liveStreamDetails = videos.ToDictionary(video => video.id, video => video.liveStreamingDetails);
-            var channelSnippets = channels.ToDictionary(channel => channel.id, channel => channel.snippet);
 
             return new PlatformStreamsDto
             {
@@ -30,14 +32,14 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
                 Streams = searchResults.items.Select(v =>
                 {
                     var viewers = liveStreamDetails.ContainsKey(v.id.videoId) ? liveStreamDetails[v.id.videoId].concurrentViewers : 0;
-                    var avatarUrl = channelSnippets.ContainsKey(v.snippet.channelId) ? channelSnippets[v.snippet.channelId].thumbnails.@default.url : null;
+                    var maybeAvatarUrl = GetAvatarUrlOrDefault(v.snippet.channelId, string.Empty);
 
                     return new PlatformStreamDto
                     {
                         StreamerName = v.snippet.channelTitle,
                         StreamTitle = v.snippet.title,
                         StreamThumbnailUrl = v.snippet.thumbnails.medium.url,
-                        StreamerAvatarUrl = avatarUrl,
+                        StreamerAvatarUrl = maybeAvatarUrl,
                         StreamUrl = $"{youTubeWebUrl}/watch?v={v.id.videoId}",
                         IsLive = true,
                         Views = viewers,
@@ -45,6 +47,15 @@ namespace GameStreamSearch.StreamProviders.YouTube.Mappers.V3
                 }),
                 NextPageToken = searchResults.nextPageToken ?? string.Empty,
             };
+        }
+
+        private string GetAvatarUrlOrDefault(string videoChannelId, string defaultValue) {
+            var avatarUrl = videoChannels
+                .Where(channel => channel.id == videoChannelId)
+                .Select(channel => channel.snippet.thumbnails.@default.url)
+                .FirstOrDefault();
+
+            return avatarUrl ?? defaultValue;
         }
     }
 }

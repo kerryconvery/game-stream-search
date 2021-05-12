@@ -9,7 +9,7 @@ using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.Twitch.Gateways
 {
-    public class TwitchKrakenGateway
+    public class TwitchKrakenGateway : TwitchStreamGateway, TwitchChannelGateway
     {
         private readonly string twitchApiUrl;
         private readonly string twitchClientId;
@@ -39,16 +39,6 @@ namespace GameStreamSearch.StreamProviders.Twitch.Gateways
             return response.streams;
         }
 
-        public async Task<IEnumerable<TwitchChannelDto>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
-        {
-            var response = await BuildPagedRequest("/kraken/search/channels", pageSize, pageOffset)
-                .WithSearchTerm(searchTerm)
-                .GetAsync()
-                .GetJsonResponseAsync<TwitchChannelsDto>();
-
-            return response.Channels;
-        }
-
         public async Task<Maybe<TwitchChannelDto>> GetChannelByName(string channelName)
         {
             var channels = await SearchChannels(channelName, 1, 0);
@@ -58,6 +48,16 @@ namespace GameStreamSearch.StreamProviders.Twitch.Gateways
                 .FirstOrDefault();
 
             return Maybe<TwitchChannelDto>.ToMaybe(channel);
+        }
+
+        private async Task<IEnumerable<TwitchChannelDto>> SearchChannels(string searchTerm, int pageSize, int pageOffset)
+        {
+            var response = await BuildPagedRequest("/kraken/search/channels", pageSize, pageOffset)
+                .WithSearchTerm(searchTerm)
+                .GetAsync()
+                .GetJsonResponseAsync<TwitchChannelsDto>();
+
+            return response.Channels;
         }
 
         private IFlurlRequest BuildPagedRequest(string endpoint, int pageSize, int pageOffset)

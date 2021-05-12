@@ -12,17 +12,20 @@ namespace GameStreamSearch.StreamProviders.DLive
 {
     public class DLiveStreamProvider : IStreamProvider
     {
-        private readonly DLiveGraphQLGateway dliveApi;
+        private readonly DLiveStreamGateway streamGateway;
+        private readonly DLiveUserGateway userGateway;
         private readonly DLiveStreamMapper streamMapper;
         private readonly DLiveChannelMapper channelMapper;
 
         public DLiveStreamProvider(
-            DLiveGraphQLGateway dliveApi,
+            DLiveStreamGateway streamGateway,
+            DLiveUserGateway userGateway,
             DLiveStreamMapper streamMapper,
             DLiveChannelMapper channelMapper
        )
         {
-            this.dliveApi = dliveApi;
+            this.streamGateway = streamGateway;
+            this.userGateway = userGateway;
             this.streamMapper = streamMapper;
             this.channelMapper = channelMapper;
         }
@@ -45,14 +48,14 @@ namespace GameStreamSearch.StreamProviders.DLive
                 return PlatformStreamsDto.Empty(StreamPlatformName);
             };
 
-            var liveStreams = await dliveApi.GetLiveStreams(pageSize, pageToken, StreamSortOrder.Trending);
+            var liveStreams = await streamGateway.GetLiveStreams(pageSize, pageToken, StreamSortOrder.Trending);
 
             return streamMapper.Map(liveStreams, pageSize, pageToken);
         }
 
         public async Task<Maybe<PlatformChannelDto>> GetStreamerChannel(string channelName)
         {
-            var maybeUser = await dliveApi.GetUserByDisplayName(channelName);
+            var maybeUser = await userGateway.GetUserByDisplayName(channelName);
 
             return maybeUser.Select(channelMapper.Map);
         }

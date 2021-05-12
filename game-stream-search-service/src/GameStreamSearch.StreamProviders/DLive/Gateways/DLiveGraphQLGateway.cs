@@ -7,7 +7,7 @@ using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.DLive.Gateways
 {
-    public class DLiveGraphQLGateway
+    public class DLiveGraphQLGateway : DLiveStreamGateway, DLiveUserGateway
     {
         private readonly string dliveGraphQLApiUrl;
 

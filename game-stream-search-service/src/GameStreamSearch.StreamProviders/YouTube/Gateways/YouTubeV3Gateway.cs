@@ -5,10 +5,11 @@ using Flurl.Http;
 using System.Linq;
 using GameStreamSearch.StreamProviders.Extensions;
 using GameStreamSearch.StreamProviders.YouTube.Gateways.Dto.V3;
+using GameStreamSearch.Types;
 
 namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
 {
-    public class YouTubeV3Gateway
+    public class YouTubeV3Gateway : YouTubeChannelGateway
     {
         private readonly string googleApiUrl;
         private readonly string googleApiKey;
@@ -35,18 +36,6 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
                 .GetJsonResponseAsync<YouTubeSearchDto>();
         }
 
-        public async Task<IEnumerable<YouTubeChannelDto>> GetChannels(string[] channelIds)
-        {
-            var response = await BuildRequest("/youtube/v3/channels")
-                .SetQueryParam("part", "id")
-                .SetQueryParam("part", "snippet")
-                .SetQueryParams(channelIds.Select(id => $"id={id}").ToArray())
-                .GetAsync()
-                .GetJsonResponseAsync<YouTubeChannelsDto>();
-
-            return response.items;
-        }
-
         public async Task<IEnumerable<YouTubeVideoDto>> GetVideos(string[] videoIds)
         {
             var response = await BuildRequest("/youtube/v3/videos")
@@ -58,6 +47,23 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
                 .GetJsonResponseAsync<YouTubeVideosDto>();
 
             return response.items;
+        }
+
+        private IFlurlRequest BuildRequest(string endpoint)
+        {
+            return googleApiUrl
+                .AppendPathSegment(endpoint)
+                .WithHeader("Accept", "application/json")
+                .SetQueryParam("key", googleApiKey)
+                .AllowAnyHttpStatus();
+        }
+
+        public async Task<Maybe<YouTubeChannelDto>> GetChannelByName(string channelName)
+        {
+            var channels = await SearchChannelById(channelName, 1);
+            var channel = channels.FirstOrDefault();
+
+            return Maybe<YouTubeChannelDto>.ToMaybe(channel);
         }
 
         public async Task<IEnumerable<YouTubeChannelDto>> SearchChannelById(string channelId, int pageSize)
@@ -73,13 +79,17 @@ namespace GameStreamSearch.StreamProviders.YouTube.Gateways.V3
             return response.items;
         }
 
-        private IFlurlRequest BuildRequest(string endpoint)
+        public async Task<IEnumerable<YouTubeChannelDto>> BulkGetAvartarByChannelId(string[] channelIds)
         {
-            return googleApiUrl
-                .AppendPathSegment(endpoint)
-                .WithHeader("Accept", "application/json")
-                .SetQueryParam("key", googleApiKey)
-                .AllowAnyHttpStatus();
+            var response = await BuildRequest("/youtube/v3/channels")
+                .SetQueryParam("part", "id")
+                .SetQueryParam("part", "snippet")
+                .SetQueryParams(channelIds.Select(id => $"id={id}").ToArray())
+                .GetAsync()
+                .GetJsonResponseAsync<YouTubeChannelsDto>();
+
+            return response.items;
+
         }
     }
 
